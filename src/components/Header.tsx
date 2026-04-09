@@ -27,6 +27,7 @@ const navItems = [
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const isHome = location.pathname === "/";
 
   useEffect(() => {
     if (mobileMenuOpen) {
@@ -95,7 +96,9 @@ export default function Header() {
             <div className="hidden md:block">
               <button
                 type="button"
-                className="flex min-h-[44px] items-center gap-2 rounded-lg bg-[#FF4757] px-6 py-2.5 text-sm font-bold text-white transition-all duration-300 hover:scale-105 hover:shadow-lg active:scale-95 active:opacity-90"
+                className={`flex min-h-[44px] items-center gap-2 rounded-lg px-6 py-2.5 text-sm font-bold text-white transition-all duration-300 hover:scale-105 hover:shadow-lg active:scale-95 active:opacity-90 ${
+                  isHome ? "bg-green-600" : "bg-[#FF4757]"
+                }`}
                 onClick={() =>
                   window.open(
                     "https://wa.me/5547984218275?text=Olá,%20gostaria%20de%20falar%20com%20a%20Lógica!",
@@ -169,7 +172,9 @@ export default function Header() {
             </Link>
             <button
               type="button"
-              className="mt-4 flex w-full min-h-[44px] items-center justify-center gap-2 rounded-lg bg-[#FF4757] py-3 text-sm font-bold text-white transition-all duration-300 hover:scale-[1.02] hover:shadow-lg active:scale-95 active:opacity-90"
+              className={`mt-4 flex w-full min-h-[44px] items-center justify-center gap-2 rounded-lg py-3 text-sm font-bold text-white transition-all duration-300 hover:scale-[1.02] hover:shadow-lg active:scale-95 active:opacity-90 ${
+                isHome ? "bg-green-600" : "bg-[#FF4757]"
+              }`}
               onClick={() => {
                 setMobileMenuOpen(false);
                 window.open(

@@ -1,0 +1,411 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 215 28% 17%;
+    --card: 0 0% 100%;
+    --card-foreground: 215 28% 17%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 215 28% 17%;
+    --primary: 224 64% 33%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 25 95% 53%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 220 14% 96%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 220 14% 96%;
+    --accent-foreground: 215 28% 17%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 224 64% 33%;
+    --radius: 0.75rem;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 224 64% 33%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 220 14% 96%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 224 64% 33%;
+    --section-dark: 215 28% 17%;
+    --section-dark-foreground: 0 0% 100%;
+    --whatsapp: 142 70% 49%;
+    --whatsapp-foreground: 0 0% 100%;
+    --hero-overlay: 224 64% 15%;
+  }
+
+  .dark {
+    --background: 215 28% 10%;
+    --foreground: 220 14% 96%;
+    --card: 215 28% 14%;
+    --card-foreground: 220 14% 96%;
+    --popover: 215 28% 14%;
+    --popover-foreground: 220 14% 96%;
+    --primary: 224 64% 50%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 25 95% 53%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 215 28% 20%;
+    --muted-foreground: 220 14% 70%;
+    --accent: 215 28% 20%;
+    --accent-foreground: 220 14% 96%;
+    --destructive: 0 62% 30%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 215 28% 25%;
+    --input: 215 28% 25%;
+    --ring: 224 64% 50%;
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    background-color: #000000;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: 'Inter', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Inter', sans-serif;
+    @apply font-bold tracking-tight;
+  }
+}
+
+@layer utilities {
+  .section-padding {
+    @apply py-16 md:py-24 px-4 md:px-8;
+  }
+
+  .container-narrow {
+    @apply max-w-7xl mx-auto;
+  }
+
+  .gradient-primary {
+    background: linear-gradient(135deg, hsl(224 64% 33%), hsl(224 64% 20%));
+  }
+
+  .gradient-hero {
+    background: linear-gradient(135deg, hsl(224 64% 15% / 0.92), hsl(215 28% 17% / 0.85));
+  }
+
+  .gradient-cta {
+    background: linear-gradient(135deg, hsl(25 95% 53%), hsl(25 95% 45%));
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, hsl(25 95% 53%), hsl(25 95% 60%));
+  }
+}
+
+@keyframes segment-shimmer {
+  0%, 100% {
+    transform: rotate(45deg) translateX(-100%);
+    opacity: 0.3;
+  }
+  50% {
+    transform: rotate(45deg) translateX(100%);
+    opacity: 0.6;
+  }
+}
+
+@keyframes segment-pulse {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.5);
+  }
+}
+
+@keyframes footer-glow-pulse {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 0.6;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+}
+
+@keyframes image-zoom-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Header glass com fallback para dispositivos sem backdrop-filter */
+@supports (backdrop-filter: blur(12px)) or (-webkit-backdrop-filter: blur(12px)) {
+  .header-glass {
+    background: rgba(255, 255, 255, 0.45);
+    backdrop-filter: blur(12px) saturate(180%);
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
+  }
+}
+
+@supports not ((backdrop-filter: blur(10px)) or (-webkit-backdrop-filter: blur(10px))) {
+  .header-glass {
+    background: rgba(255, 255, 255, 0.9);
+  }
+}
+
+/* Estilos para o conteúdo do blog (Tailwind Prose customizado) */
+.prose {
+  color: #d1d5db;
+  max-width: none;
+}
+
+.prose p {
+  margin-top: 1.25em;
+  margin-bottom: 1.25em;
+  line-height: 1.8;
+}
+
+.prose h2 {
+  color: #f3f4f6;
+  font-weight: 700;
+  font-size: 1.875rem;
+  margin-top: 2em;
+  margin-bottom: 1em;
+  line-height: 1.3;
+}
+
+.prose h3 {
+  color: #f3f4f6;
+  font-weight: 600;
+  font-size: 1.5rem;
+  margin-top: 1.6em;
+  margin-bottom: 0.8em;
+}
+
+.prose ul,
+.prose ol {
+  margin-top: 1.25em;
+  margin-bottom: 1.25em;
+  padding-left: 1.625em;
+}
+
+.prose li {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  line-height: 1.7;
+}
+
+.prose strong {
+  color: #f3f4f6;
+  font-weight: 600;
+}
+
+.prose a {
+  color: #ff4757;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.prose a:hover {
+  color: #ff6b7a;
+}
+
+.prose blockquote {
+  border-left: 4px solid #ff4757;
+  padding-left: 1em;
+  font-style: italic;
+  color: #9ca3af;
+  margin: 1.6em 0;
+}
+
+.prose code {
+  background: rgba(255, 71, 87, 0.1);
+  color: #ff4757;
+  padding: 0.2em 0.4em;
+  border-radius: 0.25rem;
+  font-size: 0.875em;
+  font-family: monospace;
+}
+
+.prose pre {
+  background: #1a1a1a;
+  padding: 1em;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin: 1.6em 0;
+}
+
+.prose img {
+  border-radius: 0.5rem;
+  margin: 2em 0;
+}
+
+/* Scrollbar customizada (tema Lógica) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(10, 12, 16, 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #FF4757 0%, #FF6B78 100%);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #FF6B78 0%, #FF8A94 100%);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #FF4757 rgba(10, 12, 16, 0.5);
+}
+
+/* ============================================ */
+/* FLIP CARD 3D STYLES */
+/* ============================================ */
+
+.flip-card-container {
+  width: 100%;
+  height: 100%;
+  min-height: 300px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  /* Evita clip do 3D em containers pai */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: inherit;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+}
+
+.flip-card-face {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+.flip-card-front {
+  z-index: 2;
+}
+
+.flip-card-back {
+  /* translateZ no inline style do componente para Safari */
+}
+
+@supports (-webkit-transform-style: preserve-3d) {
+  .flip-card-inner {
+    -webkit-transform-style: preserve-3d;
+  }
+}
+
+/* Ajuste dedicado do bloco de conteúdo do Hero */
+.hero-content-offset {
+  transform: translateY(0);
+}
+
+@media (min-width: 768px) {
+  .hero-content-offset {
+    transform: translateY(96px);
+  }
+}
+
+/* ============================================ */
+/* SMOOTH GLOBAL TRANSITIONS                    */
+/* ============================================ */
+
+/* Remove flash de toque nos dispositivos móveis */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Transições suaves para links e botões simples
+   Excluído: [role="button"] — o FlipCard usa esse role e não pode ter
+   transition: transform aplicada pelo pai, pois quebra o preserve-3d. */
+a,
+button {
+  transition-property: color, background-color, border-color, box-shadow, opacity, filter, text-decoration-color;
+  transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition-duration: 200ms;
+}
+
+/* Evita transições duplas em elementos com classes Tailwind de transição */
+.transition,
+.transition-all,
+.transition-colors,
+.transition-opacity,
+.transition-shadow,
+.transition-transform {
+  transition-duration: 200ms;
+  transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Hover suave em imagens */
+img {
+  transition: opacity 0.3s ease;
+}
+
+/* Transição suave de foco acessível */
+:focus-visible {
+  transition: outline-offset 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* Scroll suave em dispositivos que suportam */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Cards com hover suave */
+.group {
+  transition: box-shadow 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}

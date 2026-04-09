@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find c:/Users/Rafael/Downloads/l-gica-connect-main/l-gica-connect-main/src -type f \\\\\\( -name \"*.tsx\" -o -name \"*.ts\" \\\\\\) -exec sed -i 's/554796940113/5547842182275/g' {} +)",
+      "Bash(find c:/Users/Rafael/Downloads/l-gica-connect-main/l-gica-connect-main/src -type f \\\\\\( -name \"*.tsx\" -o -name \"*.ts\" \\\\\\) -exec sed -i 's/5547842182275/5547984218275/g' {} +)",
+      "Bash(npx tsc:*)",
+      "Bash(node_modules/.bin/tsc --noEmit --skipLibCheck)",
+      "Bash(echo \"EXIT:$?\")",
+      "Bash(node_modules/.bin/vite build:*)"
+    ]
+  }
+}

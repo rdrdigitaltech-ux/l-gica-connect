@@ -1,0 +1,105 @@
+# Robots.txt - Lógica Automação Comercial
+# Controla o que motores de busca podem rastrear
+
+# ========================================
+# REGRAS GERAIS (TODOS OS ROBÔS)
+# ========================================
+
+User-agent: *
+
+# PERMITIR (Páginas Públicas)
+Allow: /
+Allow: /sistemas/
+Allow: /equipamentos/
+Allow: /servicos/
+Allow: /contato/
+Allow: /blog/
+
+# BLOQUEAR (Áreas Privadas e Técnicas)
+Disallow: /portal/
+Disallow: /portal/*
+Disallow: /api/
+Disallow: /admin/
+Disallow: /*.json$
+Disallow: /obrigado
+
+# Permitir recursos necessários para renderização
+Allow: /assets/
+Allow: /*.css$
+Allow: /*.js$
+Allow: /*.webp$
+Allow: /*.jpg$
+Allow: /*.png$
+Allow: /*.svg$
+Allow: /img/
+
+# ========================================
+# GOOGLE BOT (Específico)
+# ========================================
+
+User-agent: Googlebot
+Allow: /
+Disallow: /portal/
+Disallow: /api/
+
+# ========================================
+# BING BOT
+# ========================================
+
+User-agent: Bingbot
+Allow: /
+Disallow: /portal/
+Disallow: /api/
+
+# ========================================
+# BLOQUEAR SCRAPERS E BOTS RUINS
+# ========================================
+
+# AhrefsBot (usa muito crawl budget)
+User-agent: AhrefsBot
+Disallow: /
+
+# SemrushBot (scraper SEO)
+User-agent: SemrushBot
+Disallow: /
+
+# MJ12bot (scraper agressivo)
+User-agent: MJ12bot
+Disallow: /
+
+# DotBot (scraper)
+User-agent: DotBot
+Disallow: /
+
+# ========================================
+# CRAWL RATE (Evitar sobrecarga)
+# ========================================
+
+# Google: não precisa configurar aqui, usar Search Console
+# Crawl-delay: 1
+
+# ========================================
+# LOCALIZAÇÃO DO SITEMAP
+# ========================================
+
+Sitemap: https://l-gica-connect.vercel.app/sitemap.xml
+
+# IMPORTANTE:
+# Quando tiver domínio próprio, alterar para:
+# Sitemap: https://logica.inf.br/sitemap.xml
+# ou
+# Sitemap: https://www.logica.inf.br/sitemap.xml
+
+# ========================================
+# NOTAS
+# ========================================
+
+# Este arquivo:
+# 1. Protege área do Portal (login, treinamentos, base conhecimento)
+# 2. Permite indexação de páginas públicas
+# 3. Bloqueia bots ruins que gastam recursos
+# 4. Indica localização do sitemap
+# 5. Permite recursos necessários (CSS, JS, imagens)
+
+# Data: 09/03/2026
+# Versão: 1.0

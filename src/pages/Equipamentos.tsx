@@ -29,7 +29,7 @@ const equipamentos = [
     descricao: "Controle de acesso e ponto eletrônico",
     imagem: "/img/relogio_ponto.webp",
     link: "/equipamentos/relogio-ponto",
-    categoria: "Controle de Acesso",
+    categoria: "Controle de ponto",
     marca: ["Henry", "Dimep", "Topdata"],
     tipo: "Gestão",
   },

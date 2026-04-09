@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { ArrowLeft, MessageCircle } from "lucide-react";
+import { ArrowLeft, MessageCircle, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import { ImageZoom } from "@/components/ImageZoom";
 import { CardEmBreve } from "@/components/CardEmBreve";
@@ -10,8 +10,12 @@ import {
 } from "@/data/equipamentosDetalhados";
 
 const EquipamentoRelogioPonto = () => {
+  const [showPopup, setShowPopup] = useState(false);
+
   useEffect(() => {
     window.scrollTo(0, 0);
+    const timer = setTimeout(() => setShowPopup(true), 800);
+    return () => clearTimeout(timer);
   }, []);
 
   const [filtroAtivo, setFiltroAtivo] = useState<string>("todos");
@@ -35,13 +39,112 @@ const EquipamentoRelogioPonto = () => {
 
   const handleFiltroChange = (novoFiltro: string) => {
     setFiltroAtivo(novoFiltro);
-    document
-      .getElementById("grid-produtos")
-      ?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   return (
     <div className="min-h-screen bg-[#06080A]">
+      {/* Popup - Sistema RH + Relógio de Ponto */}
+      {showPopup && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          style={{ background: "rgba(0,0,0,0.75)", backdropFilter: "blur(4px)" }}
+          onClick={() => setShowPopup(false)}
+        >
+          <div
+            className="relative w-full max-w-lg rounded-2xl p-8"
+            style={{
+              background: "linear-gradient(145deg, #0F1115 0%, #0C0E11 100%)",
+              border: "1px solid rgba(255, 71, 87, 0.35)",
+              boxShadow: "0 24px 64px rgba(0,0,0,0.7), 0 0 40px rgba(255, 71, 87, 0.1)",
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              onClick={() => setShowPopup(false)}
+              className="absolute right-4 top-4 rounded-full p-1 text-gray-400 transition-colors hover:text-white"
+              style={{ background: "rgba(255,255,255,0.05)" }}
+            >
+              <X className="h-5 w-5" />
+            </button>
+
+            <div
+              className="mb-5 inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold"
+              style={{
+                background: "rgba(255, 71, 87, 0.15)",
+                border: "1px solid rgba(255, 71, 87, 0.3)",
+                color: "#FF4757",
+              }}
+            >
+              Oferta Exclusiva
+            </div>
+
+            <h2 className="mb-3 text-2xl font-extrabold text-white">
+              Complete sua solução de RH
+            </h2>
+            <p className="mb-6 text-base leading-relaxed text-gray-400">
+              Além dos relógios de ponto, a Lógica oferece o{" "}
+              <span className="font-semibold text-gray-200">
+                Sistema de Controle de Ponto para RH
+              </span>
+              : automatize a apuração de jornadas, tratamento de exceções,
+              banco de horas e integração com folha de pagamento — tudo
+              integrado ao seu equipamento.
+            </p>
+
+            <ul className="mb-8 space-y-2">
+              {[
+                "Apuração automática de horas e faltas",
+                "Gestão de escalas e banco de horas",
+                "Relatórios gerenciais para o DP",
+                "Conformidade com a Portaria 671",
+              ].map((item) => (
+                <li key={item} className="flex items-center gap-3 text-sm text-gray-300">
+                  <span
+                    className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-xs font-bold"
+                    style={{ background: "rgba(255, 71, 87, 0.2)", color: "#FF4757" }}
+                  >
+                    ✓
+                  </span>
+                  {item}
+                </li>
+              ))}
+            </ul>
+
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <button
+                type="button"
+                onClick={() =>
+                  window.open(
+                    "https://wa.me/5547984218275?text=" +
+                      encodeURIComponent(
+                        "Olá! Tenho interesse no pacote completo: Relógio de Ponto + Sistema de RH da Lógica. Pode me ajudar?"
+                      ),
+                    "_blank"
+                  )
+                }
+                className="flex flex-1 items-center justify-center gap-2 rounded-lg px-6 py-3 text-sm font-bold text-white"
+                style={{
+                  background: "linear-gradient(135deg, #25D366 0%, #128C7E 100%)",
+                  boxShadow: "0 6px 20px rgba(37, 211, 102, 0.35)",
+                }}
+              >
+                <MessageCircle className="h-4 w-4" />
+                Falar com especialista
+              </button>
+              <Link
+                to="/sistemas/tratamento-ponto"
+                className="flex flex-1 items-center justify-center gap-2 rounded-lg border px-6 py-3 text-sm font-semibold text-gray-300 transition-colors hover:text-white"
+                style={{ borderColor: "rgba(255, 71, 87, 0.3)" }}
+                onClick={() => setShowPopup(false)}
+              >
+                Ver sistema de RH
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Header com Voltar */}
       <section className="bg-[#000000] py-8 px-6">
         <div className="mx-auto max-w-7xl">

@@ -381,7 +381,7 @@ export default function SistemaVarejo() {
         <div className="relative z-10 mx-auto max-w-4xl px-4 text-center md:px-6 lg:px-8">
           <div>
             <h2 className="mb-4 text-3xl font-extrabold text-white md:text-4xl">
-              Pronto para Revolucionar seu Varejo?
+              Pronto para melhorar sua empresa?
             </h2>
             <p className="mb-8 text-lg text-gray-400">
               Converse com nossos especialistas e descubra como nosso sistema pode transformar a gestão da sua loja.
@@ -404,7 +404,7 @@ export default function SistemaVarejo() {
               }}
             >
               <MessageCircle className="h-6 w-6" />
-              Falar com Especialista em Varejo
+              Falar com um especialista
             </button>
           </div>
         </div>

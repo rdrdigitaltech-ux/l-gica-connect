@@ -158,17 +158,7 @@ export default function SistemaTratamentoPonto() {
             className="mb-6 font-extrabold leading-tight text-gray-200"
             style={{ fontSize: "clamp(28px, 4vw, 52px)" }}
           >
-            Tratamento de Ponto{" "}
-            <span
-              style={{
-                background: `linear-gradient(135deg, ${ACCENT} 0%, #FF6B7A 100%)`,
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-              }}
-            >
-              profissional e automático
-            </span>
+            Sistema de controle de ponto para RH
           </h1>
 
           <p

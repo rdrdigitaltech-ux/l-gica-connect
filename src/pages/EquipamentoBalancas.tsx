@@ -37,9 +37,6 @@ const EquipamentoBalancas = () => {
 
   const handleFiltroChange = (novoFiltro: string) => {
     setFiltroAtivo(novoFiltro);
-    document
-      .getElementById("grid-produtos")
-      ?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   return (

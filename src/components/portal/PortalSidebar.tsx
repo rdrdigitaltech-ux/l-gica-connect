@@ -4,9 +4,9 @@ import {
   BookOpen,
   Video,
   Crown,
-  UserPlus,
 } from "lucide-react";
 import PremiumBadge from "./PremiumBadge";
+import { useAuth } from "@/context/AuthContext";
 
 const navStyle = {
   background:
@@ -25,6 +25,9 @@ const mobileLinkActive = "text-[#FF4757]";
 const mobileLinkInactive = "text-gray-500 hover:text-gray-300";
 
 export default function PortalSidebar() {
+  const { isPremium } = useAuth();
+  const premium = isPremium();
+
   return (
     <>
       {/* Sidebar — visível apenas em md+ */}
@@ -48,34 +51,29 @@ export default function PortalSidebar() {
             <BookOpen className="h-5 w-5" />
             Base de Conhecimento
           </NavLink>
-          <NavLink
-            to="/portal/treinamentos"
-            className={({ isActive }) =>
-              `${baseLink} ${isActive ? activeLink : inactiveLink}`
-            }
-          >
-            <Video className="h-5 w-5" />
-            Treinamentos
-          </NavLink>
-          <NavLink
-            to="/portal/treinamentos-premium"
-            className={({ isActive }) =>
-              `${baseLink} ${isActive ? activeLink : inactiveLink}`
-            }
-          >
-            <Crown className="h-5 w-5" />
-            Treinamentos Premium
-            <PremiumBadge />
-          </NavLink>
-          <NavLink
-            to="/portal/solicitar-acesso"
-            className={({ isActive }) =>
-              `${baseLink} ${isActive ? activeLink : inactiveLink}`
-            }
-          >
-            <UserPlus className="h-5 w-5" />
-            Solicitar Acesso
-          </NavLink>
+          {!premium && (
+            <NavLink
+              to="/portal/treinamentos"
+              className={({ isActive }) =>
+                `${baseLink} ${isActive ? activeLink : inactiveLink}`
+              }
+            >
+              <Video className="h-5 w-5" />
+              Treinamentos
+            </NavLink>
+          )}
+          {premium && (
+            <NavLink
+              to="/portal/treinamentos-premium"
+              className={({ isActive }) =>
+                `${baseLink} ${isActive ? activeLink : inactiveLink}`
+              }
+            >
+              <Crown className="h-5 w-5" />
+              Treinamentos Premium
+              <PremiumBadge />
+            </NavLink>
+          )}
         </nav>
       </aside>
 
@@ -106,35 +104,29 @@ export default function PortalSidebar() {
           <BookOpen className="h-5 w-5" />
           <span>Artigos</span>
         </NavLink>
-        <NavLink
-          to="/portal/treinamentos"
-          className={({ isActive }) =>
-            `${mobileLinkBase} ${isActive ? mobileLinkActive : mobileLinkInactive}`
-          }
-        >
-          <Video className="h-5 w-5" />
-          <span>Treinos</span>
-        </NavLink>
-        <NavLink
-          to="/portal/treinamentos-premium"
-          className={({ isActive }) =>
-            `${mobileLinkBase} ${isActive ? mobileLinkActive : mobileLinkInactive}`
-          }
-        >
-          <Crown className="h-5 w-5" />
-          <span>Premium</span>
-        </NavLink>
-        <NavLink
-          to="/portal/solicitar-acesso"
-          className={({ isActive }) =>
-            `${mobileLinkBase} ${isActive ? mobileLinkActive : mobileLinkInactive}`
-          }
-        >
-          <UserPlus className="h-5 w-5" />
-          <span>Acesso</span>
-        </NavLink>
+        {!premium && (
+          <NavLink
+            to="/portal/treinamentos"
+            className={({ isActive }) =>
+              `${mobileLinkBase} ${isActive ? mobileLinkActive : mobileLinkInactive}`
+            }
+          >
+            <Video className="h-5 w-5" />
+            <span>Treinos</span>
+          </NavLink>
+        )}
+        {premium && (
+          <NavLink
+            to="/portal/treinamentos-premium"
+            className={({ isActive }) =>
+              `${mobileLinkBase} ${isActive ? mobileLinkActive : mobileLinkInactive}`
+            }
+          >
+            <Crown className="h-5 w-5" />
+            <span>Premium</span>
+          </NavLink>
+        )}
       </nav>
-
     </>
   );
 }

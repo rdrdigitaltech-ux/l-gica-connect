@@ -46,7 +46,7 @@ export default function Treinamentos() {
     : null;
 
   return (
-    <div className="min-h-screen" style={{ background: "#000000" }}>
+    <div className="relative min-h-screen" style={{ background: "#000000" }}>
       {/* Background */}
       <div
         className="absolute inset-0 z-0"
@@ -73,7 +73,7 @@ export default function Treinamentos() {
               </div>
               <div>
                 <h1 className="text-3xl font-extrabold text-white">
-                  Treinamentos Gratuitos
+                  Seus treinamentos
                 </h1>
                 <p className="text-sm text-gray-400">
                   Olá, {user?.name}! Aprenda a usar o sistema com nossos vídeos

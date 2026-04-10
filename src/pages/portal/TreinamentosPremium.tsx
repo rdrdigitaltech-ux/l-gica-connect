@@ -53,7 +53,7 @@ export default function TreinamentosPremium() {
   if (!isPremium()) {
     return (
       <div
-        className="flex min-h-screen items-center justify-center"
+        className="relative flex min-h-screen items-center justify-center"
         style={{ background: "#000000" }}
       >
         <div
@@ -174,7 +174,7 @@ export default function TreinamentosPremium() {
 
   // Se É premium, mostrar conteúdo
   return (
-    <div className="min-h-screen" style={{ background: "#000000" }}>
+    <div className="relative min-h-screen" style={{ background: "#000000" }}>
       {/* Background */}
       <div
         className="absolute inset-0 z-0"

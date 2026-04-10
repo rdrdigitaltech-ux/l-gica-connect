@@ -79,7 +79,7 @@ const AppContent = () => {
       <main className="min-h-screen" style={{ background: "#06080A" }}>
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
-            key={location.pathname}
+            key={isPortal ? "portal" : location.pathname}
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}

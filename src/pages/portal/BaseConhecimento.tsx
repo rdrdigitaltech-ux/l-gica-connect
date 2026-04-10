@@ -93,7 +93,7 @@ export default function BaseConhecimento() {
   };
 
   return (
-    <div className="min-h-screen" style={{ background: "#000000" }}>
+    <div className="relative min-h-screen" style={{ background: "#000000" }}>
       {/* Background */}
       <div
         className="absolute inset-0 z-0"

@@ -250,7 +250,48 @@ values ('9cde18c3-8eff-4fe9-b36f-e01bc5fd0df0', 'Admin Lógica')
 on conflict (id) do nothing;
 
 
--- ─── 10. VERIFICAÇÃO FINAL ────────────────────────────────────────────────────
+-- ─── 10. STORAGE: bucket de imagens do CMS ───────────────────────────────────
+-- Cria (ou ignora se já existir) o bucket público "cms-images".
+-- IMPORTANTE: execute este bloco no SQL Editor do Supabase se o bucket ainda
+-- não aparecer em Storage → Buckets no dashboard.
+
+insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+values (
+  'cms-images',
+  'cms-images',
+  true,
+  10485760,   -- 10 MB por arquivo
+  array['image/jpeg','image/jpg','image/png','image/webp','image/gif','image/svg+xml']
+)
+on conflict (id) do update set public = true;
+
+-- Leitura pública (qualquer visitante pode ver as imagens)
+drop policy if exists "Public read cms-images" on storage.objects;
+create policy "Public read cms-images"
+  on storage.objects for select
+  using (bucket_id = 'cms-images');
+
+-- Upload somente por admin autenticado via Supabase Auth
+drop policy if exists "Auth upload cms-images" on storage.objects;
+create policy "Auth upload cms-images"
+  on storage.objects for insert
+  with check (bucket_id = 'cms-images' and auth.role() = 'authenticated');
+
+-- Substituição de arquivo (upsert)
+drop policy if exists "Auth update cms-images" on storage.objects;
+create policy "Auth update cms-images"
+  on storage.objects for update
+  using  (bucket_id = 'cms-images' and auth.role() = 'authenticated')
+  with check (bucket_id = 'cms-images' and auth.role() = 'authenticated');
+
+-- Exclusão de arquivo
+drop policy if exists "Auth delete cms-images" on storage.objects;
+create policy "Auth delete cms-images"
+  on storage.objects for delete
+  using (bucket_id = 'cms-images' and auth.role() = 'authenticated');
+
+
+-- ─── 11. VERIFICAÇÃO FINAL ────────────────────────────────────────────────────
 -- Confirme que todas as tabelas foram criadas:
 
 select

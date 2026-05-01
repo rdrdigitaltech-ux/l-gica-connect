@@ -356,6 +356,12 @@ export const defaultContent: AllContentMeta = {
     b4_desc:   { label: "Benefício 4 — Descrição", value: "Evite cálculos manuais e exporte informações prontas para a folha de pagamento.", type: "text" },
     cta_titulo: { label: "Título CTA final", value: "Quer automatizar o fechamento do ponto?", type: "text" },
     cta_desc:   { label: "Descrição CTA final", value: "A Lógica comercializa e implanta soluções de tratamento de ponto com foco em resultado, conformidade e suporte de verdade.", type: "text" },
+    // Galeria de imagens do sistema
+    galeria_titulo: { label: "Galeria — Título da seção", value: "Conheça o Sistema", type: "text" },
+    img1: { label: "Galeria — Imagem 1", value: "", type: "image_url" },
+    img2: { label: "Galeria — Imagem 2", value: "", type: "image_url" },
+    img3: { label: "Galeria — Imagem 3", value: "", type: "image_url" },
+    img4: { label: "Galeria — Imagem 4", value: "", type: "image_url" },
   },
 
   // ── PÁGINA SISTEMA ONDESK ─────────────────────────────────────────────────
@@ -404,10 +410,17 @@ export const defaultContent: AllContentMeta = {
     ad4_depois: { label: "Antes x Depois 4 — Depois", value: "Decisões baseadas em dados reais", type: "text" },
     cta_titulo: { label: "Título CTA final", value: "Pronto para organizar seu atendimento?", type: "text" },
     cta_desc:   { label: "Descrição CTA final", value: "A Lógica comercializa e implanta o Lógica.OnDesk com suporte completo e treinamento da equipe.", type: "text" },
+    // Galeria de imagens do sistema
+    galeria_titulo: { label: "Galeria — Título da seção", value: "Conheça o Sistema", type: "text" },
+    img1: { label: "Galeria — Imagem 1", value: "", type: "image_url" },
+    img2: { label: "Galeria — Imagem 2", value: "", type: "image_url" },
+    img3: { label: "Galeria — Imagem 3", value: "", type: "image_url" },
+    img4: { label: "Galeria — Imagem 4", value: "", type: "image_url" },
   },
 
   // ── CATÁLOGO — BALANÇAS ───────────────────────────────────────────────────
   catalogo_balancas: {
+    video_url: { label: "Vídeo Tutorial — URL do YouTube", value: "", type: "link" },
     m1_nome: { label: "Modelo 1 — Nome  (Toledo Prix 3 Fit)",   value: "Balança Toledo Prix 3 Fit",   type: "text" },
     m1_img:  { label: "Modelo 1 — Imagem (Toledo Prix 3 Fit)",  value: "/img/Prix 3 Fit.webp",        type: "image_url" },
     m1_desc: { label: "Modelo 1 — Descrição (Toledo Prix 3 Fit)", value: "Balança eletrônica compacta com impressora integrada, ideal para açougues, feiras e supermercados. Display amplo e fácil leitura.", type: "text" },
@@ -421,6 +434,7 @@ export const defaultContent: AllContentMeta = {
 
   // ── CATÁLOGO — LEITORES DE CÓDIGO DE BARRAS ───────────────────────────────
   catalogo_leitores: {
+    video_url: { label: "Vídeo Tutorial — URL do YouTube", value: "", type: "link" },
     m1_nome: { label: "Leitor 1 — Nome  (Elgin QW 2120)",        value: "Leitor Elgin QW 2120",       type: "text" },
     m1_img:  { label: "Leitor 1 — Imagem (Elgin QW 2120)",       value: "/img/Elgin QW 2120.webp",    type: "image_url" },
     m1_desc: { label: "Leitor 1 — Descrição (Elgin QW 2120)", value: "Scanner compacto e ergonômico com leitura omnidirecional. Conexão USB plug-and-play. Alta velocidade de captura para agilizar vendas.", type: "text" },
@@ -440,6 +454,7 @@ export const defaultContent: AllContentMeta = {
 
   // ── CATÁLOGO — IMPRESSORAS ────────────────────────────────────────────────
   catalogo_impressoras: {
+    video_url: { label: "Vídeo Tutorial — URL do YouTube", value: "", type: "link" },
     m1_nome:  { label: "Impressora 1 — Nome  (Elgin L-42 PRO)",           value: "Elgin L-42 PRO",              type: "text" },
     m1_img:   { label: "Impressora 1 — Imagem (Elgin L-42 PRO)",          value: "/img/Elgin L-42 PRO.webp",    type: "image_url" },
     m1_desc:  { label: "Impressora 1 — Descrição (Elgin L-42 PRO)", value: "Computador PDV all-in-one com tela touch, processador Intel e sistema operacional Windows. Solução completa para varejo e automação comercial.", type: "text" },
@@ -480,6 +495,7 @@ export const defaultContent: AllContentMeta = {
 
   // ── CATÁLOGO — RELÓGIOS DE PONTO E CATRACAS ───────────────────────────────
   catalogo_relogio: {
+    video_url: { label: "Vídeo Tutorial — URL do YouTube", value: "", type: "link" },
     m1_nome:  { label: "Produto 1 — Nome  (Control iD)",              value: "Relógio de Ponto Control iD",             type: "text" },
     m1_img:   { label: "Produto 1 — Imagem (Control iD)",             value: "/img/RELOGIO PONTO CONTROL ID.webp",      type: "image_url" },
     m1_desc:  { label: "Produto 1 — Descrição (Control iD)", value: "Terminal de ponto com reconhecimento biométrico e tela colorida. Registro seguro de jornada e controle de acesso. Conectividade via rede.", type: "text" },
@@ -553,6 +569,7 @@ export const defaultContent: AllContentMeta = {
 
   // ── CATÁLOGO — COMPUTADORES E HARDWARE ───────────────────────────────────
   catalogo_computadores: {
+    video_url: { label: "Vídeo Tutorial — URL do YouTube", value: "", type: "link" },
     m1_nome: { label: "Hardware 1 — Nome  (Nobreak SMS)",   value: "Nobreak SMS 1200VA",             type: "text" },
     m1_img:  { label: "Hardware 1 — Imagem (Nobreak SMS)",  value: "/img/NOBREAK SMS 1200va.webp",   type: "image_url" },
     m1_desc: { label: "Hardware 1 — Descrição (Nobreak SMS)", value: "Proteção de energia para sistemas críticos. Autonomia de até 30 minutos e estabilização de voltagem. Ideal para PDV e equipamentos eletrônicos.", type: "text" },
@@ -566,6 +583,7 @@ export const defaultContent: AllContentMeta = {
 
   // ── CATÁLOGO — EMBALADORAS ────────────────────────────────────────────────
   catalogo_embaladoras: {
+    video_url: { label: "Vídeo Tutorial — URL do YouTube", value: "", type: "link" },
     m1_nome: { label: "Embaladora 1 — Nome",    value: "Embaladoras e Seladoras",   type: "text" },
     m1_img:  { label: "Embaladora 1 — Imagem",  value: "/img/embaladoras.webp",     type: "image_url" },
     m1_desc: { label: "Embaladora 1 — Descrição", value: "Linha completa de embaladoras, seladoras e máquinas de embalar. Equipamentos para proteção e apresentação de produtos com eficiência.", type: "text" },

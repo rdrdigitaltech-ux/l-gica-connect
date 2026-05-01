@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useSiteContent } from "@/hooks/useSiteContent";
 import { Link } from "react-router-dom";
 import {
   ArrowLeft,
@@ -84,6 +85,8 @@ const beneficios = [
 ] as const;
 
 export default function SistemaTratamentoPonto() {
+  const { content: cms } = useSiteContent("sistema_ponto");
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -192,62 +195,69 @@ export default function SistemaTratamentoPonto() {
         </div>
       </section>
 
-      {/* PLACEHOLDER IMAGEM */}
-      <section className="px-6 py-20" style={{ background: "#0A0C10" }}>
-        <div className="mx-auto max-w-7xl">
-          <div
-            className="relative overflow-hidden rounded-2xl border p-12 text-center"
-            style={{
-              background: `linear-gradient(145deg, ${ACCENT}12 0%, rgba(12, 14, 17, 0.92) 70%)`,
-              borderColor: `${ACCENT}33`,
-              boxShadow: "0 10px 30px rgba(0, 0, 0, 0.45)",
-              minHeight: "360px",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <div
-              className="mb-6 inline-flex items-center justify-center rounded-full"
-              style={{
-                width: "120px",
-                height: "120px",
-                background: `linear-gradient(135deg, ${ACCENT}2B, ${ACCENT}14)`,
-                border: `2px solid ${ACCENT}66`,
-              }}
-            >
-              <Clock className="h-14 w-14" style={{ color: ACCENT }} />
+      {/* GALERIA DE IMAGENS DO SISTEMA */}
+      {(() => {
+        const imgs = [cms.img1, cms.img2, cms.img3, cms.img4].filter(Boolean) as string[];
+        if (imgs.length === 0) return (
+          <section className="px-6 py-20" style={{ background: "#0A0C10" }}>
+            <div className="mx-auto max-w-7xl">
+              <div
+                className="relative overflow-hidden rounded-2xl border p-12 text-center"
+                style={{
+                  background: `linear-gradient(145deg, ${ACCENT}12 0%, rgba(12, 14, 17, 0.92) 70%)`,
+                  borderColor: `${ACCENT}33`,
+                  boxShadow: "0 10px 30px rgba(0, 0, 0, 0.45)",
+                  minHeight: "360px",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <div
+                  className="mb-6 inline-flex items-center justify-center rounded-full"
+                  style={{
+                    width: "120px",
+                    height: "120px",
+                    background: `linear-gradient(135deg, ${ACCENT}2B, ${ACCENT}14)`,
+                    border: `2px solid ${ACCENT}66`,
+                  }}
+                >
+                  <Clock className="h-14 w-14" style={{ color: ACCENT }} />
+                </div>
+                <h2 className="mb-4 font-extrabold text-gray-200" style={{ fontSize: "clamp(22px, 3vw, 34px)" }}>
+                  Fotos do sistema em breve
+                </h2>
+                <p className="mx-auto mb-6 max-w-2xl text-base md:text-lg" style={{ color: "#9CA3AF" }}>
+                  Estamos preparando imagens e demonstrações da interface. Em breve você poderá visualizar o sistema completo por aqui.
+                </p>
+                <div
+                  className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold"
+                  style={{ background: `${ACCENT}22`, border: `1px solid ${ACCENT}55`, color: ACCENT }}
+                >
+                  Conteúdo em produção
+                </div>
+              </div>
             </div>
-
-            <h2
-              style={{
-                fontSize: "clamp(22px, 3vw, 34px)",
-              }}
-              className="mb-4 font-extrabold text-gray-200"
-            >
-              Fotos do sistema em breve
-            </h2>
-            <p
-              className="mx-auto mb-6 max-w-2xl text-base md:text-lg"
-              style={{ color: "#9CA3AF" }}
-            >
-              Estamos preparando imagens e demonstrações da interface. Em breve
-              você poderá visualizar o sistema completo por aqui.
-            </p>
-            <div
-              className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold"
-              style={{
-                background: `${ACCENT}22`,
-                border: `1px solid ${ACCENT}55`,
-                color: ACCENT,
-              }}
-            >
-              Conteúdo em produção
+          </section>
+        );
+        return (
+          <section className="px-6 py-20" style={{ background: "#0A0C10" }}>
+            <div className="mx-auto max-w-7xl">
+              <h2 className="mb-10 text-center font-extrabold text-gray-200" style={{ fontSize: "clamp(22px, 3vw, 34px)" }}>
+                {cms.galeria_titulo || "Conheça o Sistema"}
+              </h2>
+              <div className={`grid gap-4 ${imgs.length === 1 ? "grid-cols-1" : imgs.length === 2 ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1 md:grid-cols-2"}`}>
+                {imgs.map((src, i) => (
+                  <div key={i} className="overflow-hidden rounded-xl border" style={{ borderColor: `${ACCENT}33` }}>
+                    <img src={src} alt={`${cms.galeria_titulo || "Sistema"} — Imagem ${i + 1}`} className="h-auto w-full object-cover" loading="lazy" />
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        </div>
-      </section>
+          </section>
+        );
+      })()}
 
       {/* FUNCIONALIDADES */}
       <section className="px-6 py-24" style={{ background: "#12141A" }}>

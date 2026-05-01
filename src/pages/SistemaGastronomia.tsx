@@ -25,53 +25,6 @@ export default function SistemaGastronomia() {
   }));
 
   const segmentos = (cms.seg_lista ?? "").split("\n").filter(Boolean);
-
-
-const vantagens = [
-  {
-    icon: TrendingUp,
-    title: "Gestão",
-    desc: "Com nossa solução, a gestão de estoque torna-se setorizada e detalhada, garantindo controle preciso dos insumos e produtos.",
-  },
-  {
-    icon: Scale,
-    title: "Pesagem",
-    desc: "O processo de pesagem é ágil e eficiente, com autoatendimento na balança que reduz filas e elimina erros.",
-  },
-  {
-    icon: ChefHat,
-    title: "Cozinha",
-    desc: "Distribua pedidos em diversos pontos da cozinha, segmentando por tipo de alimento, otimizando a produção e entrega.",
-  },
-  {
-    icon: Receipt,
-    title: "Pedidos",
-    desc: "Garçons automatizados com lançamentos de pedidos através de celular ou tablet. Personalize e detalhe pedidos de forma rápida e eficaz, garantindo que cada cliente receba exatamente o que deseja.",
-  },
-  {
-    icon: Calendar,
-    title: "Reservas",
-    desc: "A gestão de mesas é avançada, com recursos de reservas, agrupamentos e pagamentos parciais, melhorando a experiência do cliente.",
-  },
-  {
-    icon: CreditCard,
-    title: "Pagamentos",
-    desc: "Agrupe comandas para pagamento com facilidade, otimizando o fluxo de atendimento e reduzindo tempos de espera no caixa.",
-  },
-];
-
-const segmentos = [
-  "Locais executivos",
-  "Restaurantes à la carte",
-  "Restaurantes com buffet",
-  "Cozinhas orientais",
-  "Restaurantes típicos",
-  "Bares e choperias",
-  "Pizzarias",
-  "Cafeterias",
-];
-
-export default function SistemaGastronomia() {
   return (
     <div className="min-h-screen bg-[#0A0C10]">
       {/* 1. HERO SECTION */}

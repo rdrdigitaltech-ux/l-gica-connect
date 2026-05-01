@@ -46,12 +46,6 @@ export default function Servicos() {
           </h1>
           <p className="max-w-3xl text-base text-gray-400 lg:text-lg">
             {sv.hero_subtitulo ?? "Ser parceiro da LÓGICA significa ter a certeza e a confiança de que com nossos serviços sua empresa estará continuamente segura e atualizada."}
-            SERVIÇOS
-          </h1>
-          <p className="max-w-3xl text-base text-gray-400 lg:text-lg">
-            Ser parceiro da LÓGICA significa ter a certeza e a confiança de que
-            com nossos serviços sua empresa estará continuamente segura e
-            atualizada.
           </p>
         </div>
       </section>
@@ -86,48 +80,6 @@ export default function Servicos() {
                     <span className="text-sm font-medium text-gray-300">{label}</span>
                   </div>
                 ))}
-                Assistência técnica especializada
-              </h2>
-              <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <div className="space-y-4">
-                  {[
-                    "Informática em geral",
-                    "Automação comercial em geral",
-                    "Contrato de manutenção",
-                  ].map((label) => (
-                    <div key={label} className="flex items-start gap-3">
-                      <div
-                        className="mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full"
-                        style={checkItemStyle}
-                      >
-                        <Check className="h-4 w-4 text-[#FF4757]" />
-                      </div>
-                      <span className="text-sm font-medium text-gray-300">
-                        {label}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-                <div className="space-y-4">
-                  {[
-                    "Balanças",
-                    "Impressoras Térmicas",
-                    "Nobreak",
-                    "Notebook",
-                  ].map((label) => (
-                    <div key={label} className="flex items-start gap-3">
-                      <div
-                        className="mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full"
-                        style={checkItemStyle}
-                      >
-                        <Check className="h-4 w-4 text-[#FF4757]" />
-                      </div>
-                      <span className="text-sm font-medium text-gray-300">
-                        {label}
-                      </span>
-                    </div>
-                  ))}
-                </div>
               </div>
               <button
                 type="button"
@@ -159,7 +111,6 @@ export default function Servicos() {
               >
                 <img
                   src={sv.assistencia_imagem ?? "/img/assistencia-tecnica.webp"}
-                  src="/img/assistencia-tecnica.webp"
                   alt="Assistência Técnica"
                   width={800}
                   height={600}
@@ -200,7 +151,6 @@ export default function Servicos() {
               >
                 <img
                   src={sv.datacenter_imagem ?? "/img/solucoes-datacenter.webp"}
-                  src="/img/solucoes-datacenter.webp"
                   alt="Soluções de Data Center"
                   width={800}
                   height={600}
@@ -222,27 +172,6 @@ export default function Servicos() {
                       <Check className="h-4 w-4 text-[#FF4757]" />
                     </div>
                     <span className="text-sm font-medium text-gray-300">{label}</span>
-                Soluções de Data Center
-              </h2>
-              <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
-                {[
-                  "Servidores",
-                  "Banco de Dados",
-                  "Soluções de backup",
-                  "Antivírus",
-                  "Redes e cabeamento estruturado",
-                  "Estruturas em Rack",
-                ].map((label) => (
-                  <div key={label} className="flex items-start gap-3">
-                    <div
-                      className="mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full"
-                      style={checkItemStyle}
-                    >
-                      <Check className="h-4 w-4 text-[#FF4757]" />
-                    </div>
-                    <span className="text-sm font-medium text-gray-300">
-                      {label}
-                    </span>
                   </div>
                 ))}
               </div>
@@ -297,7 +226,6 @@ export default function Servicos() {
               >
                 <img
                   src={sv.software_imagem ?? "/img/suporte-software.webp"}
-                  src="/img/suporte-software.webp"
                   alt="Suporte de Software"
                   width={800}
                   height={600}
@@ -314,13 +242,6 @@ export default function Servicos() {
               </h2>
               <p className="mb-8 text-base leading-relaxed text-gray-400">
                 {sv.software_descricao ?? "Evite a frustração dos suportes 0800. Aqui, com nosso suporte próprio, estamos prontos para atender às suas necessidades tecnológicas, assegurando eficiência e segurança. Entre em contato e experimente a diferença que oferecemos."}
-                Suporte de software
-              </h2>
-              <p className="mb-8 text-base leading-relaxed text-gray-400">
-                Evite a frustração dos suportes 0800. Aqui, com nosso suporte
-                próprio, estamos prontos para atender às suas necessidades
-                tecnológicas, assegurando eficiência e segurança. Entre em
-                contato e experimente a diferença que oferecemos.
               </p>
               <button
                 type="button"
@@ -358,11 +279,6 @@ export default function Servicos() {
           </h2>
           <p className="mb-8 text-base text-gray-400 lg:text-lg">
             {sv.cta_subtitulo ?? "Nossa equipe especializada está pronta para atender você com agilidade e eficiência"}
-            Precisa de ajuda com algum serviço?
-          </h2>
-          <p className="mb-8 text-base text-gray-400 lg:text-lg">
-            Nossa equipe especializada está pronta para atender você com
-            agilidade e eficiência
           </p>
           <button
             type="button"

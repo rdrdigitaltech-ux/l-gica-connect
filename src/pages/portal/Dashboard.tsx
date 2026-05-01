@@ -23,11 +23,6 @@ export default function Dashboard() {
           </h1>
           <p className="mt-2 text-gray-400">
             {pt.dashboard_subtitulo ?? "Aqui você acessa manuais, drivers, tutoriais e treinamentos."}
-            Olá, {user?.name}
-          </h1>
-          <p className="mt-2 text-gray-400">
-            Bem-vindo à área restrita. Use o menu para acessar base de
-            conhecimento e treinamentos.
           </p>
         </div>
 

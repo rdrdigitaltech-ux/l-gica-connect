@@ -6,7 +6,6 @@
       "Bash(npx tsc:*)",
       "Bash(node_modules/.bin/tsc --noEmit --skipLibCheck)",
       "Bash(echo \"EXIT:$?\")",
-<<<<<<< HEAD
       "Bash(node_modules/.bin/vite build:*)",
       "Bash(npm install:*)",
       "Bash(npx vite:*)",
@@ -22,9 +21,6 @@
       "Bash(git commit *)",
       "Bash(git branch *)",
       "Bash(git push *)"
-=======
-      "Bash(node_modules/.bin/vite build:*)"
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
     ]
   }
 }

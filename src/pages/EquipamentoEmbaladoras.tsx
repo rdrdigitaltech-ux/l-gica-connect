@@ -8,8 +8,6 @@ import { useSiteContent } from "@/hooks/useSiteContent";
 const EquipamentoEmbaladoras = () => {
   const { content: eq } = useSiteContent("equipamentos");
 
-
-const EquipamentoEmbaladoras = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -37,10 +35,6 @@ const EquipamentoEmbaladoras = () => {
           </h1>
           <p className="mt-4 text-lg text-gray-400">
             {eq.embaladoras_page_descricao ?? "Seladoras e máquinas de embalar para seu negócio"}
-            Embaladoras
-          </h1>
-          <p className="mt-4 text-lg text-gray-400">
-            Seladoras e máquinas de embalar para seu negócio
           </p>
         </div>
       </section>

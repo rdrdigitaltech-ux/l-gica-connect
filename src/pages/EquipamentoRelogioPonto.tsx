@@ -12,8 +12,6 @@ import { useSiteContent } from "@/hooks/useSiteContent";
 
 const EquipamentoRelogioPonto = () => {
   const { content: eq } = useSiteContent("equipamentos");
-
-const EquipamentoRelogioPonto = () => {
   const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
@@ -168,10 +166,6 @@ const EquipamentoRelogioPonto = () => {
           </h1>
           <p className="mt-4 text-lg text-gray-400">
             {eq.relogio_page_descricao ?? "Controle de acesso e ponto eletrônico para sua empresa"}
-            Relógios de Ponto
-          </h1>
-          <p className="mt-4 text-lg text-gray-400">
-            Controle de acesso e ponto eletrônico para sua empresa
           </p>
         </div>
       </section>

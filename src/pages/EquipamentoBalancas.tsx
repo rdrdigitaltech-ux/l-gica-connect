@@ -14,8 +14,6 @@ import { useSiteContent } from "@/hooks/useSiteContent";
 const EquipamentoBalancas = () => {
   const { content: eq } = useSiteContent("equipamentos");
 
-
-const EquipamentoBalancas = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -65,10 +63,6 @@ const EquipamentoBalancas = () => {
           </h1>
           <p className="mt-4 text-lg text-gray-400">
             {eq.balancas_page_descricao ?? "Balanças eletrônicas de alta precisão para pesagem comercial"}
-            Balanças
-          </h1>
-          <p className="mt-4 text-lg text-gray-400">
-            Balanças eletrônicas de alta precisão para pesagem comercial
           </p>
         </div>
       </section>

@@ -39,14 +39,12 @@ export default function WhoWeAreSection() {
         borderTop: "1px solid rgba(255, 255, 255, 0.06)",
       }}
     >
-      {/* Overlay de transição do hero */}
       <div
         className="pointer-events-none absolute left-0 right-0 top-0 z-0 h-32"
         style={{
           background: "linear-gradient(180deg, #12141A 0%, transparent 100%)",
         }}
       />
-      {/* Flash de luz - opacidade reduzida */}
       <div
         className="pointer-events-none absolute -left-[10%] -top-[15%] z-0"
         style={{
@@ -57,8 +55,6 @@ export default function WhoWeAreSection() {
           filter: "blur(100px)",
         }}
       />
-
-      {/* Flash de luz - canto inferior direito */}
       <div
         className="pointer-events-none absolute -bottom-[12%] -right-[10%] z-0"
         style={{
@@ -69,8 +65,6 @@ export default function WhoWeAreSection() {
           filter: "blur(110px)",
         }}
       />
-
-      {/* Linha horizontal de luz */}
       <div
         className="pointer-events-none absolute left-[20%] top-1/2 z-0 h-px w-[60%] -translate-y-1/2"
         style={{
@@ -102,75 +96,28 @@ export default function WhoWeAreSection() {
             </div>
 
             <h2 className="mb-6 text-3xl font-extrabold leading-tight text-gray-200 lg:text-4xl">
-              {s.titulo ?? "Mais de 3 Décadas Transformando Negócios em Santa Catarina"}
+              {s.titulo ?? (
+                <>
+                  Mais de 3 Décadas Transformando Negócios em{" "}
+                  <span
+                    className="inline-block"
+                    style={{
+                      background: "linear-gradient(135deg, #FF4757 0%, #FF6B7A 100%)",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                      backgroundClip: "text",
+                    }}
+                  >
+                    Santa Catarina
+                  </span>
+                </>
+              )}
             </h2>
 
             <div className="space-y-4 text-base leading-relaxed text-gray-400">
               <p>{s.paragrafo_1 ?? "Fundada em 1988, a Lógica Informática e Automação Comercial nasceu com um propósito claro: levar tecnologia de ponta para empresas de todos os portes em Santa Catarina."}</p>
               <p>{s.paragrafo_2 ?? "Ao longo de mais de 36 anos, construímos uma trajetória sólida baseada em confiança, inovação e atendimento personalizado."}</p>
               <p>{s.paragrafo_3 ?? "Como empresa autorizada pelo INMETRO e credenciada pela SEFAZ-SC, garantimos tecnologia de qualidade e conformidade legal."}</p>
-            <h2
-              className="mb-6 text-3xl font-extrabold leading-tight text-gray-200 lg:text-4xl"
-            >
-              Mais de 3 Décadas Transformando Negócios em{" "}
-              <span
-                className="inline-block"
-                style={{
-                  background: "linear-gradient(135deg, #FF4757 0%, #FF6B7A 100%)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
-                }}
-              >
-                Santa Catarina
-              </span>
-            </h2>
-
-            <div
-              className="space-y-4 text-base leading-relaxed text-gray-400"
-            >
-              <p>
-                Fundada em <strong className="text-gray-200">1988</strong>, a{" "}
-                <strong className="text-gray-200">
-                  Lógica Informática e Automação Comercial
-                </strong>{" "}
-                nasceu com um propósito claro: levar tecnologia de ponta para
-                empresas de todos os portes em Santa Catarina. O que começou como
-                uma pequena operação em Brusque se transformou em referência
-                regional em soluções de automação comercial.
-              </p>
-
-              <p>
-                Ao longo de{" "}
-                <strong className="text-[#FF4757]">mais de 36 anos</strong>,
-                construímos uma trajetória sólida baseada em{" "}
-                <strong className="text-gray-200">
-                  confiança, inovação e atendimento personalizado
-                </strong>
-                . Nossa expertise nos permitiu atender com excelência{" "}
-                <strong className="text-[#FF4757]">Centenas de clientes</strong>
-                , desde pequenos comércios até grandes redes, sempre com o
-                compromisso de entregar soluções que realmente fazem a diferença
-                no dia a dia dos negócios.
-              </p>
-
-              <p>
-                Como{" "}
-                <strong className="text-gray-200">
-                  empresa autorizada pelo INMETRO
-                </strong>{" "}
-                para comercialização e manutenção de balanças, e{" "}
-                <strong className="text-gray-200">
-                  credenciada pela SEFAZ-SC
-                </strong>{" "}
-                para impressoras fiscais, garantimos não apenas tecnologia de
-                qualidade, mas também conformidade total com as exigências
-                legais. Hoje, com unidades em{" "}
-                <strong className="text-gray-200">Brusque e Blumenau</strong>,
-                continuamos expandindo nossa presença e consolidando nosso papel
-                como parceira estratégica na transformação digital das empresas
-                catarinenses.
-              </p>
             </div>
           </motion.div>
 
@@ -181,6 +128,7 @@ export default function WhoWeAreSection() {
             viewport={{ once: true, amount: 0.05 }}
             transition={{ duration: 0.6, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
           >
+            {/* Nossa Missão */}
             <div
               className="group relative overflow-hidden rounded-2xl border p-6"
               style={cardStyle}
@@ -207,16 +155,10 @@ export default function WhoWeAreSection() {
               </div>
               <p className="text-sm leading-relaxed text-gray-400">
                 {s.missao_texto ?? "Fornecer soluções tecnológicas que simplifiquem a gestão comercial, aumentem a produtividade e impulsionem o crescimento dos nossos clientes."}
-                <h3 className="text-lg font-bold text-gray-200">Nossa Missão</h3>
-              </div>
-              <p className="text-sm leading-relaxed text-gray-400">
-                Fornecer soluções tecnológicas que simplifiquem a gestão
-                comercial, aumentem a produtividade e impulsionem o crescimento
-                dos nossos clientes através de inovação constante e suporte
-                excepcional.
               </p>
             </div>
 
+            {/* Nossos Valores */}
             <div
               className="group relative overflow-hidden rounded-2xl border p-6"
               style={cardStyle}
@@ -240,42 +182,33 @@ export default function WhoWeAreSection() {
                   <Heart className="h-6 w-6 text-[#FF4757]" />
                 </div>
                 <h3 className="text-lg font-bold text-gray-200">{s.valores_titulo ?? "Nossos Valores"}</h3>
-                <h3 className="text-lg font-bold text-gray-200">Nossos Valores</h3>
               </div>
               <ul className="space-y-2 text-sm text-gray-400">
                 <li className="flex items-start gap-2">
                   <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#FF4757]" />
-                  <span><strong className="text-gray-300">Confiança:</strong>{" "}{s.valor_confianca ?? "Relacionamentos duradouros baseados em transparência"}</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#FF4757]" />
-                  <span><strong className="text-gray-300">Inovação:</strong>{" "}{s.valor_inovacao ?? "Sempre à frente com as melhores tecnologias"}</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#FF4757]" />
-                  <span><strong className="text-gray-300">Compromisso:</strong>{" "}{s.valor_compromisso ?? "Suporte dedicado em todas as etapas"}</span>
                   <span>
                     <strong className="text-gray-300">Confiança:</strong>{" "}
-                    Relacionamentos duradouros baseados em transparência
+                    {s.valor_confianca ?? "Relacionamentos duradouros baseados em transparência"}
                   </span>
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#FF4757]" />
                   <span>
-                    <strong className="text-gray-300">Inovação:</strong> Sempre
-                    à frente com as melhores tecnologias
+                    <strong className="text-gray-300">Inovação:</strong>{" "}
+                    {s.valor_inovacao ?? "Sempre à frente com as melhores tecnologias"}
                   </span>
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#FF4757]" />
                   <span>
                     <strong className="text-gray-300">Compromisso:</strong>{" "}
-                    Suporte dedicado em todas as etapas
+                    {s.valor_compromisso ?? "Suporte dedicado em todas as etapas"}
                   </span>
                 </li>
               </ul>
             </div>
 
+            {/* Certificações */}
             <div
               className="group relative overflow-hidden rounded-2xl border p-6"
               style={cardStyle}
@@ -310,11 +243,8 @@ export default function WhoWeAreSection() {
                 >
                   <Shield className="h-5 w-5 shrink-0 text-[#FF4757]" />
                   <div>
-                    <p className="text-xs font-bold text-gray-200">
-                      Autorizado INMETRO
-                    </p>
+                    <p className="text-xs font-bold text-gray-200">Autorizado INMETRO</p>
                     <p className="text-xs text-gray-500">{s.cert_inmetro ?? "Balanças certificadas"}</p>
-                    <p className="text-xs text-gray-500">Balanças certificadas</p>
                   </div>
                 </div>
                 <div
@@ -326,11 +256,8 @@ export default function WhoWeAreSection() {
                 >
                   <FileCheck className="h-5 w-5 shrink-0 text-[#FF4757]" />
                   <div>
-                    <p className="text-xs font-bold text-gray-200">
-                      Credenciado SEFAZ-SC
-                    </p>
+                    <p className="text-xs font-bold text-gray-200">Credenciado SEFAZ-SC</p>
                     <p className="text-xs text-gray-500">{s.cert_sefaz ?? "Impressoras fiscais"}</p>
-                    <p className="text-xs text-gray-500">Impressoras fiscais</p>
                   </div>
                 </div>
               </div>

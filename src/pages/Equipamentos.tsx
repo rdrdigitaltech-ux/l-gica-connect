@@ -445,12 +445,6 @@ export default function Equipamentos() {
 
           <p className="mb-8 text-base text-gray-400 lg:text-lg">
             {eq.cta_subtitulo ?? "Nossa equipe está pronta para ajudar você a encontrar a melhor solução para o seu negócio"}
-            Precisa de orientação para escolher o equipamento ideal?
-          </h2>
-
-          <p className="mb-8 text-base text-gray-400 lg:text-lg">
-            Nossa equipe está pronta para ajudar você a encontrar a melhor
-            solução para o seu negócio
           </p>
 
           <button

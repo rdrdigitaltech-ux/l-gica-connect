@@ -8,8 +8,6 @@ import { useSiteContent } from "@/hooks/useSiteContent";
 const EquipamentoComputadores = () => {
   const { content: eq } = useSiteContent("equipamentos");
 
-
-const EquipamentoComputadores = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -37,10 +35,6 @@ const EquipamentoComputadores = () => {
           </h1>
           <p className="mt-4 text-lg text-gray-400">
             {eq.computadores_page_descricao ?? "PCs, nobreaks, teclados e periféricos para automação comercial"}
-            Computadores e Hardwares
-          </h1>
-          <p className="mt-4 text-lg text-gray-400">
-            PCs, nobreaks, teclados e periféricos para automação comercial
           </p>
         </div>
       </section>

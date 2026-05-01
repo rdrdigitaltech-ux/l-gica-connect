@@ -8,8 +8,6 @@ import { useSiteContent } from "@/hooks/useSiteContent";
 const EquipamentoImpressoras = () => {
   const { content: eq } = useSiteContent("equipamentos");
 
-
-const EquipamentoImpressoras = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -37,10 +35,6 @@ const EquipamentoImpressoras = () => {
           </h1>
           <p className="mt-4 text-lg text-gray-400">
             {eq.impressoras_page_descricao ?? "Impressoras homologadas e térmicas para emissão fiscal"}
-            Impressoras Fiscais
-          </h1>
-          <p className="mt-4 text-lg text-gray-400">
-            Impressoras homologadas e térmicas para emissão fiscal
           </p>
         </div>
       </section>

@@ -6,8 +6,6 @@ import { useSiteContent } from "@/hooks/useSiteContent";
 export default function Obrigado() {
   const { content: ob } = useSiteContent("obrigado");
 
-
-export default function Obrigado() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -17,7 +15,6 @@ export default function Obrigado() {
       className="flex min-h-screen items-center justify-center"
       style={{ background: "#000000" }}
     >
-      {/* Background com gradiente */}
       <div
         className="absolute inset-0 z-0"
         style={{
@@ -25,8 +22,6 @@ export default function Obrigado() {
             "linear-gradient(180deg, #000000 0%, #0A0C10 50%, #12141A 100%)",
         }}
       />
-
-      {/* Flashes de luz */}
       <div
         className="pointer-events-none absolute -left-[20%] top-[20%] z-0"
         style={{
@@ -48,10 +43,8 @@ export default function Obrigado() {
         }}
       />
 
-      {/* Conteúdo Principal */}
       <div className="relative z-10 mx-auto max-w-4xl px-4 py-20 md:px-6 lg:px-8">
         <div className="text-center">
-          {/* Ícone de Sucesso */}
           <div className="mb-8 flex justify-center">
             <div
               className="flex h-24 w-24 items-center justify-center rounded-full"
@@ -69,25 +62,20 @@ export default function Obrigado() {
             </div>
           </div>
 
-          {/* Título Principal */}
           <h1 className="mb-6 text-4xl font-extrabold text-white md:text-5xl lg:text-6xl">
             {ob.titulo ?? "Mensagem Enviada!"}
-            Mensagem Enviada!
           </h1>
 
-          {/* Subtítulo */}
           <p className="mb-4 text-lg text-gray-300 md:text-xl">
             Obrigado por entrar em contato com a Lógica Automação Comercial!
           </p>
 
-          {/* Descrição */}
           <p className="mb-12 text-base text-gray-400 md:text-lg">
             Recebemos sua mensagem e nossa equipe entrará em contato em breve.
             <br />
             Normalmente respondemos em até 24 horas úteis.
           </p>
 
-          {/* Cards de Informação - APENAS 2 CARDS */}
           <div className="mb-12 grid grid-cols-1 gap-6 md:grid-cols-2">
             <div
               className="rounded-2xl border p-6"
@@ -118,7 +106,6 @@ export default function Obrigado() {
             </div>
           </div>
 
-          {/* Botão Voltar ao Início - CENTRALIZADO */}
           <div className="flex justify-center">
             <Link to="/">
               <span
@@ -130,8 +117,7 @@ export default function Obrigado() {
                 }}
               >
                 <Home className="h-5 w-5" />
-                {ob.botao_voltar ?? "Voltar ao início"}
-                Voltar ao Início
+                {ob.botao_voltar ?? "Voltar ao Início"}
               </span>
             </Link>
           </div>

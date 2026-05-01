@@ -5,20 +5,14 @@ import { useSiteContent } from "@/hooks/useSiteContent";
 export default function HeroSection() {
   const { content } = useSiteContent("hero");
 
-  const titulo =
-    content?.titulo ??
-    "Automação Comercial e Informática para Brusque, Blumenau e região";
-  const subtitulo =
-    content?.subtitulo ??
-    "Transforme seu negócio com soluções eficientes e tecnologia avançada.";
+  const titulo = content?.titulo ?? "Automação Comercial e Informática para Brusque, Blumenau e região";
+  const subtitulo = content?.subtitulo ?? "Transforme seu negócio com soluções eficientes e tecnologia avançada.";
   const badgeAnos = content?.badge_anos ?? "36 anos";
   const badgeClientes = content?.badge_clientes ?? "52 mil+";
   const bannerDesktop = content?.banner_desktop ?? "/img/novobanner-desktop.webp";
   const bannerTablet = content?.banner_tablet ?? "/img/novobanner-tablet.webp";
   const bannerMobile = content?.banner_mobile ?? "/img/novobanner-mobile.webp";
 
-
-export default function HeroSection() {
   return (
     <section
       className="relative flex min-h-[72vh] flex-col items-end overflow-hidden px-0 pt-0 pb-0 md:min-h-[85vh] md:items-start md:justify-center md:px-8 md:pt-20 md:pb-20"
@@ -27,33 +21,13 @@ export default function HeroSection() {
         borderTop: "1px solid rgba(255, 255, 255, 0.06)",
       }}
     >
-      {/* Background */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <picture>
-          <source
-            media="(max-width: 640px)"
-            srcSet={bannerMobile}
-            srcSet="/img/novobanner-mobile.webp"
-            type="image/webp"
-          />
-          <source
-            media="(min-width: 641px) and (max-width: 1024px)"
-            srcSet={bannerTablet}
-            srcSet="/img/novobanner-tablet.webp"
-            type="image/webp"
-          />
-          <source
-            media="(min-width: 1025px)"
-            srcSet={bannerDesktop}
-            type="image/webp"
-          />
+          <source media="(max-width: 640px)" srcSet={bannerMobile} type="image/webp" />
+          <source media="(min-width: 641px) and (max-width: 1024px)" srcSet={bannerTablet} type="image/webp" />
+          <source media="(min-width: 1025px)" srcSet={bannerDesktop} type="image/webp" />
           <img
             src={bannerDesktop}
-            srcSet="/img/novobanner-desktop.webp"
-            type="image/webp"
-          />
-          <img
-            src="/img/novobanner-desktop.webp"
             alt="Lógica Automação Comercial - Soluções completas para gestão do seu negócio"
             width={1920}
             height={600}
@@ -61,10 +35,7 @@ export default function HeroSection() {
             fetchPriority="high"
             decoding="async"
             className="h-full w-full object-cover object-center blur-0 md:blur-[2px]"
-            style={{
-              opacity: 0.92,
-              objectPosition: "center",
-            }}
+            style={{ opacity: 0.92, objectPosition: "center" }}
           />
         </picture>
         <div
@@ -75,7 +46,6 @@ export default function HeroSection() {
         />
       </div>
 
-      {/* Glassmorphism mobile */}
       <div
         className="pointer-events-none absolute inset-0 z-[5] md:hidden"
         style={{
@@ -85,7 +55,6 @@ export default function HeroSection() {
           WebkitBackdropFilter: "blur(1px)",
         }}
       />
-
       <div
         className="pointer-events-none absolute bottom-0 left-0 right-0 z-[6] md:hidden"
         style={{
@@ -107,7 +76,6 @@ export default function HeroSection() {
             transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
           >
             {titulo}
-            Automação Comercial e Informática para Brusque, Blumenau e região
           </motion.h1>
 
           <motion.p
@@ -118,7 +86,6 @@ export default function HeroSection() {
             transition={{ duration: 0.6, delay: 0.15, ease: [0.25, 0.46, 0.45, 0.94] }}
           >
             {subtitulo}
-            Transforme seu negócio com soluções eficientes e tecnologia avançada.
           </motion.p>
 
           <motion.div
@@ -146,38 +113,25 @@ export default function HeroSection() {
               >
                 <CheckCircle2
                   className="h-5 w-5"
-                  style={{
-                    color: "#22c55e",
-                    filter: "drop-shadow(0 2px 4px rgba(34, 197, 94, 0.4))",
-                  }}
+                  style={{ color: "#22c55e", filter: "drop-shadow(0 2px 4px rgba(34, 197, 94, 0.4))" }}
                 />
               </div>
               <p className="flex items-center gap-2 text-sm font-semibold md:text-base text-[#F0EDE8]">
                 <span className="hidden md:inline">Mais de </span>
                 <span
                   className="font-extrabold"
-                  style={{
-                    color: "#22c55e",
-                    textShadow: "0 0 20px rgba(34, 197, 94, 0.7), 0 0 40px rgba(34, 197, 94, 0.4)",
-                  }}
+                  style={{ color: "#22c55e", textShadow: "0 0 20px rgba(34, 197, 94, 0.7), 0 0 40px rgba(34, 197, 94, 0.4)" }}
                 >
                   {badgeAnos}
-                </span>
-                  <span className="md:hidden">36+</span>
-                  <span className="hidden md:inline">36 anos</span>
                 </span>
                 <span className="md:hidden"> Anos</span>
                 <span className="hidden md:inline"> de mercado</span>
                 <span> • </span>
                 <span
                   className="font-extrabold"
-                  style={{
-                    color: "#22c55e",
-                    textShadow: "0 0 20px rgba(34, 197, 94, 0.7), 0 0 40px rgba(34, 197, 94, 0.4)",
-                  }}
+                  style={{ color: "#22c55e", textShadow: "0 0 20px rgba(34, 197, 94, 0.7), 0 0 40px rgba(34, 197, 94, 0.4)" }}
                 >
                   {badgeClientes}
-                  52 mil+
                 </span>
                 <span className="hidden md:inline"> clientes atendidos</span>
                 <span className="md:hidden"> Clientes</span>

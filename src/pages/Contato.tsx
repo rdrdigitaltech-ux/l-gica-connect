@@ -10,25 +10,6 @@ import {
 } from "lucide-react";
 import { useSiteContent } from "@/hooks/useSiteContent";
 
-const units = [
-  {
-    city: "Brusque",
-    address: "Av. Dom Joaquim, 437 - Jardim Maluche",
-    phone: "(47) 3351-5497",
-    email: "atendimento@logica.inf.br",
-    mapsDirUrl:
-      "https://www.google.com/maps/dir/?api=1&destination=-27.10681,-48.92285",
-  },
-  {
-    city: "Blumenau",
-    address: "R. Dois de Setembro, 4115 - Itoupava Norte",
-    phone: "(47) 3328-0077",
-    email: "atendimento@logica.inf.br",
-    mapsDirUrl:
-      "https://www.google.com/maps/dir/?api=1&destination=-26.9234,-49.0662",
-  },
-];
-
 const inputBaseStyle = {
   borderColor: "rgba(230, 57, 70, 0.2)",
   background: "rgba(15, 17, 21, 0.5)",
@@ -92,11 +73,6 @@ export default function Contato() {
           </h1>
           <p className="max-w-3xl text-base text-gray-400 lg:text-lg">
             {ct.hero_subtitulo ?? "Estamos prontos para atender você. Fale conosco e descubra como podemos transformar seu negócio"}
-            Entre em Contato
-          </h1>
-          <p className="max-w-3xl text-base text-gray-400 lg:text-lg">
-            Estamos prontos para atender você. Fale conosco e descubra como
-            podemos transformar seu negócio
           </p>
         </div>
       </section>
@@ -109,7 +85,6 @@ export default function Contato() {
             "linear-gradient(180deg, #12141A 0%, #0A0C10 70%, #06080A 100%)",
         }}
       >
-        {/* Overlay de transição do hero */}
         <div
           className="pointer-events-none absolute left-0 right-0 top-0 z-0 h-32"
           style={{
@@ -136,7 +111,6 @@ export default function Contato() {
             filter: "blur(110px)",
           }}
         />
-        {/* Overlay inferior para transição ao footer */}
         <div
           className="pointer-events-none absolute bottom-0 left-0 right-0 z-0 h-24"
           style={{
@@ -168,10 +142,6 @@ export default function Contato() {
               </h2>
               <form
                 action={`https://formspree.io/f/${formspreeId}`}
-                Envie sua Mensagem
-              </h2>
-              <form
-                action="https://formspree.io/f/xzdjwzpe"
                 method="POST"
                 className="space-y-4"
               >
@@ -287,13 +257,6 @@ export default function Contato() {
                 />
                 <input type="hidden" name="_next" value={redirectUrl} />
 
-                {/* Redirecionamento após envio */}
-                <input
-                  type="hidden"
-                  name="_next"
-                  value="https://l-gica-connect.vercel.app/obrigado"
-                />
-
                 <button
                   type="submit"
                   className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#FF4757] px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-[#E63946]"
@@ -393,7 +356,6 @@ export default function Contato() {
                     </p>
                     <p className="text-sm text-gray-400">
                       {ct.horario ?? "Segunda a Sexta, 08h às 18h"}
-                      Segunda a Sexta, 08h às 18h
                     </p>
                   </div>
                 </div>

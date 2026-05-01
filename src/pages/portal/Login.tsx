@@ -26,14 +26,12 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // Se já está autenticado, redireciona para dashboard
   useEffect(() => {
     if (isAuthenticated) {
       navigate("/portal/dashboard");
     }
   }, [isAuthenticated, navigate]);
 
-  // Formatar CNPJ enquanto digita
   const formatCNPJ = (value: string) => {
     const numbers = value.replace(/\D/g, "");
 
@@ -48,7 +46,6 @@ export default function Login() {
     return value;
   };
 
-  // Handle input change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
@@ -64,16 +61,13 @@ export default function Login() {
       }));
     }
 
-    // Limpar erro ao digitar
     if (error) setError("");
   };
 
-  // Handle submit
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
 
-    // Validações
     const cnpjNumbers = formData.cnpj.replace(/\D/g, "");
 
     if (cnpjNumbers.length !== 14) {
@@ -111,7 +105,6 @@ export default function Login() {
       className="relative flex w-full flex-col items-center py-10"
       style={{ background: "#06080A" }}
     >
-      {/* Background com gradiente */}
       <div
         className="absolute inset-0 z-0"
         style={{
@@ -119,8 +112,6 @@ export default function Login() {
             "linear-gradient(180deg, #06080A 0%, #0A0C10 50%, #06080A 100%)",
         }}
       />
-
-      {/* Flashes de luz */}
       <div
         className="pointer-events-none absolute -left-[20%] top-[20%] z-0"
         style={{
@@ -131,7 +122,6 @@ export default function Login() {
           filter: "blur(100px)",
         }}
       />
-
       <div
         className="pointer-events-none absolute -right-[15%] bottom-[15%] z-0"
         style={{
@@ -143,10 +133,8 @@ export default function Login() {
         }}
       />
 
-      {/* Container Principal */}
       <div className="relative z-10 w-full max-w-md px-4">
         <div>
-          {/* Logo / Título */}
           <div className="mb-8 text-center">
             <div className="mb-4 flex justify-center">
               <div
@@ -163,13 +151,11 @@ export default function Login() {
             <h1 className="mb-2 text-3xl font-extrabold text-white">
               {pt.login_titulo ?? "Portal do Cliente"}
             </h1>
-            <p className="text-gray-400">{pt.login_subtitulo ?? "Acesse sua área exclusiva"}</p>
-              Portal do Cliente
-            </h1>
-            <p className="text-gray-400">Acesse sua área restrita</p>
+            <p className="text-gray-400">
+              {pt.login_subtitulo ?? "Acesse sua área exclusiva"}
+            </p>
           </div>
 
-          {/* Card de Login */}
           <div
             className="rounded-2xl border p-8"
             style={{
@@ -179,7 +165,6 @@ export default function Login() {
               boxShadow: "0 20px 60px rgba(0, 0, 0, 0.5)",
             }}
           >
-            {/* Mensagem de Erro */}
             {error && (
               <div
                 className="mb-6 flex items-start gap-3 rounded-lg p-4"
@@ -193,9 +178,7 @@ export default function Login() {
               </div>
             )}
 
-            {/* Formulário */}
             <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Campo CNPJ */}
               <div>
                 <label
                   htmlFor="cnpj"
@@ -231,7 +214,6 @@ export default function Login() {
                 </p>
               </div>
 
-              {/* Campo Senha */}
               <div>
                 <label
                   htmlFor="password"
@@ -277,7 +259,6 @@ export default function Login() {
                 </div>
               </div>
 
-              {/* Link "Esqueci minha senha" */}
               <div className="text-right">
                 <button
                   type="button"
@@ -292,7 +273,6 @@ export default function Login() {
                 </button>
               </div>
 
-              {/* Botão de Login */}
               <button
                 type="submit"
                 disabled={isLoading}
@@ -319,14 +299,12 @@ export default function Login() {
               </button>
             </form>
 
-            {/* Divisor */}
             <div className="my-8 flex items-center gap-4">
               <div className="h-px flex-1 bg-gray-700" />
               <span className="text-xs text-gray-500">OU</span>
               <div className="h-px flex-1 bg-gray-700" />
             </div>
 
-            {/* Solicitar Acesso */}
             <button
               type="button"
               onClick={() => navigate("/portal/solicitar-acesso")}
@@ -342,7 +320,6 @@ export default function Login() {
             </button>
           </div>
 
-          {/* Voltar ao Site */}
           <div className="mt-8 text-center">
             <button
               type="button"

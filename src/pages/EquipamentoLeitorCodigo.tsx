@@ -13,8 +13,6 @@ import { useSiteContent } from "@/hooks/useSiteContent";
 const EquipamentoLeitorCodigo = () => {
   const { content: eq } = useSiteContent("equipamentos");
 
-
-const EquipamentoLeitorCodigo = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -63,10 +61,6 @@ const EquipamentoLeitorCodigo = () => {
           </h1>
           <p className="mt-4 text-lg text-gray-400">
             {eq.leitor_page_descricao ?? "Scanners e leitores de alta performance para automação comercial"}
-            Leitores de Código de Barras
-          </h1>
-          <p className="mt-4 text-lg text-gray-400">
-            Scanners e leitores de alta performance para automação comercial
           </p>
         </div>
       </section>

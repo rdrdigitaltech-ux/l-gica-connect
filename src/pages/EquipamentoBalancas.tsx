@@ -5,25 +5,20 @@ import { ImageZoom } from "@/components/ImageZoom";
 import { CardEmBreve } from "@/components/CardEmBreve";
 import { FiltroEquipamentos } from "@/components/FiltroEquipamentos";
 import {
-  getModelosPorCategoria,
   SubcategoriaBalanca,
 } from "@/data/equipamentosDetalhados";
 import { MessageCircle } from "lucide-react";
-import { useSiteContent } from "@/hooks/useSiteContent";
+import { useSiteContent, useEquipamentoCatalogo } from "@/hooks/useSiteContent";
 
 const EquipamentoBalancas = () => {
   const { content: eq } = useSiteContent("equipamentos");
+  const { modelos: todosModelos } = useEquipamentoCatalogo("balancas");
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   const [filtroAtivo, setFiltroAtivo] = useState<string>("todos");
-
-  const todosModelos = useMemo(
-    () => getModelosPorCategoria("balancas"),
-    []
-  );
 
   const opcoesSubcategorias: readonly SubcategoriaBalanca[] = [
     "Etiquetadoras",
@@ -37,6 +32,7 @@ const EquipamentoBalancas = () => {
     if (filtroAtivo === "todos") return todosModelos;
     return todosModelos.filter((m) => m.subcategoria === filtroAtivo);
   }, [filtroAtivo, todosModelos]);
+
 
   const handleFiltroChange = (novoFiltro: string) => {
     setFiltroAtivo(novoFiltro);

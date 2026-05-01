@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
+import { useSiteContent } from "@/hooks/useSiteContent";
 
 function AnimatedCounter({
   end,
@@ -64,6 +65,13 @@ const lightLineStyle = {
 };
 
 export default function ImpactNumbers() {
+  const { content: nums } = useSiteContent("numeros");
+
+  const anos      = parseInt(nums.anos            ?? "36",    10) || 36;
+  const clientes  = parseInt(nums.clientes_ativos ?? "1250",  10) || 1250;
+  const estados   = parseInt(nums.estados         ?? "3",     10) || 3;
+  const empresas  = parseInt(nums.empresas        ?? "52200", 10) || 52200;
+
   return (
     <section
       className="relative overflow-hidden py-16 transition-colors duration-300 md:py-20 lg:py-24"
@@ -145,7 +153,7 @@ export default function ImpactNumbers() {
                   "0 0 20px rgba(230, 57, 70, 0.4), 0 0 40px rgba(230, 57, 70, 0.2)",
               }}
             >
-              +<AnimatedCounter end={36} />
+              +<AnimatedCounter end={anos} />
             </p>
             <p className="mt-4 text-center text-sm font-medium uppercase tracking-wider text-gray-500">
               Anos de atuação
@@ -175,7 +183,7 @@ export default function ImpactNumbers() {
                   "0 0 20px rgba(230, 57, 70, 0.4), 0 0 40px rgba(230, 57, 70, 0.2)",
               }}
             >
-              +<AnimatedCounter end={1250} duration={2.2} />
+              +<AnimatedCounter end={clientes} duration={2.2} />
             </p>
             <p className="mt-4 text-center text-sm font-medium uppercase tracking-wider text-gray-500">
               Clientes ativos
@@ -205,7 +213,7 @@ export default function ImpactNumbers() {
                   "0 0 20px rgba(230, 57, 70, 0.4), 0 0 40px rgba(230, 57, 70, 0.2)",
               }}
             >
-              +<AnimatedCounter end={3} />
+              +<AnimatedCounter end={estados} />
             </p>
             <p className="mt-4 text-center text-sm font-medium uppercase tracking-wider text-gray-500">
               Estados ativos
@@ -228,7 +236,7 @@ export default function ImpactNumbers() {
                   "0 0 20px rgba(230, 57, 70, 0.4), 0 0 40px rgba(230, 57, 70, 0.2)",
               }}
             >
-              +<AnimatedCounter end={52200} duration={2.2} />
+              +<AnimatedCounter end={empresas} duration={2.2} />
             </p>
             <p className="mt-4 text-center text-sm font-medium uppercase tracking-wider text-gray-500">
               Empresas atendidas

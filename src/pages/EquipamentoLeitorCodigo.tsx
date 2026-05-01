@@ -5,24 +5,19 @@ import { ImageZoom } from "@/components/ImageZoom";
 import { CardEmBreve } from "@/components/CardEmBreve";
 import { FiltroEquipamentos } from "@/components/FiltroEquipamentos";
 import {
-  getModelosPorCategoria,
   SubcategoriaLeitor,
 } from "@/data/equipamentosDetalhados";
-import { useSiteContent } from "@/hooks/useSiteContent";
+import { useSiteContent, useEquipamentoCatalogo } from "@/hooks/useSiteContent";
 
 const EquipamentoLeitorCodigo = () => {
   const { content: eq } = useSiteContent("equipamentos");
+  const { modelos: todosModelos } = useEquipamentoCatalogo("leitores");
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   const [filtroAtivo, setFiltroAtivo] = useState<string>("todos");
-
-  const todosModelos = useMemo(
-    () => getModelosPorCategoria("leitores"),
-    []
-  );
 
   const opcoesSubcategorias: readonly SubcategoriaLeitor[] = [
     "Leitor Manual",
@@ -31,10 +26,10 @@ const EquipamentoLeitorCodigo = () => {
     "Leitor com Pedestal",
   ];
 
-  const modelosFiltrados = useMemo(() => {
-    if (filtroAtivo === "todos") return todosModelos;
-    return todosModelos.filter((m) => m.subcategoria === filtroAtivo);
-  }, [filtroAtivo, todosModelos]);
+  const modelosFiltrados = useMemo(
+    () => filtroAtivo === "todos" ? todosModelos : todosModelos.filter((m) => m.subcategoria === filtroAtivo),
+    [filtroAtivo, todosModelos]
+  );
 
   const handleFiltroChange = (novoFiltro: string) => {
     setFiltroAtivo(novoFiltro);

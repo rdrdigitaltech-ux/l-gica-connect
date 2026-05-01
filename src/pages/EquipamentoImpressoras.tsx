@@ -2,17 +2,15 @@ import { useEffect } from "react";
 import { ArrowLeft, MessageCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { ImageZoom } from "@/components/ImageZoom";
-import { getModelosPorCategoria } from "@/data/equipamentosDetalhados";
-import { useSiteContent } from "@/hooks/useSiteContent";
+import { useSiteContent, useEquipamentoCatalogo } from "@/hooks/useSiteContent";
 
 const EquipamentoImpressoras = () => {
   const { content: eq } = useSiteContent("equipamentos");
+  const { modelos } = useEquipamentoCatalogo("impressoras");
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
-  const modelos = getModelosPorCategoria("impressoras");
 
   return (
     <div className="min-h-screen bg-[#06080A]">

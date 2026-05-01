@@ -5,13 +5,13 @@ import { ImageZoom } from "@/components/ImageZoom";
 import { CardEmBreve } from "@/components/CardEmBreve";
 import { FiltroEquipamentos } from "@/components/FiltroEquipamentos";
 import {
-  getModelosPorCategoria,
   SubcategoriaRelogioPonto,
 } from "@/data/equipamentosDetalhados";
-import { useSiteContent } from "@/hooks/useSiteContent";
+import { useSiteContent, useEquipamentoCatalogo } from "@/hooks/useSiteContent";
 
 const EquipamentoRelogioPonto = () => {
   const { content: eq } = useSiteContent("equipamentos");
+  const { modelos: todosModelos } = useEquipamentoCatalogo("relogio-ponto");
   const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
@@ -22,11 +22,6 @@ const EquipamentoRelogioPonto = () => {
 
   const [filtroAtivo, setFiltroAtivo] = useState<string>("todos");
 
-  const todosModelos = useMemo(
-    () => getModelosPorCategoria("relogio-ponto"),
-    []
-  );
-
   const opcoesSubcategorias: readonly SubcategoriaRelogioPonto[] = [
     "Relógio de Ponto com Facial",
     "Relógio de Ponto sem Facial",
@@ -34,10 +29,10 @@ const EquipamentoRelogioPonto = () => {
     "Catraca sem Facial",
   ];
 
-  const modelosFiltrados = useMemo(() => {
-    if (filtroAtivo === "todos") return todosModelos;
-    return todosModelos.filter((m) => m.subcategoria === filtroAtivo);
-  }, [filtroAtivo, todosModelos]);
+  const modelosFiltrados = useMemo(
+    () => filtroAtivo === "todos" ? todosModelos : todosModelos.filter((m) => m.subcategoria === filtroAtivo),
+    [filtroAtivo, todosModelos]
+  );
 
   const handleFiltroChange = (novoFiltro: string) => {
     setFiltroAtivo(novoFiltro);

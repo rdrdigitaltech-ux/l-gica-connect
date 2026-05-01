@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { defaultContent, type ContentType } from "@/data/defaultContent";
 import { loadContent, updateField } from "@/hooks/useSiteContent";
+import { uploadImageToStorage } from "@/lib/supabase";
 
 const sectionLabels: Record<string, string> = {
   hero: "Banner Principal",
@@ -40,6 +41,7 @@ function FieldEditor({
     current[section]?.[fieldKey] ?? defaultValue
   );
   const [status, setStatus] = useState<FieldStatus>("idle");
+  const [uploading, setUploading] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
   const hasChanged = value !== (loadContent()[section]?.[fieldKey] ?? defaultValue);
 
@@ -56,16 +58,22 @@ function FieldEditor({
     setTimeout(() => setStatus("idle"), 2000);
   };
 
-  const handleImageFile = (file: File) => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      const url = reader.result as string;
+  const handleImageFile = async (file: File) => {
+    setUploading(true);
+    try {
+      const publicUrl = await uploadImageToStorage(file);
+      const url = publicUrl ?? (await new Promise<string>((resolve) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result as string);
+        reader.readAsDataURL(file);
+      }));
       setValue(url);
       updateField(section, fieldKey, url);
       setStatus("saved");
       setTimeout(() => setStatus("idle"), 2000);
-    };
-    reader.readAsDataURL(file);
+    } finally {
+      setUploading(false);
+    }
   };
 
   return (
@@ -129,9 +137,10 @@ function FieldEditor({
             <button
               type="button"
               onClick={() => fileRef.current?.click()}
-              className="rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-xs text-gray-400 hover:text-white"
+              disabled={uploading}
+              className="rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-xs text-gray-400 hover:text-white disabled:opacity-50"
             >
-              Arquivo
+              {uploading ? "Enviando…" : "Arquivo"}
             </button>
             <input
               ref={fileRef}

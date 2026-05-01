@@ -27,6 +27,7 @@ import {
 } from "lucide-react";
 import { defaultContent, type ContentField } from "@/data/defaultContent";
 import { loadContent, saveContent } from "@/hooks/useSiteContent";
+import { uploadImageToStorage } from "@/lib/supabase";
 import { toast } from "sonner";
 import { Switch } from "@/components/ui/switch";
 
@@ -154,13 +155,30 @@ function TextCard({ fields, values, modifiedFields, onChange }: CardProps) {
 
 function ImageCard({ fields, values, modifiedFields, onChange }: CardProps) {
   const [urlMode, setUrlMode] = useState<Record<string, boolean>>({});
+  const [uploading, setUploading] = useState<Record<string, boolean>>({});
   const fileRefs = useRef<Record<string, HTMLInputElement | null>>({});
 
-  const handleFile = (key: string, file: File) => {
-    const reader = new FileReader();
-    reader.onload = () => onChange(key, reader.result as string);
-    reader.readAsDataURL(file);
+  const handleFile = async (key: string, file: File) => {
+    setUploading((prev) => ({ ...prev, [key]: true }));
+    try {
+      const publicUrl = await uploadImageToStorage(file);
+      if (publicUrl) {
+        onChange(key, publicUrl);
+        toast.success("Imagem enviada! Clique em 'Salvar Alterações'.");
+      } else {
+        // Fallback: base64 apenas local (salvo só no localStorage)
+        const reader = new FileReader();
+        reader.onload = () => {
+          onChange(key, reader.result as string);
+          toast.warning("Imagem salva localmente. Para publicar para todos, use uma URL.");
+        };
+        reader.readAsDataURL(file);
+      }
+    } finally {
+      setUploading((prev) => ({ ...prev, [key]: false }));
+    }
   };
+
 
   return (
     <div className="overflow-hidden rounded-xl border border-gray-800/50 bg-gray-900/60">
@@ -223,10 +241,11 @@ function ImageCard({ fields, values, modifiedFields, onChange }: CardProps) {
                 <button
                   type="button"
                   onClick={() => fileRefs.current[key]?.click()}
-                  className="flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-gray-800/70 bg-gray-900/60 px-2 py-1.5 text-xs text-gray-500 transition hover:border-gray-700 hover:text-gray-200"
+                  disabled={uploading[key]}
+                  className="flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-gray-800/70 bg-gray-900/60 px-2 py-1.5 text-xs text-gray-500 transition hover:border-gray-700 hover:text-gray-200 disabled:opacity-50"
                 >
                   <Upload className="h-3 w-3" />
-                  Upload
+                  {uploading[key] ? "Enviando…" : "Upload"}
                 </button>
                 <button
                   type="button"

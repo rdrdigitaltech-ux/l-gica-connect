@@ -41,11 +41,13 @@ export async function saveContent(content: ContentValues): Promise<void> {
 
   if (!supabase) return;
 
-  // Monta array de upsert
+  // Monta array de upsert — ignora base64 (muito grande para o banco; fica só no localStorage)
   const rows: Array<{ section: string; key: string; value: string }> = [];
   for (const [section, fields] of Object.entries(content)) {
     for (const [key, val] of Object.entries(fields)) {
-      rows.push({ section, key, value: String(val) });
+      const strVal = String(val);
+      if (strVal.startsWith("data:")) continue;
+      rows.push({ section, key, value: strVal });
     }
   }
 

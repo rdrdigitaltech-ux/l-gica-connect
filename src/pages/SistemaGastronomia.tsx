@@ -161,8 +161,6 @@ export default function SistemaGastronomia() {
 
               <p className="mb-8 text-base leading-relaxed text-gray-400 lg:text-lg">
                 {cms.func_desc}
-                Como funciona?
-              </h2>
 
               <p className="mb-8 text-base leading-relaxed text-gray-400 lg:text-lg">
                 Oferecemos soluções inteligentes para gestão, atendimento e
@@ -359,8 +357,6 @@ export default function SistemaGastronomia() {
             </h2>
             <p className="mb-8 text-lg text-gray-400">
               {cms.cta_desc}
-              Transforme a Gestão do seu Restaurante
-            </h2>
             <p className="mb-8 text-lg text-gray-400">
               Fale com nossos consultores especializados em bares e restaurantes e veja como podemos otimizar seu negócio.
             </p>

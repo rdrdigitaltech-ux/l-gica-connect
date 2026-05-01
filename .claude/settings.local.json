@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find c:/Users/Rafael/Downloads/l-gica-connect-main/l-gica-connect-main/src -type f \\\\\\( -name \"*.tsx\" -o -name \"*.ts\" \\\\\\) -exec sed -i 's/554796940113/5547842182275/g' {} +)",
+      "Bash(find c:/Users/Rafael/Downloads/l-gica-connect-main/l-gica-connect-main/src -type f \\\\\\( -name \"*.tsx\" -o -name \"*.ts\" \\\\\\) -exec sed -i 's/5547842182275/5547984218275/g' {} +)",
+      "Bash(npx tsc:*)",
+      "Bash(node_modules/.bin/tsc --noEmit --skipLibCheck)",
+      "Bash(echo \"EXIT:$?\")",
+      "Bash(node_modules/.bin/vite build:*)",
+      "Bash(npm install:*)",
+      "Bash(npx vite:*)",
+      "Bash(node -e \"const l = require\\('./node_modules/lucide-react'\\); ['AlignBottom','Settings2','BarChart3','AlignVerticalJustifyEnd','Footprints'].forEach\\(n => console.log\\(n, ':', !!l[n]\\)\\)\")",
+      "Bash(node -e ':*)",
+      "Bash(grep -E \"\\\\.\\(ts|tsx\\)$\")",
+      "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\Rafael\\\\OneDrive\\\\Documents\\\\Projeto Lógica + RDRcompany\\\\l-gica-connect-main2\\\\l-gica-connect-main\" -Recurse -Filter \"*.sql\" -ErrorAction SilentlyContinue)",
+      "Bash(Select-Object -ExpandProperty FullName)",
+      "PowerShell(Get-ChildItem -Path \"c:\\\\Users\\\\Rafael\\\\OneDrive\\\\Documents\\\\Projeto Lógica + RDRcompany\\\\l-gica-connect-main2\\\\l-gica-connect-main\" -Depth 2 -Directory | Where-Object { $_.Name -match \"admin|supabase|db|database|migrations|sql\" } | Select-Object -ExpandProperty FullName)",
+      "Bash(git init *)",
+      "Bash(git remote *)",
+      "Bash(git add *)"
+    ]
+  }
+}

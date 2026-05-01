@@ -12,17 +12,14 @@ import {
   AlertCircle,
   Send,
 } from "lucide-react";
-<<<<<<< HEAD
 import { useSiteContent } from "@/hooks/useSiteContent";
 
 export default function SolicitarAcesso() {
   const navigate = useNavigate();
   const { content: pt } = useSiteContent("portal");
-=======
 
 export default function SolicitarAcesso() {
   const navigate = useNavigate();
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
 
   const [formData, setFormData] = useState({
     nomeCompleto: "",
@@ -306,17 +303,14 @@ export default function SolicitarAcesso() {
               </div>
             </div>
             <h1 className="mb-2 text-3xl font-extrabold text-white">
-<<<<<<< HEAD
               {pt.solicitar_titulo ?? "Solicitar Acesso ao Portal"}
             </h1>
             <p className="text-gray-400">
               {pt.solicitar_subtitulo ?? "Preencha os dados abaixo para solicitar seu acesso ao portal do cliente."}
-=======
               Solicitar Acesso
             </h1>
             <p className="text-gray-400">
               Preencha o formulário abaixo e nossa equipe entrará em contato
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
             </p>
           </div>
 

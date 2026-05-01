@@ -13,15 +13,12 @@ import {
   blogCategories,
   getRecentPosts,
 } from "@/data/blogPosts";
-<<<<<<< HEAD
 import { useSiteContent } from "@/hooks/useSiteContent";
 
 export default function BlogHome() {
   const { content: bl } = useSiteContent("blog");
-=======
 
 export default function BlogHome() {
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
 
@@ -75,18 +72,15 @@ export default function BlogHome() {
         <div className="relative z-10 mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="mb-6 text-4xl font-extrabold text-white md:text-5xl lg:text-6xl">
-<<<<<<< HEAD
               {bl.hero_titulo ?? "Blog & Notícias"}
             </h1>
             <p className="mx-auto max-w-2xl text-lg text-gray-400">
               {bl.hero_subtitulo ?? "Dicas, novidades e conteúdo sobre automação comercial e tecnologia."}
-=======
               Blog Lógica
             </h1>
             <p className="mx-auto max-w-2xl text-lg text-gray-400">
               Dicas, tutoriais e novidades sobre gestão comercial, automação e
               tecnologia para o seu negócio.
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
             </p>
           </div>
         </div>

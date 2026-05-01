@@ -9,16 +9,13 @@ import {
   SubcategoriaBalanca,
 } from "@/data/equipamentosDetalhados";
 import { MessageCircle } from "lucide-react";
-<<<<<<< HEAD
 import { useSiteContent } from "@/hooks/useSiteContent";
 
 const EquipamentoBalancas = () => {
   const { content: eq } = useSiteContent("equipamentos");
 
-=======
 
 const EquipamentoBalancas = () => {
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -64,17 +61,14 @@ const EquipamentoBalancas = () => {
             className="font-bold text-white"
             style={{ fontSize: "clamp(32px, 5vw, 56px)" }}
           >
-<<<<<<< HEAD
             {eq.balancas_page_titulo ?? "Balanças"}
           </h1>
           <p className="mt-4 text-lg text-gray-400">
             {eq.balancas_page_descricao ?? "Balanças eletrônicas de alta precisão para pesagem comercial"}
-=======
             Balanças
           </h1>
           <p className="mt-4 text-lg text-gray-400">
             Balanças eletrônicas de alta precisão para pesagem comercial
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
           </p>
         </div>
       </section>

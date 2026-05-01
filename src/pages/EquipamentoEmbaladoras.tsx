@@ -3,16 +3,13 @@ import { ArrowLeft, MessageCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { ImageZoom } from "@/components/ImageZoom";
 import { getModelosPorCategoria } from "@/data/equipamentosDetalhados";
-<<<<<<< HEAD
 import { useSiteContent } from "@/hooks/useSiteContent";
 
 const EquipamentoEmbaladoras = () => {
   const { content: eq } = useSiteContent("equipamentos");
 
-=======
 
 const EquipamentoEmbaladoras = () => {
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -36,17 +33,14 @@ const EquipamentoEmbaladoras = () => {
             className="font-bold text-white"
             style={{ fontSize: "clamp(32px, 5vw, 56px)" }}
           >
-<<<<<<< HEAD
             {eq.embaladoras_page_titulo ?? "Embaladoras"}
           </h1>
           <p className="mt-4 text-lg text-gray-400">
             {eq.embaladoras_page_descricao ?? "Seladoras e máquinas de embalar para seu negócio"}
-=======
             Embaladoras
           </h1>
           <p className="mt-4 text-lg text-gray-400">
             Seladoras e máquinas de embalar para seu negócio
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
           </p>
         </div>
       </section>

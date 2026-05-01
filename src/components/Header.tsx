@@ -1,10 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-<<<<<<< HEAD
 import { User, Settings } from "lucide-react";
-=======
 import { User } from "lucide-react";
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
 
 function WhatsAppIcon({ className }: { className?: string }) {
   return (
@@ -94,7 +91,6 @@ export default function Header() {
                 <User className="h-4 w-4" />
                 Portal do Cliente
               </Link>
-<<<<<<< HEAD
               <Link
                 to="/admin"
                 title="Painel Administrativo"
@@ -106,8 +102,6 @@ export default function Header() {
               >
                 <Settings className="h-6 w-6" />
               </Link>
-=======
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
             </nav>
 
             <div className="hidden md:block">
@@ -185,7 +179,6 @@ export default function Header() {
               <User className="h-5 w-5" />
               Portal do Cliente
             </Link>
-<<<<<<< HEAD
             <Link
               to="/admin"
               onClick={() => setMobileMenuOpen(false)}
@@ -196,8 +189,6 @@ export default function Header() {
               <Settings className="h-5 w-5" />
               Painel Admin
             </Link>
-=======
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
             <button
               type="button"
               className="mt-4 flex w-full min-h-[44px] items-center justify-center gap-2 rounded-lg bg-[#FF4757] py-3 text-sm font-bold text-white transition-all duration-300 hover:scale-[1.02] hover:shadow-lg active:scale-95 active:opacity-90"

@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { Mail, Phone } from "lucide-react";
-<<<<<<< HEAD
 import { useSiteContent } from "@/hooks/useSiteContent";
 
 export default function Footer() {
@@ -19,10 +18,8 @@ export default function Footer() {
   const email = contato?.email ?? "atendimento@logica.inf.br";
   const telBrusque = contato?.telefone_brusque ?? "(47) 3351-5497";
   const telBlumenau = contato?.telefone_blumenau ?? "(47) 3328-0077";
-=======
 
 export default function Footer() {
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
   return (
     <footer
       className="relative overflow-hidden border-t border-[rgba(255,255,255,0.06)] py-16 md:py-20"
@@ -77,11 +74,8 @@ export default function Footer() {
           {/* COLUNA 1 - SOBRE + LOGO */}
           <div>
             <img
-<<<<<<< HEAD
               src={logoRodape}
-=======
               src="/img/logorodape.webp"
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
               alt="Lógica Informática"
               width={200}
               height={60}
@@ -95,12 +89,9 @@ export default function Footer() {
             <p
               className="mb-6 text-sm leading-relaxed text-gray-400"
             >
-<<<<<<< HEAD
               {descricao}
-=======
               Conectando negócios com tecnologia desde 1988. Sua parceira em
               automação comercial e informática.
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
             </p>
             <div
               className="rounded-lg border border-[rgba(255,255,255,0.08)] p-3"
@@ -116,11 +107,8 @@ export default function Footer() {
               <p
                 className="mt-1 text-xs text-gray-400"
               >
-<<<<<<< HEAD
                 {horario}
-=======
                 Seg-Sex: 08h às 18h
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
               </p>
             </div>
           </div>
@@ -182,17 +170,14 @@ export default function Footer() {
                     Email
                   </p>
                   <a
-<<<<<<< HEAD
                     href={`mailto:${email}`}
                     className="text-sm text-gray-400 transition-colors hover:text-[#E63946] active:opacity-70"
                   >
                     {email}
-=======
                     href="mailto:atendimento@logica.inf.br"
                     className="text-sm text-gray-400 transition-colors hover:text-[#E63946] active:opacity-70"
                   >
                     atendimento@logica.inf.br
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
                   </a>
                 </div>
               </li>
@@ -207,17 +192,14 @@ export default function Footer() {
                     Brusque
                   </p>
                   <a
-<<<<<<< HEAD
                     href={`tel:${(telBrusque).replace(/\D/g, "")}`}
                     className="text-sm text-gray-400 transition-colors hover:text-[#E63946] active:opacity-70"
                   >
                     {telBrusque}
-=======
                     href="tel:4733515497"
                     className="text-sm text-gray-400 transition-colors hover:text-[#E63946] active:opacity-70"
                   >
                     (47) 3351-5497
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
                   </a>
                 </div>
               </li>
@@ -232,17 +214,14 @@ export default function Footer() {
                     Blumenau
                   </p>
                   <a
-<<<<<<< HEAD
                     href={`tel:${(telBlumenau).replace(/\D/g, "")}`}
                     className="text-sm text-gray-400 transition-colors hover:text-[#E63946] active:opacity-70"
                   >
                     {telBlumenau}
-=======
                     href="tel:4733280077"
                     className="text-sm text-gray-400 transition-colors hover:text-[#E63946] active:opacity-70"
                   >
                     (47) 3328-0077
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
                   </a>
                 </div>
               </li>
@@ -302,14 +281,11 @@ export default function Footer() {
         <div
           className="flex flex-col items-center gap-4 pt-6 text-center text-xs text-gray-500 sm:flex-row sm:justify-between sm:text-left"
         >
-<<<<<<< HEAD
             <p>{copyright}</p>
-=======
             <p>
               © 2026 Lógica Informática e Automação Comercial. Todos os direitos
               reservados.
             </p>
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
             <div className="flex gap-6">
               <Link
                 to="/politica-privacidade"

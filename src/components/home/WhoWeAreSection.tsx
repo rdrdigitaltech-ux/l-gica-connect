@@ -8,10 +8,7 @@ import {
   Check,
 } from "lucide-react";
 import { motion } from "framer-motion";
-<<<<<<< HEAD
 import { useSiteContent } from "@/hooks/useSiteContent";
-=======
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
 
 const cardStyle = {
   background: "linear-gradient(145deg, rgba(15,17,21,0.9) 0%, rgba(12,14,17,0.9) 100%)",
@@ -32,11 +29,8 @@ const cardGlowHover = {
 };
 
 export default function WhoWeAreSection() {
-<<<<<<< HEAD
   const { content: s } = useSiteContent("sobre");
 
-=======
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
   return (
     <section
       className="relative overflow-hidden py-24 transition-colors duration-300"
@@ -107,7 +101,6 @@ export default function WhoWeAreSection() {
               </span>
             </div>
 
-<<<<<<< HEAD
             <h2 className="mb-6 text-3xl font-extrabold leading-tight text-gray-200 lg:text-4xl">
               {s.titulo ?? "Mais de 3 Décadas Transformando Negócios em Santa Catarina"}
             </h2>
@@ -116,7 +109,6 @@ export default function WhoWeAreSection() {
               <p>{s.paragrafo_1 ?? "Fundada em 1988, a Lógica Informática e Automação Comercial nasceu com um propósito claro: levar tecnologia de ponta para empresas de todos os portes em Santa Catarina."}</p>
               <p>{s.paragrafo_2 ?? "Ao longo de mais de 36 anos, construímos uma trajetória sólida baseada em confiança, inovação e atendimento personalizado."}</p>
               <p>{s.paragrafo_3 ?? "Como empresa autorizada pelo INMETRO e credenciada pela SEFAZ-SC, garantimos tecnologia de qualidade e conformidade legal."}</p>
-=======
             <h2
               className="mb-6 text-3xl font-extrabold leading-tight text-gray-200 lg:text-4xl"
             >
@@ -179,7 +171,6 @@ export default function WhoWeAreSection() {
                 como parceira estratégica na transformação digital das empresas
                 catarinenses.
               </p>
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
             </div>
           </motion.div>
 
@@ -212,12 +203,10 @@ export default function WhoWeAreSection() {
                 >
                   <Target className="h-6 w-6 text-[#FF4757]" />
                 </div>
-<<<<<<< HEAD
                 <h3 className="text-lg font-bold text-gray-200">{s.missao_titulo ?? "Nossa Missão"}</h3>
               </div>
               <p className="text-sm leading-relaxed text-gray-400">
                 {s.missao_texto ?? "Fornecer soluções tecnológicas que simplifiquem a gestão comercial, aumentem a produtividade e impulsionem o crescimento dos nossos clientes."}
-=======
                 <h3 className="text-lg font-bold text-gray-200">Nossa Missão</h3>
               </div>
               <p className="text-sm leading-relaxed text-gray-400">
@@ -225,7 +214,6 @@ export default function WhoWeAreSection() {
                 comercial, aumentem a produtividade e impulsionem o crescimento
                 dos nossos clientes através de inovação constante e suporte
                 excepcional.
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
               </p>
             </div>
 
@@ -251,16 +239,12 @@ export default function WhoWeAreSection() {
                 >
                   <Heart className="h-6 w-6 text-[#FF4757]" />
                 </div>
-<<<<<<< HEAD
                 <h3 className="text-lg font-bold text-gray-200">{s.valores_titulo ?? "Nossos Valores"}</h3>
-=======
                 <h3 className="text-lg font-bold text-gray-200">Nossos Valores</h3>
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
               </div>
               <ul className="space-y-2 text-sm text-gray-400">
                 <li className="flex items-start gap-2">
                   <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#FF4757]" />
-<<<<<<< HEAD
                   <span><strong className="text-gray-300">Confiança:</strong>{" "}{s.valor_confianca ?? "Relacionamentos duradouros baseados em transparência"}</span>
                 </li>
                 <li className="flex items-start gap-2">
@@ -270,7 +254,6 @@ export default function WhoWeAreSection() {
                 <li className="flex items-start gap-2">
                   <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#FF4757]" />
                   <span><strong className="text-gray-300">Compromisso:</strong>{" "}{s.valor_compromisso ?? "Suporte dedicado em todas as etapas"}</span>
-=======
                   <span>
                     <strong className="text-gray-300">Confiança:</strong>{" "}
                     Relacionamentos duradouros baseados em transparência
@@ -289,7 +272,6 @@ export default function WhoWeAreSection() {
                     <strong className="text-gray-300">Compromisso:</strong>{" "}
                     Suporte dedicado em todas as etapas
                   </span>
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
                 </li>
               </ul>
             </div>
@@ -331,11 +313,8 @@ export default function WhoWeAreSection() {
                     <p className="text-xs font-bold text-gray-200">
                       Autorizado INMETRO
                     </p>
-<<<<<<< HEAD
                     <p className="text-xs text-gray-500">{s.cert_inmetro ?? "Balanças certificadas"}</p>
-=======
                     <p className="text-xs text-gray-500">Balanças certificadas</p>
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
                   </div>
                 </div>
                 <div
@@ -350,11 +329,8 @@ export default function WhoWeAreSection() {
                     <p className="text-xs font-bold text-gray-200">
                       Credenciado SEFAZ-SC
                     </p>
-<<<<<<< HEAD
                     <p className="text-xs text-gray-500">{s.cert_sefaz ?? "Impressoras fiscais"}</p>
-=======
                     <p className="text-xs text-gray-500">Impressoras fiscais</p>
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
                   </div>
                 </div>
               </div>

@@ -1,9 +1,7 @@
 import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { ChevronRight, Filter, X } from "lucide-react";
-<<<<<<< HEAD
 import { useSiteContent } from "@/hooks/useSiteContent";
-=======
 
 const equipamentos = [
   {
@@ -67,7 +65,6 @@ const equipamentos = [
     tipo: "Hardware",
   },
 ];
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
 
 const cardStyle = {
   background:
@@ -77,7 +74,6 @@ const cardStyle = {
 };
 
 export default function Equipamentos() {
-<<<<<<< HEAD
   const { content: eq } = useSiteContent("equipamentos");
 
   const equipamentos = useMemo(() => [
@@ -89,8 +85,6 @@ export default function Equipamentos() {
     { id: 6, nome: eq.computadores_nome ?? "Computadores e Hardwares", descricao: eq.computadores_descricao ?? "PCs, nobreaks, teclados e periféricos",    imagem: eq.computadores_imagem ?? "/img/computadores.webp",        link: "/equipamentos/computadores",  categoria: "Informática",      tipo: "Hardware"  },
   ], [eq]);
 
-=======
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
   const [filtroCategoria, setFiltroCategoria] = useState<string>("");
   const [filtroTipo, setFiltroTipo] = useState<string>("");
   const [mostrarFiltros, setMostrarFiltros] = useState(false);
@@ -160,23 +154,17 @@ export default function Equipamentos() {
             className="mb-6 font-extrabold text-gray-200"
             style={{ fontSize: "clamp(28px, 4vw, 48px)" }}
           >
-<<<<<<< HEAD
             {eq.hero_titulo ?? "EQUIPAMENTOS"}
-=======
             EQUIPAMENTOS
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
           </h1>
 
           <p
             className="max-w-3xl text-gray-400"
             style={{ fontSize: "clamp(14px, 1.5vw, 18px)" }}
           >
-<<<<<<< HEAD
             {eq.hero_subtitulo ?? "Os melhores equipamentos de automação e informática. Escolhas inteligentes para o seu negócio."}
-=======
             Os melhores equipamentos de automação e informática. Escolhas
             inteligentes para o seu negócio.
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
           </p>
         </div>
       </section>
@@ -452,20 +440,17 @@ export default function Equipamentos() {
 
         <div className="relative z-10 mx-auto flex max-w-5xl flex-col items-center justify-center px-4 text-center md:px-6 lg:px-8">
           <h2 className="mb-6 text-3xl font-extrabold text-gray-200 lg:text-4xl">
-<<<<<<< HEAD
             {eq.cta_titulo ?? "Precisa de orientação para escolher o equipamento ideal?"}
           </h2>
 
           <p className="mb-8 text-base text-gray-400 lg:text-lg">
             {eq.cta_subtitulo ?? "Nossa equipe está pronta para ajudar você a encontrar a melhor solução para o seu negócio"}
-=======
             Precisa de orientação para escolher o equipamento ideal?
           </h2>
 
           <p className="mb-8 text-base text-gray-400 lg:text-lg">
             Nossa equipe está pronta para ajudar você a encontrar a melhor
             solução para o seu negócio
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
           </p>
 
           <button

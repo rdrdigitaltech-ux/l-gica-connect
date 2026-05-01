@@ -1,10 +1,7 @@
 import { BookOpen, Video, FileText, TrendingUp } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { knowledgeFiles, trainingVideos } from "@/data/portalData";
-<<<<<<< HEAD
 import { useSiteContent } from "@/hooks/useSiteContent";
-=======
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
 
 const cardStyle = {
   background:
@@ -14,10 +11,7 @@ const cardStyle = {
 
 export default function Dashboard() {
   const { user, isPremium } = useAuth();
-<<<<<<< HEAD
   const { content: pt } = useSiteContent("portal");
-=======
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
   const freeVideos = trainingVideos.filter((v) => !v.isPremium);
 
   return (
@@ -25,18 +19,15 @@ export default function Dashboard() {
       <div className="mx-auto max-w-7xl px-4 py-8 md:px-6 lg:px-8">
         <div>
           <h1 className="text-2xl font-bold text-gray-200 md:text-3xl">
-<<<<<<< HEAD
             {pt.dashboard_titulo ?? "Bem-vindo ao Portal"}{user?.name ? `, ${user.name}` : ""}
           </h1>
           <p className="mt-2 text-gray-400">
             {pt.dashboard_subtitulo ?? "Aqui você acessa manuais, drivers, tutoriais e treinamentos."}
-=======
             Olá, {user?.name}
           </h1>
           <p className="mt-2 text-gray-400">
             Bem-vindo à área restrita. Use o menu para acessar base de
             conhecimento e treinamentos.
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
           </p>
         </div>
 

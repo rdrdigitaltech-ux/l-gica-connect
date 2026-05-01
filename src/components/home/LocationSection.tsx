@@ -1,5 +1,4 @@
 import { MapPin, Phone, Mail, Navigation } from "lucide-react";
-<<<<<<< HEAD
 import { useSiteContent } from "@/hooks/useSiteContent";
 
 export default function LocationSection() {
@@ -28,7 +27,6 @@ export default function LocationSection() {
 
   const horario = contato?.horario ?? "Segunda a Sexta, 08h às 18h";
 
-=======
 
 const units = [
   {
@@ -48,7 +46,6 @@ const units = [
 ];
 
 export default function LocationSection() {
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
   return (
     <section
       className="relative overflow-hidden py-16 transition-colors duration-300 md:py-20 lg:py-24"
@@ -236,11 +233,8 @@ export default function LocationSection() {
                     Horário de Atendimento
                   </p>
                   <p className="mt-1 text-sm text-gray-400">
-<<<<<<< HEAD
                     {horario}
-=======
                     Segunda a Sexta, 08h às 18h
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
                   </p>
                 </div>
 

@@ -11,7 +11,6 @@ import {
   CreditCard,
   MessageCircle,
 } from "lucide-react";
-<<<<<<< HEAD
 import { useSiteContent } from "@/hooks/useSiteContent";
 
 const VANTAGEM_ICONS = [TrendingUp, Scale, ChefHat, Receipt, Calendar, CreditCard];
@@ -27,7 +26,6 @@ export default function SistemaGastronomia() {
 
   const segmentos = (cms.seg_lista ?? "").split("\n").filter(Boolean);
 
-=======
 
 const vantagens = [
   {
@@ -74,7 +72,6 @@ const segmentos = [
 ];
 
 export default function SistemaGastronomia() {
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
   return (
     <div className="min-h-screen bg-[#0A0C10]">
       {/* 1. HERO SECTION */}
@@ -118,11 +115,8 @@ export default function SistemaGastronomia() {
           >
             <UtensilsCrossed className="h-4 w-4 text-[#FF4757]" />
             <span className="text-xs font-bold uppercase tracking-wider text-gray-300">
-<<<<<<< HEAD
               {cms.hero_badge}
-=======
               Sistema para Bares & Restaurantes
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
             </span>
           </div>
 
@@ -130,9 +124,7 @@ export default function SistemaGastronomia() {
             className="mb-6 font-extrabold leading-tight text-gray-200"
             style={{ fontSize: "clamp(28px, 4vw, 48px)" }}
           >
-<<<<<<< HEAD
             {cms.hero_titulo}
-=======
             Software para{" "}
             <span
               style={{
@@ -144,18 +136,14 @@ export default function SistemaGastronomia() {
             >
               Bares & Restaurantes
             </span>
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
           </h1>
 
           <p
             className="mb-8 max-w-3xl text-gray-400"
             style={{ fontSize: "clamp(14px, 1.5vw, 18px)" }}
           >
-<<<<<<< HEAD
             {cms.hero_subtitulo}
-=======
             Otimize seu negócio e aprimore o atendimento ao cliente
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
           </p>
         </div>
       </section>
@@ -197,11 +185,8 @@ export default function SistemaGastronomia() {
                   }}
                 />
                 <img
-<<<<<<< HEAD
                   src={cms.func_imagem ?? "/img/dashboard-restaurante.webp"}
-=======
                   src="/img/dashboard-restaurante.webp"
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
                   alt="Sistema de Gastronomia - Dashboard"
                   width={1600}
                   height={900}
@@ -218,13 +203,11 @@ export default function SistemaGastronomia() {
 
             <div>
               <h2 className="mb-6 text-3xl font-extrabold text-gray-200 lg:text-4xl">
-<<<<<<< HEAD
                 {cms.func_titulo}
               </h2>
 
               <p className="mb-8 text-base leading-relaxed text-gray-400 lg:text-lg">
                 {cms.func_desc}
-=======
                 Como funciona?
               </h2>
 
@@ -232,7 +215,6 @@ export default function SistemaGastronomia() {
                 Oferecemos soluções inteligentes para gestão, atendimento e
                 automação, voltadas à gastronomia e ao entretenimento,
                 simplificando a gestão do seu negócio.
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
               </p>
 
               <button
@@ -279,11 +261,8 @@ export default function SistemaGastronomia() {
         <div className="relative z-10 mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
           <div className="mb-16">
             <h2 className="text-3xl font-extrabold text-gray-200 lg:text-4xl">
-<<<<<<< HEAD
               {cms.vant_secao}
-=======
               VANTAGENS
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
             </h2>
           </div>
 
@@ -374,11 +353,8 @@ export default function SistemaGastronomia() {
 
               <div className="overflow-hidden rounded-2xl">
                 <img
-<<<<<<< HEAD
                   src={cms.seg_imagem ?? "/img/gastronomia-segmentos.webp"}
-=======
                   src="/img/gastronomia-segmentos.webp"
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
                   alt="Segmentos de Gastronomia"
                   width={1200}
                   height={675}
@@ -395,11 +371,8 @@ export default function SistemaGastronomia() {
 
             <div>
               <h2 className="mb-8 text-3xl font-extrabold text-gray-200 lg:text-4xl">
-<<<<<<< HEAD
                 {cms.seg_titulo}
-=======
                 Para quem?
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
               </h2>
 
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -429,17 +402,14 @@ export default function SistemaGastronomia() {
         <div className="relative z-10 mx-auto max-w-4xl px-4 text-center md:px-6 lg:px-8">
           <div>
             <h2 className="mb-4 text-3xl font-extrabold text-white md:text-4xl">
-<<<<<<< HEAD
               {cms.cta_titulo}
             </h2>
             <p className="mb-8 text-lg text-gray-400">
               {cms.cta_desc}
-=======
               Transforme a Gestão do seu Restaurante
             </h2>
             <p className="mb-8 text-lg text-gray-400">
               Fale com nossos consultores especializados em bares e restaurantes e veja como podemos otimizar seu negócio.
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
             </p>
             <button
               type="button"

@@ -1,24 +1,18 @@
 import { Link } from "react-router-dom";
 import { ChevronRight, Check, MessageCircle } from "lucide-react";
-<<<<<<< HEAD
 import { useSiteContent } from "@/hooks/useSiteContent";
 import { parseListField } from "@/data/defaultContent";
-=======
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
 
 const checkItemStyle = {
   background: "rgba(255, 71, 87, 0.2)",
 };
 
 export default function Servicos() {
-<<<<<<< HEAD
   const { content: sv } = useSiteContent("servicos");
 
   const assistenciaItens = parseListField(sv.assistencia_itens ?? "Informática em geral\nAutomação comercial em geral\nContrato de manutenção\nBalanças\nImpressoras Térmicas\nNobreak\nNotebook");
   const datacenterItens  = parseListField(sv.datacenter_itens  ?? "Servidores\nBanco de Dados\nSoluções de backup\nAntivírus\nRedes e cabeamento estruturado\nEstruturas em Rack");
 
-=======
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
   return (
     <div className="min-h-screen bg-[#0A0C10]">
       {/* ========== 1. HERO SECTION ========== */}
@@ -48,19 +42,16 @@ export default function Servicos() {
             <span className="text-gray-300">Serviços</span>
           </nav>
           <h1 className="mb-6 text-4xl font-extrabold text-gray-200 lg:text-5xl">
-<<<<<<< HEAD
             {sv.hero_titulo ?? "SERVIÇOS"}
           </h1>
           <p className="max-w-3xl text-base text-gray-400 lg:text-lg">
             {sv.hero_subtitulo ?? "Ser parceiro da LÓGICA significa ter a certeza e a confiança de que com nossos serviços sua empresa estará continuamente segura e atualizada."}
-=======
             SERVIÇOS
           </h1>
           <p className="max-w-3xl text-base text-gray-400 lg:text-lg">
             Ser parceiro da LÓGICA significa ter a certeza e a confiança de que
             com nossos serviços sua empresa estará continuamente segura e
             atualizada.
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
           </p>
         </div>
       </section>
@@ -84,7 +75,6 @@ export default function Servicos() {
           <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
             <div>
               <h2 className="mb-8 text-3xl font-extrabold text-gray-200 lg:text-4xl">
-<<<<<<< HEAD
                 {sv.assistencia_titulo ?? "Assistência técnica especializada"}
               </h2>
               <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -96,7 +86,6 @@ export default function Servicos() {
                     <span className="text-sm font-medium text-gray-300">{label}</span>
                   </div>
                 ))}
-=======
                 Assistência técnica especializada
               </h2>
               <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -139,7 +128,6 @@ export default function Servicos() {
                     </div>
                   ))}
                 </div>
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
               </div>
               <button
                 type="button"
@@ -170,11 +158,8 @@ export default function Servicos() {
                 }}
               >
                 <img
-<<<<<<< HEAD
                   src={sv.assistencia_imagem ?? "/img/assistencia-tecnica.webp"}
-=======
                   src="/img/assistencia-tecnica.webp"
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
                   alt="Assistência Técnica"
                   width={800}
                   height={600}
@@ -214,11 +199,8 @@ export default function Servicos() {
                 }}
               >
                 <img
-<<<<<<< HEAD
                   src={sv.datacenter_imagem ?? "/img/solucoes-datacenter.webp"}
-=======
                   src="/img/solucoes-datacenter.webp"
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
                   alt="Soluções de Data Center"
                   width={800}
                   height={600}
@@ -231,7 +213,6 @@ export default function Servicos() {
             </div>
             <div className="order-1 lg:order-2">
               <h2 className="mb-8 text-3xl font-extrabold text-gray-200 lg:text-4xl">
-<<<<<<< HEAD
                 {sv.datacenter_titulo ?? "Soluções de Data Center"}
               </h2>
               <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -241,7 +222,6 @@ export default function Servicos() {
                       <Check className="h-4 w-4 text-[#FF4757]" />
                     </div>
                     <span className="text-sm font-medium text-gray-300">{label}</span>
-=======
                 Soluções de Data Center
               </h2>
               <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -263,7 +243,6 @@ export default function Servicos() {
                     <span className="text-sm font-medium text-gray-300">
                       {label}
                     </span>
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
                   </div>
                 ))}
               </div>
@@ -317,11 +296,8 @@ export default function Servicos() {
                 }}
               >
                 <img
-<<<<<<< HEAD
                   src={sv.software_imagem ?? "/img/suporte-software.webp"}
-=======
                   src="/img/suporte-software.webp"
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
                   alt="Suporte de Software"
                   width={800}
                   height={600}
@@ -334,12 +310,10 @@ export default function Servicos() {
             </div>
             <div className="order-1 lg:order-2">
               <h2 className="mb-6 text-3xl font-extrabold text-gray-200 lg:text-4xl">
-<<<<<<< HEAD
                 {sv.software_titulo ?? "Suporte de software"}
               </h2>
               <p className="mb-8 text-base leading-relaxed text-gray-400">
                 {sv.software_descricao ?? "Evite a frustração dos suportes 0800. Aqui, com nosso suporte próprio, estamos prontos para atender às suas necessidades tecnológicas, assegurando eficiência e segurança. Entre em contato e experimente a diferença que oferecemos."}
-=======
                 Suporte de software
               </h2>
               <p className="mb-8 text-base leading-relaxed text-gray-400">
@@ -347,7 +321,6 @@ export default function Servicos() {
                 próprio, estamos prontos para atender às suas necessidades
                 tecnológicas, assegurando eficiência e segurança. Entre em
                 contato e experimente a diferença que oferecemos.
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
               </p>
               <button
                 type="button"
@@ -381,18 +354,15 @@ export default function Servicos() {
       >
         <div className="relative z-10 mx-auto max-w-5xl px-4 text-center md:px-6 lg:px-8">
           <h2 className="mb-6 text-3xl font-extrabold text-gray-200 lg:text-4xl">
-<<<<<<< HEAD
             {sv.cta_titulo ?? "Precisa de ajuda com algum serviço?"}
           </h2>
           <p className="mb-8 text-base text-gray-400 lg:text-lg">
             {sv.cta_subtitulo ?? "Nossa equipe especializada está pronta para atender você com agilidade e eficiência"}
-=======
             Precisa de ajuda com algum serviço?
           </h2>
           <p className="mb-8 text-base text-gray-400 lg:text-lg">
             Nossa equipe especializada está pronta para atender você com
             agilidade e eficiência
->>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
           </p>
           <button
             type="button"

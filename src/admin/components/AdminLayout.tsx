@@ -1,12 +1,26 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation, Outlet, Navigate } from "react-router-dom";
 import {
   LayoutGrid,
   LogOut,
   Menu,
   ChevronRight,
+  AlertTriangle,
+  CheckCircle2,
+  Loader2,
 } from "lucide-react";
 import { useAdminAuth } from "@/context/AdminAuthContext";
+import { supabase } from "@/lib/supabase";
+
+type DbStatus = "checking" | "ok" | "no-table" | "no-connection";
+
+async function checkSupabaseStatus(): Promise<DbStatus> {
+  if (!supabase) return "no-connection";
+  const { error } = await supabase.from("site_content").select("id").limit(1);
+  if (!error) return "ok";
+  if (error.code === "42P01") return "no-table"; // relation does not exist
+  return "no-connection";
+}
 
 const navItems = [
   { label: "Editor de Seções", href: "/admin/editor", icon: LayoutGrid },
@@ -16,6 +30,11 @@ export default function AdminLayout() {
   const { isAuthenticated, logout } = useAdminAuth();
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [dbStatus, setDbStatus] = useState<DbStatus>("checking");
+
+  useEffect(() => {
+    checkSupabaseStatus().then(setDbStatus);
+  }, []);
 
   if (!isAuthenticated) {
     return <Navigate to="/admin/login" replace />;
@@ -146,6 +165,51 @@ export default function AdminLayout() {
             Ver site →
           </a>
         </header>
+
+        {/* Supabase status banner */}
+        {dbStatus === "checking" && (
+          <div className="flex items-center gap-2 border-b border-gray-800/40 bg-gray-900/60 px-4 py-2 text-xs text-gray-500">
+            <Loader2 className="h-3.5 w-3.5 animate-spin" />
+            Verificando conexão com Supabase…
+          </div>
+        )}
+        {dbStatus === "ok" && (
+          <div className="flex items-center gap-2 border-b border-green-900/30 bg-green-950/30 px-4 py-2 text-xs text-green-400">
+            <CheckCircle2 className="h-3.5 w-3.5" />
+            Supabase conectado — alterações salvas ficam visíveis para todos.
+          </div>
+        )}
+        {dbStatus === "no-table" && (
+          <div className="flex flex-wrap items-start gap-2 border-b border-red-900/40 bg-red-950/40 px-4 py-3 text-xs text-red-300">
+            <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-red-400" />
+            <span>
+              <strong className="text-red-200">Tabela não encontrada no Supabase.</strong>{" "}
+              As alterações são salvas só neste navegador e não ficam visíveis no site.
+              {" "}Acesse{" "}
+              <a
+                href="https://supabase.com/dashboard"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:text-red-100"
+              >
+                supabase.com/dashboard
+              </a>
+              {" "}→ seu projeto → <strong>SQL Editor</strong> → cole e execute o arquivo{" "}
+              <code className="rounded bg-red-900/40 px-1">supabase-schema.sql</code>{" "}
+              da raiz do projeto.
+            </span>
+          </div>
+        )}
+        {dbStatus === "no-connection" && (
+          <div className="flex flex-wrap items-start gap-2 border-b border-yellow-900/40 bg-yellow-950/30 px-4 py-3 text-xs text-yellow-300">
+            <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-yellow-400" />
+            <span>
+              <strong className="text-yellow-200">Supabase não conectado.</strong>{" "}
+              Verifique as variáveis <code className="rounded bg-yellow-900/40 px-1">VITE_SUPABASE_URL</code> e{" "}
+              <code className="rounded bg-yellow-900/40 px-1">VITE_SUPABASE_ANON_KEY</code> no Vercel.
+            </span>
+          </div>
+        )}
 
         <main className="flex-1 overflow-auto p-4 lg:p-6">
           <Outlet />

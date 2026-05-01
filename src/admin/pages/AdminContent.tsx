@@ -45,17 +45,25 @@ function FieldEditor({
   const fileRef = useRef<HTMLInputElement>(null);
   const hasChanged = value !== (loadContent()[section]?.[fieldKey] ?? defaultValue);
 
-  const save = () => {
-    updateField(section, fieldKey, value);
-    setStatus("saved");
-    setTimeout(() => setStatus("idle"), 2000);
+  const save = async () => {
+    try {
+      await updateField(section, fieldKey, value);
+      setStatus("saved");
+      setTimeout(() => setStatus("idle"), 2000);
+    } catch {
+      alert("Erro ao salvar no Supabase. Verifique o status da conexão no topo da página.");
+    }
   };
 
-  const reset = () => {
+  const reset = async () => {
     setValue(defaultValue);
-    updateField(section, fieldKey, defaultValue);
-    setStatus("saved");
-    setTimeout(() => setStatus("idle"), 2000);
+    try {
+      await updateField(section, fieldKey, defaultValue);
+      setStatus("saved");
+      setTimeout(() => setStatus("idle"), 2000);
+    } catch {
+      // silencioso no reset
+    }
   };
 
   const handleImageFile = async (file: File) => {

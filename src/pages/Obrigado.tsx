@@ -1,11 +1,16 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { CheckCircle2, Home } from "lucide-react";
+<<<<<<< HEAD
 import { useSiteContent } from "@/hooks/useSiteContent";
 
 export default function Obrigado() {
   const { content: ob } = useSiteContent("obrigado");
 
+=======
+
+export default function Obrigado() {
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -69,7 +74,11 @@ export default function Obrigado() {
 
           {/* Título Principal */}
           <h1 className="mb-6 text-4xl font-extrabold text-white md:text-5xl lg:text-6xl">
+<<<<<<< HEAD
             {ob.titulo ?? "Mensagem Enviada!"}
+=======
+            Mensagem Enviada!
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
           </h1>
 
           {/* Subtítulo */}
@@ -127,7 +136,11 @@ export default function Obrigado() {
                 }}
               >
                 <Home className="h-5 w-5" />
+<<<<<<< HEAD
                 {ob.botao_voltar ?? "Voltar ao início"}
+=======
+                Voltar ao Início
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
               </span>
             </Link>
           </div>

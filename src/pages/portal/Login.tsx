@@ -10,12 +10,18 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
+<<<<<<< HEAD
 import { useSiteContent } from "@/hooks/useSiteContent";
+=======
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
 
 export default function Login() {
   const navigate = useNavigate();
   const { login, isAuthenticated } = useAuth();
+<<<<<<< HEAD
   const { content: pt } = useSiteContent("portal");
+=======
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
 
   const [formData, setFormData] = useState({
     cnpj: "",
@@ -161,9 +167,15 @@ export default function Login() {
               </div>
             </div>
             <h1 className="mb-2 text-3xl font-extrabold text-white">
+<<<<<<< HEAD
               {pt.login_titulo ?? "Portal do Cliente"}
             </h1>
             <p className="text-gray-400">{pt.login_subtitulo ?? "Acesse sua área exclusiva"}</p>
+=======
+              Portal do Cliente
+            </h1>
+            <p className="text-gray-400">Acesse sua área restrita</p>
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
           </div>
 
           {/* Card de Login */}

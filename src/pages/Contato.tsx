@@ -8,7 +8,29 @@ import {
   ChevronRight,
   Navigation,
 } from "lucide-react";
+<<<<<<< HEAD
 import { useSiteContent } from "@/hooks/useSiteContent";
+=======
+
+const units = [
+  {
+    city: "Brusque",
+    address: "Av. Dom Joaquim, 437 - Jardim Maluche",
+    phone: "(47) 3351-5497",
+    email: "atendimento@logica.inf.br",
+    mapsDirUrl:
+      "https://www.google.com/maps/dir/?api=1&destination=-27.10681,-48.92285",
+  },
+  {
+    city: "Blumenau",
+    address: "R. Dois de Setembro, 4115 - Itoupava Norte",
+    phone: "(47) 3328-0077",
+    email: "atendimento@logica.inf.br",
+    mapsDirUrl:
+      "https://www.google.com/maps/dir/?api=1&destination=-26.9234,-49.0662",
+  },
+];
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
 
 const inputBaseStyle = {
   borderColor: "rgba(230, 57, 70, 0.2)",
@@ -17,6 +39,7 @@ const inputBaseStyle = {
 };
 
 export default function Contato() {
+<<<<<<< HEAD
   const { content: ct } = useSiteContent("contato");
 
   const units = [
@@ -39,6 +62,8 @@ export default function Contato() {
   const formspreeId = ct.formspree_id ?? "xzdjwzpe";
   const redirectUrl = ct.redirect_obrigado ?? "https://l-gica-connect.vercel.app/obrigado";
 
+=======
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
   return (
     <div className="min-h-screen" style={{ background: "#06080A" }}>
       {/* Hero */}
@@ -69,10 +94,18 @@ export default function Contato() {
             <span className="text-gray-300">Contato</span>
           </nav>
           <h1 className="mb-6 text-4xl font-extrabold text-gray-200 lg:text-5xl">
+<<<<<<< HEAD
             {ct.hero_titulo ?? "Entre em Contato"}
           </h1>
           <p className="max-w-3xl text-base text-gray-400 lg:text-lg">
             {ct.hero_subtitulo ?? "Estamos prontos para atender você. Fale conosco e descubra como podemos transformar seu negócio"}
+=======
+            Entre em Contato
+          </h1>
+          <p className="max-w-3xl text-base text-gray-400 lg:text-lg">
+            Estamos prontos para atender você. Fale conosco e descubra como
+            podemos transformar seu negócio
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
           </p>
         </div>
       </section>
@@ -85,6 +118,10 @@ export default function Contato() {
             "linear-gradient(180deg, #12141A 0%, #0A0C10 70%, #06080A 100%)",
         }}
       >
+<<<<<<< HEAD
+=======
+        {/* Overlay de transição do hero */}
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
         <div
           className="pointer-events-none absolute left-0 right-0 top-0 z-0 h-32"
           style={{
@@ -111,6 +148,10 @@ export default function Contato() {
             filter: "blur(110px)",
           }}
         />
+<<<<<<< HEAD
+=======
+        {/* Overlay inferior para transição ao footer */}
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
         <div
           className="pointer-events-none absolute bottom-0 left-0 right-0 z-0 h-24"
           style={{
@@ -138,10 +179,17 @@ export default function Contato() {
                 }}
               />
               <h2 className="mb-6 text-2xl font-bold text-gray-200">
+<<<<<<< HEAD
                 {ct.form_titulo ?? "Envie sua Mensagem"}
               </h2>
               <form
                 action={`https://formspree.io/f/${formspreeId}`}
+=======
+                Envie sua Mensagem
+              </h2>
+              <form
+                action="https://formspree.io/f/xzdjwzpe"
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
                 method="POST"
                 className="space-y-4"
               >
@@ -247,6 +295,10 @@ export default function Contato() {
                   />
                 </div>
 
+<<<<<<< HEAD
+=======
+                {/* Anti-spam (honeypot) */}
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
                 <input
                   type="text"
                   name="_gotcha"
@@ -254,7 +306,17 @@ export default function Contato() {
                   tabIndex={-1}
                   autoComplete="off"
                 />
+<<<<<<< HEAD
                 <input type="hidden" name="_next" value={redirectUrl} />
+=======
+
+                {/* Redirecionamento após envio */}
+                <input
+                  type="hidden"
+                  name="_next"
+                  value="https://l-gica-connect.vercel.app/obrigado"
+                />
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
 
                 <button
                   type="submit"
@@ -354,7 +416,11 @@ export default function Contato() {
                       Horário de Atendimento
                     </p>
                     <p className="text-sm text-gray-400">
+<<<<<<< HEAD
                       {ct.horario ?? "Segunda a Sexta, 08h às 18h"}
+=======
+                      Segunda a Sexta, 08h às 18h
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
                     </p>
                   </div>
                 </div>

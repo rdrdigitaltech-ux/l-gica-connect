@@ -11,7 +11,10 @@ import {
   MessageCircle,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+<<<<<<< HEAD
 import { useSiteContent } from "@/hooks/useSiteContent";
+=======
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
 
 const cardBaseStyle = {
   background:
@@ -33,6 +36,7 @@ const cardHoverLeave = (e: React.MouseEvent<HTMLDivElement>) => {
     "0 8px 24px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 71, 87, 0.1)";
 };
 
+<<<<<<< HEAD
 // títulos dos cards são substituídos pelo hook dentro do componente
 const segmentCardsBase = [
   { id: "varejo",      href: "/sistemas/varejo",      key: "varejo_titulo",     icons: [ShoppingCart, Store]          },
@@ -48,6 +52,53 @@ const solutionCardsBase = [
 export default function Sistemas() {
   const { content: s } = useSiteContent("sistemas");
 
+=======
+const segmentCards = [
+  {
+    id: "varejo",
+    href: "/sistemas/varejo",
+    title: "Comércio & Varejo",
+    icons: [ShoppingCart, Store],
+  },
+  {
+    id: "gastronomia",
+    href: "/sistemas/gastronomia",
+    title: "Bares & Restaurantes",
+    icons: [UtensilsCrossed, Coffee],
+  },
+  {
+    id: "multiloja",
+    href: "/sistemas/multiloja",
+    title: "Supermercados & Multilojas",
+    icons: [ShoppingBasket, Building2],
+  },
+];
+
+const solutionCards = [
+  {
+    id: "tratamento-ponto",
+    href: "/sistemas/tratamento-ponto",
+    title: "Tratamento de Ponto",
+    description:
+      "Sistema completo de gestão e apuração de ponto eletrônico com relatórios avançados e integração total.",
+    accent: "#FF4757",
+    icon: Clock,
+  },
+  {
+    id: "ondesk",
+    href: "/sistemas/ondesk",
+    title: "Lógica.OnDesk",
+    description:
+      "Central de comando para WhatsApp. Métricas reais, controle total da equipe e produtividade em tempo real.",
+    accent: "#FF4757",
+    icon: Headset,
+    badge: "NOVO",
+    slogan: "Pare de adivinhar. Organize seu atendimento.",
+  },
+] as const;
+
+export default function Sistemas() {
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
   return (
     <div className="min-h-screen bg-[#12141A]">
       {/* Hero - mantido */}
@@ -78,10 +129,17 @@ export default function Sistemas() {
             <span className="text-gray-300">Sistemas</span>
           </nav>
           <h1 className="mb-6 text-4xl font-extrabold text-gray-200 lg:text-5xl">
+<<<<<<< HEAD
             {s.hero_titulo ?? "Sistemas de Gestão Completos"}
           </h1>
           <p className="max-w-3xl text-base text-gray-400 lg:text-lg">
             {s.hero_subtitulo ?? "Escolha a solução ideal para o seu segmento"}
+=======
+            Sistemas de Gestão Completos
+          </h1>
+          <p className="max-w-3xl text-base text-gray-400 lg:text-lg">
+            Escolha a solução ideal para o seu segmento
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
           </p>
         </div>
       </section>
@@ -125,16 +183,28 @@ export default function Sistemas() {
           {/* Título da Pergunta */}
           <div className="mb-12 text-center">
             <h2 className="mb-4 text-3xl font-extrabold text-gray-200 lg:text-4xl">
+<<<<<<< HEAD
               {s.secao_titulo ?? "A Lógica tem o sistema ideal para você"}
             </h2>
             <p className="mx-auto max-w-3xl text-base text-gray-400 lg:text-lg">
               {s.secao_subtitulo ?? "Qual o segmento do seu negócio? Nossos sistemas abrangem estas áreas."}
+=======
+              A Lógica tem o sistema ideal para você
+            </h2>
+            <p className="mx-auto max-w-3xl text-base text-gray-400 lg:text-lg">
+              Qual o segmento do seu negócio? Nossos sistemas abrangem estas
+              áreas.
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
             </p>
           </div>
 
           {/* Grid de 3 Cards de Segmentos (categorias unidas, ícones duplos) */}
           <div className="mb-16 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+<<<<<<< HEAD
             {segmentCardsBase.map((card) => (
+=======
+            {segmentCards.map((card) => (
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
               <div
                 key={card.id}
                 role="button"
@@ -191,7 +261,11 @@ export default function Sistemas() {
                 </div>
 
                 <h3 className="mb-3 text-center text-xl font-bold text-gray-200">
+<<<<<<< HEAD
                   {s[card.key] ?? card.key}
+=======
+                  {card.title}
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
                 </h3>
                 <div className="flex items-center justify-center gap-2 text-xs font-medium text-gray-500 transition-colors group-hover:text-[#FF4757]">
                   <span>Ver Detalhes</span>
@@ -204,15 +278,26 @@ export default function Sistemas() {
           {/* Novas Soluções */}
           <div className="mb-10 text-center">
             <h2 className="mb-4 text-3xl font-extrabold text-gray-200 lg:text-4xl">
+<<<<<<< HEAD
               {s.outras_titulo ?? "Outras Soluções da Lógica"}
             </h2>
             <p className="mx-auto max-w-3xl text-base text-gray-400 lg:text-lg">
               {s.outras_subtitulo ?? "Ferramentas para RH, gestão de ponto e organização de atendimentos."}
+=======
+              Outras Soluções da Lógica
+            </h2>
+            <p className="mx-auto max-w-3xl text-base text-gray-400 lg:text-lg">
+              Ferramentas para RH, gestão de ponto e organização de atendimentos.
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
             </p>
           </div>
 
           <div className="mb-16 grid grid-cols-1 gap-8 md:grid-cols-2">
+<<<<<<< HEAD
             {solutionCardsBase.map((card) => (
+=======
+            {solutionCards.map((card) => (
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
               <div
                 key={card.id}
                 role="button"
@@ -256,7 +341,11 @@ export default function Sistemas() {
                 />
 
                 <div className="relative z-10 mb-4 flex min-h-[28px] justify-center">
+<<<<<<< HEAD
                   {card.badge != null && (
+=======
+                  {card.badge && (
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
                     <div
                       className="inline-flex items-center rounded-full px-3 py-1 text-xs font-bold tracking-wider"
                       style={{
@@ -289,6 +378,7 @@ export default function Sistemas() {
                   </div>
                 </div>
 
+<<<<<<< HEAD
                 <h3 className="mb-3 text-center text-2xl font-extrabold text-gray-200 transition-colors">
                   {s[card.titleKey] ?? card.titleKey}
                 </h3>
@@ -296,11 +386,26 @@ export default function Sistemas() {
                 {card.sloganKey && (
                   <p className="mb-2 text-center text-sm font-semibold text-gray-300">
                     {s[card.sloganKey] ?? ""}
+=======
+                <h3
+                  className="mb-3 text-center text-2xl font-extrabold text-gray-200 transition-colors"
+                >
+                  {card.title}
+                </h3>
+
+                {card.slogan && (
+                  <p className="mb-2 text-center text-sm font-semibold text-gray-300">
+                    {card.slogan}
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
                   </p>
                 )}
 
                 <p className="mb-6 text-center text-sm leading-relaxed text-gray-400 md:text-base">
+<<<<<<< HEAD
                   {s[card.descKey] ?? card.descKey}
+=======
+                  {card.description}
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
                 </p>
 
                 <div
@@ -317,7 +422,12 @@ export default function Sistemas() {
           {/* Seção de Ajuda */}
           <div className="text-center">
             <p className="mb-6 text-base text-gray-400">
+<<<<<<< HEAD
               {s.ajuda_texto ?? "Não encontrou um sistema pra você ou precisa da nossa ajuda para escolhê-lo?"}
+=======
+              Não encontrou um sistema pra você ou precisa da nossa ajuda para
+              escolhê-lo?
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
             </p>
 
             <button

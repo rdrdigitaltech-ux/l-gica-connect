@@ -1,5 +1,6 @@
 import { CheckCircle2 } from "lucide-react";
 import { motion } from "framer-motion";
+<<<<<<< HEAD
 import { useSiteContent } from "@/hooks/useSiteContent";
 
 export default function HeroSection() {
@@ -17,6 +18,10 @@ export default function HeroSection() {
   const bannerTablet = content?.banner_tablet ?? "/img/novobanner-tablet.webp";
   const bannerMobile = content?.banner_mobile ?? "/img/novobanner-mobile.webp";
 
+=======
+
+export default function HeroSection() {
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
   return (
     <section
       className="relative flex min-h-[72vh] flex-col items-end overflow-hidden px-0 pt-0 pb-0 md:min-h-[85vh] md:items-start md:justify-center md:px-8 md:pt-20 md:pb-20"
@@ -30,21 +35,37 @@ export default function HeroSection() {
         <picture>
           <source
             media="(max-width: 640px)"
+<<<<<<< HEAD
             srcSet={bannerMobile}
+=======
+            srcSet="/img/novobanner-mobile.webp"
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
             type="image/webp"
           />
           <source
             media="(min-width: 641px) and (max-width: 1024px)"
+<<<<<<< HEAD
             srcSet={bannerTablet}
+=======
+            srcSet="/img/novobanner-tablet.webp"
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
             type="image/webp"
           />
           <source
             media="(min-width: 1025px)"
+<<<<<<< HEAD
             srcSet={bannerDesktop}
             type="image/webp"
           />
           <img
             src={bannerDesktop}
+=======
+            srcSet="/img/novobanner-desktop.webp"
+            type="image/webp"
+          />
+          <img
+            src="/img/novobanner-desktop.webp"
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
             alt="Lógica Automação Comercial - Soluções completas para gestão do seu negócio"
             width={1920}
             height={600}
@@ -97,7 +118,11 @@ export default function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
           >
+<<<<<<< HEAD
             {titulo}
+=======
+            Automação Comercial e Informática para Brusque, Blumenau e região
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
           </motion.h1>
 
           <motion.p
@@ -107,7 +132,11 @@ export default function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.15, ease: [0.25, 0.46, 0.45, 0.94] }}
           >
+<<<<<<< HEAD
             {subtitulo}
+=======
+            Transforme seu negócio com soluções eficientes e tecnologia avançada.
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
           </motion.p>
 
           <motion.div
@@ -142,6 +171,10 @@ export default function HeroSection() {
                 />
               </div>
               <p className="flex items-center gap-2 text-sm font-semibold md:text-base text-[#F0EDE8]">
+<<<<<<< HEAD
+=======
+                <span className="hidden md:inline">Mais de </span>
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
                 <span
                   className="font-extrabold"
                   style={{
@@ -149,8 +182,15 @@ export default function HeroSection() {
                     textShadow: "0 0 20px rgba(34, 197, 94, 0.7), 0 0 40px rgba(34, 197, 94, 0.4)",
                   }}
                 >
+<<<<<<< HEAD
                   {badgeAnos}
                 </span>
+=======
+                  <span className="md:hidden">36+</span>
+                  <span className="hidden md:inline">36 anos</span>
+                </span>
+                <span className="md:hidden"> Anos</span>
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
                 <span className="hidden md:inline"> de mercado</span>
                 <span> • </span>
                 <span
@@ -160,7 +200,11 @@ export default function HeroSection() {
                     textShadow: "0 0 20px rgba(34, 197, 94, 0.7), 0 0 40px rgba(34, 197, 94, 0.4)",
                   }}
                 >
+<<<<<<< HEAD
                   {badgeClientes}
+=======
+                  52 mil+
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
                 </span>
                 <span className="hidden md:inline"> clientes atendidos</span>
                 <span className="md:hidden"> Clientes</span>

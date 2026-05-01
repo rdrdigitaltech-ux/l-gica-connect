@@ -1,4 +1,5 @@
 import { MapPin, Phone, Mail, Navigation } from "lucide-react";
+<<<<<<< HEAD
 import { useSiteContent } from "@/hooks/useSiteContent";
 
 export default function LocationSection() {
@@ -27,6 +28,27 @@ export default function LocationSection() {
 
   const horario = contato?.horario ?? "Segunda a Sexta, 08h às 18h";
 
+=======
+
+const units = [
+  {
+    city: "Brusque",
+    address: "Av. Dom Joaquim, 437 - Jardim Maluche",
+    phone: "(47) 3351-5497",
+    email: "atendimento@logica.inf.br",
+    mapsDirUrl: "https://www.google.com/maps/dir/?api=1&destination=-27.10681,-48.92285",
+  },
+  {
+    city: "Blumenau",
+    address: "R. Dois de Setembro, 4115 - Itoupava Norte",
+    phone: "(47) 3328-0077",
+    email: "atendimento@logica.inf.br",
+    mapsDirUrl: "https://www.google.com/maps/dir/?api=1&destination=-26.9234,-49.0662",
+  },
+];
+
+export default function LocationSection() {
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
   return (
     <section
       className="relative overflow-hidden py-16 transition-colors duration-300 md:py-20 lg:py-24"
@@ -214,7 +236,11 @@ export default function LocationSection() {
                     Horário de Atendimento
                   </p>
                   <p className="mt-1 text-sm text-gray-400">
+<<<<<<< HEAD
                     {horario}
+=======
+                    Segunda a Sexta, 08h às 18h
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
                   </p>
                 </div>
 

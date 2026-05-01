@@ -3,11 +3,16 @@ import { ArrowLeft, MessageCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { ImageZoom } from "@/components/ImageZoom";
 import { getModelosPorCategoria } from "@/data/equipamentosDetalhados";
+<<<<<<< HEAD
 import { useSiteContent } from "@/hooks/useSiteContent";
 
 const EquipamentoComputadores = () => {
   const { content: eq } = useSiteContent("equipamentos");
 
+=======
+
+const EquipamentoComputadores = () => {
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -31,10 +36,17 @@ const EquipamentoComputadores = () => {
             className="font-bold text-white"
             style={{ fontSize: "clamp(32px, 5vw, 56px)" }}
           >
+<<<<<<< HEAD
             {eq.computadores_page_titulo ?? "Computadores e Hardwares"}
           </h1>
           <p className="mt-4 text-lg text-gray-400">
             {eq.computadores_page_descricao ?? "PCs, nobreaks, teclados e periféricos para automação comercial"}
+=======
+            Computadores e Hardwares
+          </h1>
+          <p className="mt-4 text-lg text-gray-400">
+            PCs, nobreaks, teclados e periféricos para automação comercial
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
           </p>
         </div>
       </section>

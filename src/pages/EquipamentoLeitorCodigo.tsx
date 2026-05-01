@@ -8,11 +8,16 @@ import {
   getModelosPorCategoria,
   SubcategoriaLeitor,
 } from "@/data/equipamentosDetalhados";
+<<<<<<< HEAD
 import { useSiteContent } from "@/hooks/useSiteContent";
 
 const EquipamentoLeitorCodigo = () => {
   const { content: eq } = useSiteContent("equipamentos");
 
+=======
+
+const EquipamentoLeitorCodigo = () => {
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -57,10 +62,17 @@ const EquipamentoLeitorCodigo = () => {
             className="font-bold text-white"
             style={{ fontSize: "clamp(32px, 5vw, 56px)" }}
           >
+<<<<<<< HEAD
             {eq.leitor_page_titulo ?? "Leitores de Código de Barras"}
           </h1>
           <p className="mt-4 text-lg text-gray-400">
             {eq.leitor_page_descricao ?? "Scanners e leitores de alta performance para automação comercial"}
+=======
+            Leitores de Código de Barras
+          </h1>
+          <p className="mt-4 text-lg text-gray-400">
+            Scanners e leitores de alta performance para automação comercial
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
           </p>
         </div>
       </section>

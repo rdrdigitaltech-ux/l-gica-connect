@@ -8,10 +8,15 @@ import {
   getModelosPorCategoria,
   SubcategoriaRelogioPonto,
 } from "@/data/equipamentosDetalhados";
+<<<<<<< HEAD
 import { useSiteContent } from "@/hooks/useSiteContent";
 
 const EquipamentoRelogioPonto = () => {
   const { content: eq } = useSiteContent("equipamentos");
+=======
+
+const EquipamentoRelogioPonto = () => {
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
   const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
@@ -162,10 +167,17 @@ const EquipamentoRelogioPonto = () => {
             className="font-bold text-white"
             style={{ fontSize: "clamp(32px, 5vw, 56px)" }}
           >
+<<<<<<< HEAD
             {eq.relogio_page_titulo ?? "Relógios de Ponto"}
           </h1>
           <p className="mt-4 text-lg text-gray-400">
             {eq.relogio_page_descricao ?? "Controle de acesso e ponto eletrônico para sua empresa"}
+=======
+            Relógios de Ponto
+          </h1>
+          <p className="mt-4 text-lg text-gray-400">
+            Controle de acesso e ponto eletrônico para sua empresa
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
           </p>
         </div>
       </section>

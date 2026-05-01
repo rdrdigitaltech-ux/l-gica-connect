@@ -11,6 +11,7 @@ import {
   DollarSign,
   MessageCircle,
 } from "lucide-react";
+<<<<<<< HEAD
 import { useSiteContent } from "@/hooks/useSiteContent";
 
 const VANTAGEM_ICONS = [Settings, Building2, FileText, Package, Monitor, DollarSign];
@@ -26,6 +27,59 @@ export default function SistemaMultiloja() {
 
   const segmentos = (cms.seg_lista ?? "").split("\n").filter(Boolean);
 
+=======
+
+const vantagens = [
+  {
+    icon: Settings,
+    title: "Personalizado",
+    desc: "Adequação de funcionalidades requeridas por qualquer tipo de loja ou negócio.",
+  },
+  {
+    icon: Building2,
+    title: "Gerenciamento",
+    desc: "Permite gerenciar filiais, centralizando a gestão da empresa.",
+  },
+  {
+    icon: FileText,
+    title: "Documentos Fiscais",
+    desc: "Emissão facilitada de documentos como NF-e, NFC-e. Esteja dentro da legislação do seu estado.",
+  },
+  {
+    icon: Package,
+    title: "Controle de estoque",
+    desc: "Chega de perder venda por furo no estoque! Use nosso sistema para facilitar o controle.",
+  },
+  {
+    icon: Monitor,
+    title: "PDV Frente de caixa",
+    desc: "Simples de usar, intuitivo e ágil. Perfeito para agilizar o atendimento e reduzir filas.",
+  },
+  {
+    icon: DollarSign,
+    title: "Finanças",
+    desc: "Acesse facilmente a todos os dados e relatórios que ajudam a deixar o financeiro em dia.",
+  },
+];
+
+const segmentos = [
+  "Departamentos variados",
+  "Autopeças",
+  "Lojas com filiais",
+  "Supermercados",
+  "Empresas de transporte",
+  "Distribuidoras",
+  "Construtoras",
+  "Farmácias",
+];
+
+const segmentosImagem = {
+  src: "/img/shopping-erp.webp",
+  alt: "Supermercados & Multilojas - ERP",
+};
+
+export default function SistemaMultiloja() {
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
   return (
     <div className="min-h-screen bg-[#0A0C10]">
       {/* 1. HERO SECTION */}
@@ -69,7 +123,11 @@ export default function SistemaMultiloja() {
           >
             <Store className="h-4 w-4 text-[#FF4757]" />
             <span className="text-xs font-bold uppercase tracking-wider text-gray-300">
+<<<<<<< HEAD
               {cms.hero_badge}
+=======
+              Sistema para Supermercados & Multilojas
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
             </span>
           </div>
 
@@ -77,14 +135,32 @@ export default function SistemaMultiloja() {
             className="mb-6 font-extrabold leading-tight text-gray-200"
             style={{ fontSize: "clamp(28px, 4vw, 48px)" }}
           >
+<<<<<<< HEAD
             {cms.hero_titulo}
+=======
+            Software para{" "}
+            <span
+              style={{
+                background: "linear-gradient(135deg, #FF4757 0%, #FF6B7A 100%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+              }}
+            >
+              Supermercados & Multilojas
+            </span>
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
           </h1>
 
           <p
             className="mb-8 max-w-3xl text-gray-400"
             style={{ fontSize: "clamp(14px, 1.5vw, 18px)" }}
           >
+<<<<<<< HEAD
             {cms.hero_subtitulo}
+=======
+            Automação e Eficiência em Diversos Segmentos
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
           </p>
         </div>
       </section>
@@ -126,7 +202,11 @@ export default function SistemaMultiloja() {
                   }}
                 />
                 <img
+<<<<<<< HEAD
                   src={cms.func_imagem ?? "/img/dashboard-multiloja.webp"}
+=======
+                  src="/img/dashboard-multiloja.webp"
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
                   alt="Sistema Multiloja - Dashboard"
                   width={1600}
                   height={900}
@@ -143,11 +223,23 @@ export default function SistemaMultiloja() {
 
             <div>
               <h2 className="mb-6 text-3xl font-extrabold text-gray-200 lg:text-4xl">
+<<<<<<< HEAD
                 {cms.func_titulo}
               </h2>
 
               <p className="mb-8 text-base leading-relaxed text-gray-400 lg:text-lg">
                 {cms.func_desc}
+=======
+                Como funciona?
+              </h2>
+
+              <p className="mb-8 text-base leading-relaxed text-gray-400 lg:text-lg">
+                Este software traz uma solução personalizada para cada negócio,
+                por isso seu uso é considerado multiloja, buscando atender às
+                necessidades específicas de cada empresa. É possível a
+                implementação de funcionalidades, ferramentas e mais, de acordo
+                com o segmento onde a loja atua.
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
               </p>
 
               <button
@@ -194,7 +286,11 @@ export default function SistemaMultiloja() {
         <div className="relative z-10 mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
           <div className="mb-16">
             <h2 className="text-3xl font-extrabold text-gray-200 lg:text-4xl">
+<<<<<<< HEAD
               {cms.vant_secao}
+=======
+              VANTAGENS
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
             </h2>
           </div>
 
@@ -273,8 +369,13 @@ export default function SistemaMultiloja() {
             <div>
               <div className="overflow-hidden rounded-2xl border border-[rgba(255,71,87,0.18)]">
                 <img
+<<<<<<< HEAD
                   src={cms.seg_imagem ?? "/img/shopping-erp.webp"}
                   alt="Supermercados & Multilojas - ERP"
+=======
+                  src={segmentosImagem.src}
+                  alt={segmentosImagem.alt}
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
                   width={1200}
                   height={900}
                   loading="lazy"

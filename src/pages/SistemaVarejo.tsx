@@ -11,6 +11,7 @@ import {
   ShoppingBag,
   MessageCircle,
 } from "lucide-react";
+<<<<<<< HEAD
 import { useSiteContent } from "@/hooks/useSiteContent";
 
 const VANTAGEM_ICONS = [FileText, Tag, DollarSign, Package, Monitor, ShoppingBag];
@@ -26,6 +27,54 @@ export default function SistemaVarejo() {
 
   const segmentos = (cms.seg_lista ?? "").split("\n").filter(Boolean);
 
+=======
+
+const vantagens = [
+  {
+    icon: FileText,
+    title: "Documentos Fiscais",
+    desc: "Emissão facilitada de documentos como NF-e, NFC-e. Esteja dentro da legislação do seu estado.",
+  },
+  {
+    icon: Tag,
+    title: "Etiquetas",
+    desc: "Gere etiquetas personalizadas para o seu negócio para identificação e organização de produtos.",
+  },
+  {
+    icon: DollarSign,
+    title: "Finanças",
+    desc: "Acesse facilmente a todos os dados e relatórios que ajudam a deixar o financeiro em dia.",
+  },
+  {
+    icon: Package,
+    title: "Controle de estoque",
+    desc: "Chega de perder venda por furo no estoque! Use nosso sistema para facilitar o controle.",
+  },
+  {
+    icon: Monitor,
+    title: "PDV Frente de caixa",
+    desc: "Simples de usar, intuitivo e ágil. Perfeito para agilizar o atendimento e reduzir filas.",
+  },
+  {
+    icon: ShoppingBag,
+    title: "Pedidos Online",
+    desc: "Aumente suas vendas com integração ao Mercado Livre e vendas on-line sem mistério.",
+  },
+];
+
+const segmentos = [
+  "Vestuário",
+  "Micro varejo",
+  "Comércio em geral",
+  "Pequeno varejo",
+  "Materiais de construção",
+  "Mercados",
+  "Joalherias e óticas",
+  "Autopeças",
+];
+
+export default function SistemaVarejo() {
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
   return (
     <div className="min-h-screen bg-[#0A0C10]">
       {/* 1. HERO SECTION */}
@@ -69,7 +118,11 @@ export default function SistemaVarejo() {
           >
             <ShoppingCart className="h-4 w-4 text-[#FF4757]" />
             <span className="text-xs font-bold uppercase tracking-wider text-gray-300">
+<<<<<<< HEAD
               {cms.hero_badge}
+=======
+              Sistema para Comércio & Varejo
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
             </span>
           </div>
 
@@ -77,14 +130,32 @@ export default function SistemaVarejo() {
             className="mb-6 font-extrabold leading-tight text-gray-200"
             style={{ fontSize: "clamp(28px, 4vw, 48px)" }}
           >
+<<<<<<< HEAD
             {cms.hero_titulo}
+=======
+            Implantamos Softwares para Comércio & Varejo em{" "}
+            <span
+              style={{
+                background: "linear-gradient(135deg, #FF4757 0%, #FF6B7A 100%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+              }}
+            >
+              toda Santa Catarina
+            </span>
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
           </h1>
 
           <p
             className="mb-8 max-w-3xl text-gray-400"
             style={{ fontSize: "clamp(14px, 1.5vw, 18px)" }}
           >
+<<<<<<< HEAD
             {cms.hero_subtitulo}
+=======
+            Automação e Controle para Comércio e Varejo
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
           </p>
         </div>
       </section>
@@ -126,7 +197,11 @@ export default function SistemaVarejo() {
                   }}
                 />
                 <img
+<<<<<<< HEAD
                   src={cms.func_imagem ?? "/img/dashboard-varejo.webp"}
+=======
+                  src="/img/dashboard-varejo.webp"
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
                   alt="Sistema de Varejo - Dashboard"
                   width={1600}
                   height={900}
@@ -143,11 +218,22 @@ export default function SistemaVarejo() {
 
             <div>
               <h2 className="mb-6 text-3xl font-extrabold text-gray-200 lg:text-4xl">
+<<<<<<< HEAD
                 {cms.func_titulo}
               </h2>
 
               <p className="mb-8 text-base leading-relaxed text-gray-400 lg:text-lg">
                 {cms.func_desc}
+=======
+                Como funciona?
+              </h2>
+
+              <p className="mb-8 text-base leading-relaxed text-gray-400 lg:text-lg">
+                Nosso software de varejo é a solução de gestão e emissão fiscal
+                mais utilizada no micro e pequeno varejo brasileiro. Completo,
+                estável e com o melhor custo-benefício do mercado, ele atende com
+                excelência o seu negócio.
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
               </p>
 
               <button
@@ -194,7 +280,11 @@ export default function SistemaVarejo() {
         <div className="relative z-10 mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
           <div className="mb-16">
             <h2 className="text-3xl font-extrabold text-gray-200 lg:text-4xl">
+<<<<<<< HEAD
               {cms.vant_secao}
+=======
+              VANTAGENS
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
             </h2>
           </div>
 
@@ -290,7 +380,11 @@ export default function SistemaVarejo() {
 
               <div className="overflow-hidden rounded-2xl">
                 <img
+<<<<<<< HEAD
                   src={cms.seg_imagem ?? "/img/imagem-varejo.jpg"}
+=======
+                  src="/img/imagem-varejo.jpg"
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
                   alt="Segmentos de Varejo"
                   width={1200}
                   height={900}
@@ -307,7 +401,11 @@ export default function SistemaVarejo() {
 
             <div>
               <h2 className="mb-8 text-3xl font-extrabold text-gray-200 lg:text-4xl">
+<<<<<<< HEAD
                 {cms.seg_titulo}
+=======
+                Para quem é o software?
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
               </h2>
 
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -337,10 +435,17 @@ export default function SistemaVarejo() {
         <div className="relative z-10 mx-auto max-w-4xl px-4 text-center md:px-6 lg:px-8">
           <div>
             <h2 className="mb-4 text-3xl font-extrabold text-white md:text-4xl">
+<<<<<<< HEAD
               {cms.cta_titulo}
             </h2>
             <p className="mb-8 text-lg text-gray-400">
               {cms.cta_desc}
+=======
+              Pronto para melhorar sua empresa?
+            </h2>
+            <p className="mb-8 text-lg text-gray-400">
+              Converse com nossos especialistas e descubra como nosso sistema pode transformar a gestão da sua loja.
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
             </p>
             <button
               type="button"

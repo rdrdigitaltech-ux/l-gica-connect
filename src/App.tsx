@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { lazy, Suspense, useEffect } from "react";
+=======
+import { lazy, Suspense } from "react";
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -6,10 +10,15 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation, Outlet, Navigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { AuthProvider } from "@/context/AuthContext";
+<<<<<<< HEAD
 import { AdminAuthProvider } from "@/context/AdminAuthContext";
 import Header from "@/components/Header";
 import ScrollToTop from "@/components/ScrollToTop";
 import { syncFromSupabase } from "@/hooks/useSiteContent";
+=======
+import Header from "@/components/Header";
+import ScrollToTop from "@/components/ScrollToTop";
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
 
 const Footer = lazy(() => import("@/components/Footer"));
 const WhatsAppFloat = lazy(() => import("@/components/WhatsAppFloat"));
@@ -45,12 +54,15 @@ const Treinamentos = lazy(() => import("./pages/portal/Treinamentos"));
 const TreinamentosPremium = lazy(() => import("./pages/portal/TreinamentosPremium"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
+<<<<<<< HEAD
 // Admin
 const AdminLayout = lazy(() => import("./admin/components/AdminLayout"));
 const AdminLogin = lazy(() => import("./admin/pages/AdminLogin"));
 const AdminEditor = lazy(() => import("./admin/pages/AdminEditor"));
 const AdminSettings = lazy(() => import("./admin/pages/AdminSettings"));
 
+=======
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
 const PageLoader = () => (
   <div
     style={{
@@ -80,6 +92,7 @@ const queryClient = new QueryClient();
 const AppContent = () => {
   const location = useLocation();
   const isPortal = location.pathname.startsWith("/portal");
+<<<<<<< HEAD
   const isAdmin = location.pathname.startsWith("/admin");
 
   // Sincroniza conteúdo do Supabase para o cache local na inicialização
@@ -91,6 +104,13 @@ const AppContent = () => {
     <>
       {!isPortal && !isAdmin && <Header />}
       <main className="min-h-screen" style={{ background: isAdmin ? undefined : "#06080A" }}>
+=======
+
+  return (
+    <>
+      {!isPortal && <Header />}
+      <main className="min-h-screen" style={{ background: "#06080A" }}>
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={isPortal ? "portal" : location.pathname}
@@ -132,6 +152,7 @@ const AppContent = () => {
                   <Route path="treinamentos-premium" element={<ProtectedRoute requirePremium><TreinamentosPremium /></ProtectedRoute>} />
                 </Route>
               </Route>
+<<<<<<< HEAD
               {/* Admin routes */}
               <Route path="/admin/login" element={<AdminLogin />} />
               <Route path="/admin" element={<AdminLayout />}>
@@ -141,18 +162,25 @@ const AppContent = () => {
                 <Route path="configuracoes" element={<AdminSettings />} />
               </Route>
 
+=======
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
               <Route path="*" element={<NotFound />} />
             </Routes>
             </Suspense>
           </motion.div>
         </AnimatePresence>
       </main>
+<<<<<<< HEAD
       {!isPortal && !isAdmin && (
+=======
+      {!isPortal && (
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
         <Suspense fallback={<div>Carregando...</div>}>
           <Footer />
           <WhatsAppFloat />
         </Suspense>
       )}
+<<<<<<< HEAD
       {/* Desfoque fixo no rodapé – apenas no site principal */}
       {!isAdmin && !isPortal && (
         <div
@@ -170,6 +198,23 @@ const AppContent = () => {
           }}
         />
       )}
+=======
+      {/* Desfoque fixo no rodapé – topo borrado para não marcar onde começa */}
+      <div
+        className="pointer-events-none fixed bottom-0 left-0 right-0 z-50"
+        style={{
+          height: "64px",
+          background:
+            "linear-gradient(to top, rgba(6, 8, 10, 0.92) 0%, rgba(6, 8, 10, 0.5) 45%, rgba(6, 8, 10, 0.15) 75%, transparent 100%)",
+          backdropFilter: "blur(32px) saturate(120%)",
+          WebkitBackdropFilter: "blur(32px) saturate(120%)",
+          maskImage:
+            "linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.2) 25%, rgba(0,0,0,0.55) 55%, black 100%)",
+          WebkitMaskImage:
+            "linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.2) 25%, rgba(0,0,0,0.55) 55%, black 100%)",
+        }}
+      />
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
     </>
   );
 };
@@ -182,9 +227,13 @@ const App = () => (
       <BrowserRouter>
         <ScrollToTop />
         <AuthProvider>
+<<<<<<< HEAD
           <AdminAuthProvider>
             <AppContent />
           </AdminAuthProvider>
+=======
+          <AppContent />
+>>>>>>> bb0eef4899aa3e3e6fbc87389bad56699407c752
         </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>

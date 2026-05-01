@@ -33,69 +33,23 @@ const cardHoverLeave = (e: React.MouseEvent<HTMLDivElement>) => {
     "0 8px 24px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 71, 87, 0.1)";
 };
 
-// títulos dos cards são substituídos pelo hook dentro do componente
 const segmentCardsBase = [
-  { id: "varejo",      href: "/sistemas/varejo",      key: "varejo_titulo",     icons: [ShoppingCart, Store]          },
-  { id: "gastronomia", href: "/sistemas/gastronomia",  key: "gastronomia_titulo",icons: [UtensilsCrossed, Coffee]      },
-  { id: "multiloja",   href: "/sistemas/multiloja",    key: "multiloja_titulo",  icons: [ShoppingBasket, Building2]    },
+  { id: "varejo",      href: "/sistemas/varejo",      key: "varejo_titulo",      icons: [ShoppingCart, Store]       },
+  { id: "gastronomia", href: "/sistemas/gastronomia",  key: "gastronomia_titulo", icons: [UtensilsCrossed, Coffee]   },
+  { id: "multiloja",   href: "/sistemas/multiloja",    key: "multiloja_titulo",   icons: [ShoppingBasket, Building2] },
 ];
 
 const solutionCardsBase = [
-  { id: "tratamento-ponto", href: "/sistemas/tratamento-ponto", titleKey: "ponto_titulo",  descKey: "ponto_descricao",  sloganKey: null,          badge: null,   accent: "#FF4757", icon: Clock   },
-  { id: "ondesk",           href: "/sistemas/ondesk",           titleKey: "ondesk_titulo", descKey: "ondesk_descricao", sloganKey: "ondesk_slogan", badge: "NOVO", accent: "#FF4757", icon: Headset },
+  { id: "tratamento-ponto", href: "/sistemas/tratamento-ponto", titleKey: "ponto_titulo",  descKey: "ponto_descricao",   sloganKey: null,           badge: null,   accent: "#FF4757", icon: Clock   },
+  { id: "ondesk",           href: "/sistemas/ondesk",           titleKey: "ondesk_titulo", descKey: "ondesk_descricao",  sloganKey: "ondesk_slogan", badge: "NOVO", accent: "#FF4757", icon: Headset },
 ];
 
 export default function Sistemas() {
   const { content: s } = useSiteContent("sistemas");
 
-const segmentCards = [
-  {
-    id: "varejo",
-    href: "/sistemas/varejo",
-    title: "Comércio & Varejo",
-    icons: [ShoppingCart, Store],
-  },
-  {
-    id: "gastronomia",
-    href: "/sistemas/gastronomia",
-    title: "Bares & Restaurantes",
-    icons: [UtensilsCrossed, Coffee],
-  },
-  {
-    id: "multiloja",
-    href: "/sistemas/multiloja",
-    title: "Supermercados & Multilojas",
-    icons: [ShoppingBasket, Building2],
-  },
-];
-
-const solutionCards = [
-  {
-    id: "tratamento-ponto",
-    href: "/sistemas/tratamento-ponto",
-    title: "Tratamento de Ponto",
-    description:
-      "Sistema completo de gestão e apuração de ponto eletrônico com relatórios avançados e integração total.",
-    accent: "#FF4757",
-    icon: Clock,
-  },
-  {
-    id: "ondesk",
-    href: "/sistemas/ondesk",
-    title: "Lógica.OnDesk",
-    description:
-      "Central de comando para WhatsApp. Métricas reais, controle total da equipe e produtividade em tempo real.",
-    accent: "#FF4757",
-    icon: Headset,
-    badge: "NOVO",
-    slogan: "Pare de adivinhar. Organize seu atendimento.",
-  },
-] as const;
-
-export default function Sistemas() {
   return (
     <div className="min-h-screen bg-[#12141A]">
-      {/* Hero - mantido */}
+      {/* Hero */}
       <section
         className="relative overflow-hidden pt-32 pb-16"
         style={{
@@ -127,28 +81,21 @@ export default function Sistemas() {
           </h1>
           <p className="max-w-3xl text-base text-gray-400 lg:text-lg">
             {s.hero_subtitulo ?? "Escolha a solução ideal para o seu segmento"}
-            Sistemas de Gestão Completos
-          </h1>
-          <p className="max-w-3xl text-base text-gray-400 lg:text-lg">
-            Escolha a solução ideal para o seu segmento
           </p>
         </div>
       </section>
 
-      {/* Seção Principal - Seletor de Segmento (background consistente até o footer) */}
+      {/* Seção Principal */}
       <section
         className="relative overflow-hidden pt-24 pb-12"
         style={{ background: "#12141A" }}
       >
-        {/* Overlay de transição suave do hero */}
         <div
           className="pointer-events-none absolute left-0 right-0 top-0 z-0 h-32"
           style={{
-            background:
-              "linear-gradient(180deg, #0A0C10 0%, transparent 100%)",
+            background: "linear-gradient(180deg, #0A0C10 0%, transparent 100%)",
           }}
         />
-        {/* Flashes de luz vermelha - opacidade reduzida */}
         <div
           className="pointer-events-none absolute -left-[10%] -top-[15%] z-0"
           style={{
@@ -171,25 +118,17 @@ export default function Sistemas() {
         />
 
         <div className="relative z-10 mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
-          {/* Título da Pergunta */}
           <div className="mb-12 text-center">
             <h2 className="mb-4 text-3xl font-extrabold text-gray-200 lg:text-4xl">
               {s.secao_titulo ?? "A Lógica tem o sistema ideal para você"}
             </h2>
             <p className="mx-auto max-w-3xl text-base text-gray-400 lg:text-lg">
               {s.secao_subtitulo ?? "Qual o segmento do seu negócio? Nossos sistemas abrangem estas áreas."}
-              A Lógica tem o sistema ideal para você
-            </h2>
-            <p className="mx-auto max-w-3xl text-base text-gray-400 lg:text-lg">
-              Qual o segmento do seu negócio? Nossos sistemas abrangem estas
-              áreas.
             </p>
           </div>
 
-          {/* Grid de 3 Cards de Segmentos (categorias unidas, ícones duplos) */}
           <div className="mb-16 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
             {segmentCardsBase.map((card) => (
-            {segmentCards.map((card) => (
               <div
                 key={card.id}
                 role="button"
@@ -221,8 +160,6 @@ export default function Sistemas() {
                     filter: "blur(30px)",
                   }}
                 />
-
-                {/* Container dos 2 ícones lado a lado */}
                 <div className="relative z-10 mb-6 flex items-center justify-center gap-4">
                   {card.icons.map((Icon, i) => (
                     <div
@@ -236,18 +173,13 @@ export default function Sistemas() {
                     >
                       <Icon
                         className="h-8 w-8 text-[#FF4757]"
-                        style={{
-                          filter:
-                            "drop-shadow(0 0 8px rgba(255, 71, 87, 0.5))",
-                        }}
+                        style={{ filter: "drop-shadow(0 0 8px rgba(255, 71, 87, 0.5))" }}
                       />
                     </div>
                   ))}
                 </div>
-
                 <h3 className="mb-3 text-center text-xl font-bold text-gray-200">
                   {s[card.key] ?? card.key}
-                  {card.title}
                 </h3>
                 <div className="flex items-center justify-center gap-2 text-xs font-medium text-gray-500 transition-colors group-hover:text-[#FF4757]">
                   <span>Ver Detalhes</span>
@@ -257,23 +189,17 @@ export default function Sistemas() {
             ))}
           </div>
 
-          {/* Novas Soluções */}
           <div className="mb-10 text-center">
             <h2 className="mb-4 text-3xl font-extrabold text-gray-200 lg:text-4xl">
               {s.outras_titulo ?? "Outras Soluções da Lógica"}
             </h2>
             <p className="mx-auto max-w-3xl text-base text-gray-400 lg:text-lg">
               {s.outras_subtitulo ?? "Ferramentas para RH, gestão de ponto e organização de atendimentos."}
-              Outras Soluções da Lógica
-            </h2>
-            <p className="mx-auto max-w-3xl text-base text-gray-400 lg:text-lg">
-              Ferramentas para RH, gestão de ponto e organização de atendimentos.
             </p>
           </div>
 
           <div className="mb-16 grid grid-cols-1 gap-8 md:grid-cols-2">
             {solutionCardsBase.map((card) => (
-            {solutionCards.map((card) => (
               <div
                 key={card.id}
                 role="button"
@@ -307,7 +233,6 @@ export default function Sistemas() {
                     background: `linear-gradient(90deg, transparent, ${card.accent}99, transparent)`,
                   }}
                 />
-
                 <div
                   className="pointer-events-none absolute left-0 top-0 h-32 w-32 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
                   style={{
@@ -315,10 +240,8 @@ export default function Sistemas() {
                     filter: "blur(30px)",
                   }}
                 />
-
                 <div className="relative z-10 mb-4 flex min-h-[28px] justify-center">
                   {card.badge != null && (
-                  {card.badge && (
                     <div
                       className="inline-flex items-center rounded-full px-3 py-1 text-xs font-bold tracking-wider"
                       style={{
@@ -331,7 +254,6 @@ export default function Sistemas() {
                     </div>
                   )}
                 </div>
-
                 <div className="relative z-10 mb-6 flex items-center justify-center">
                   <div
                     className="flex h-20 w-20 items-center justify-center rounded-2xl transition-transform duration-300 group-hover:scale-110"
@@ -350,31 +272,17 @@ export default function Sistemas() {
                     />
                   </div>
                 </div>
-
                 <h3 className="mb-3 text-center text-2xl font-extrabold text-gray-200 transition-colors">
                   {s[card.titleKey] ?? card.titleKey}
                 </h3>
-
                 {card.sloganKey && (
                   <p className="mb-2 text-center text-sm font-semibold text-gray-300">
                     {s[card.sloganKey] ?? ""}
-                <h3
-                  className="mb-3 text-center text-2xl font-extrabold text-gray-200 transition-colors"
-                >
-                  {card.title}
-                </h3>
-
-                {card.slogan && (
-                  <p className="mb-2 text-center text-sm font-semibold text-gray-300">
-                    {card.slogan}
                   </p>
                 )}
-
                 <p className="mb-6 text-center text-sm leading-relaxed text-gray-400 md:text-base">
                   {s[card.descKey] ?? card.descKey}
-                  {card.description}
                 </p>
-
                 <div
                   className="flex items-center justify-center gap-2 text-xs font-semibold transition-colors"
                   style={{ color: card.accent }}
@@ -386,14 +294,10 @@ export default function Sistemas() {
             ))}
           </div>
 
-          {/* Seção de Ajuda */}
           <div className="text-center">
             <p className="mb-6 text-base text-gray-400">
               {s.ajuda_texto ?? "Não encontrou um sistema pra você ou precisa da nossa ajuda para escolhê-lo?"}
-              Não encontrou um sistema pra você ou precisa da nossa ajuda para
-              escolhê-lo?
             </p>
-
             <button
               type="button"
               onClick={() =>

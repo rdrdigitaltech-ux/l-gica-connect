@@ -10,11 +10,11 @@ import { AdminAuthProvider } from "@/context/AdminAuthContext";
 import Header from "@/components/Header";
 import ScrollToTop from "@/components/ScrollToTop";
 import { syncFromSupabase } from "@/hooks/useSiteContent";
+import ProtectedRoute from "@/components/portal/ProtectedRoute";
+import PortalLayout from "@/components/portal/PortalLayout";
 
 const Footer = lazy(() => import("@/components/Footer"));
 const WhatsAppFloat = lazy(() => import("@/components/WhatsAppFloat"));
-import ProtectedRoute from "@/components/portal/ProtectedRoute";
-import PortalLayout from "@/components/portal/PortalLayout";
 
 // Lazy loading de todas as páginas
 const Index = lazy(() => import("./pages/Index"));

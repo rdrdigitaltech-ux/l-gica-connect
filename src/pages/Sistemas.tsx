@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useSiteContent } from "@/hooks/useSiteContent";
+import { useSistemasExtras } from "@/lib/dynamicItems";
 
 const cardBaseStyle = {
   background:
@@ -46,6 +47,7 @@ const solutionCardsBase = [
 
 export default function Sistemas() {
   const { content: s } = useSiteContent("sistemas");
+  const sistemasExtras = useSistemasExtras();
 
   return (
     <div className="min-h-screen bg-[#12141A]">
@@ -293,6 +295,79 @@ export default function Sistemas() {
               </div>
             ))}
           </div>
+
+          {/* ── Cards de sistemas extras (criados pelo admin) ─────── */}
+          {sistemasExtras.length > 0 && (
+            <div className="mb-16">
+              <div className="mb-10 text-center">
+                <h2 className="mb-4 text-3xl font-extrabold text-gray-200 lg:text-4xl">
+                  Mais Sistemas Disponíveis
+                </h2>
+              </div>
+              <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+                {sistemasExtras.map((sistema) => (
+                  <div
+                    key={sistema.id}
+                    role="button"
+                    tabIndex={0}
+                    className="group relative cursor-pointer overflow-hidden rounded-2xl border p-8 transition-all duration-500"
+                    style={{
+                      background: "linear-gradient(145deg, rgba(15,17,21,0.9) 0%, rgba(12,14,17,0.9) 100%)",
+                      borderColor: "rgba(255,71,87,0.25)",
+                      boxShadow: "0 8px 24px rgba(0,0,0,0.4)",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.borderColor = "rgba(255,71,87,0.6)";
+                      e.currentTarget.style.boxShadow = "0 16px 48px rgba(0,0,0,0.6), 0 0 40px rgba(255,71,87,0.3)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.borderColor = "rgba(255,71,87,0.25)";
+                      e.currentTarget.style.boxShadow = "0 8px 24px rgba(0,0,0,0.4)";
+                    }}
+                    onClick={() => (window.location.href = `/sistemas/${sistema.slug}`)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        window.location.href = `/sistemas/${sistema.slug}`;
+                      }
+                    }}
+                  >
+                    <div
+                      className="pointer-events-none absolute left-0 right-0 top-0 h-px opacity-70"
+                      style={{ background: "linear-gradient(90deg, transparent, rgba(255,71,87,0.6), transparent)" }}
+                    />
+                    {sistema.badge && (
+                      <div className="mb-4 flex justify-center">
+                        <span
+                          className="inline-flex items-center rounded-full px-3 py-1 text-xs font-bold tracking-wider"
+                          style={{ background: "rgba(255,71,87,0.2)", border: "1px solid rgba(255,71,87,0.4)", color: "#FF4757" }}
+                        >
+                          {sistema.badge}
+                        </span>
+                      </div>
+                    )}
+                    <div className="relative z-10 mb-6 flex items-center justify-center">
+                      <div
+                        className="flex h-16 w-16 items-center justify-center rounded-xl text-3xl transition-transform duration-300 group-hover:scale-110"
+                        style={{
+                          background: "linear-gradient(135deg, rgba(255,71,87,0.15) 0%, rgba(255,71,87,0.05) 100%)",
+                          boxShadow: "0 4px 12px rgba(255,71,87,0.2)",
+                        }}
+                      >
+                        {sistema.emoji || "🖥️"}
+                      </div>
+                    </div>
+                    <h3 className="mb-3 text-center text-xl font-bold text-gray-200">{sistema.nome}</h3>
+                    <p className="mb-4 text-center text-sm leading-relaxed text-gray-400">{sistema.descricao}</p>
+                    <div className="flex items-center justify-center gap-2 text-xs font-medium text-gray-500 transition-colors group-hover:text-[#FF4757]">
+                      <span>Ver Detalhes</span>
+                      <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           <div className="text-center">
             <p className="mb-6 text-base text-gray-400">

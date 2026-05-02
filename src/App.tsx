@@ -44,6 +44,8 @@ const BaseConhecimento = lazy(() => import("./pages/portal/BaseConhecimento"));
 const Treinamentos = lazy(() => import("./pages/portal/Treinamentos"));
 const TreinamentosPremium = lazy(() => import("./pages/portal/TreinamentosPremium"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+const SistemaDinamico = lazy(() => import("./pages/SistemaDinamico"));
+const EquipamentoDinamico = lazy(() => import("./pages/EquipamentoDinamico"));
 
 // Admin
 const AdminLayout = lazy(() => import("./admin/components/AdminLayout"));
@@ -90,6 +92,8 @@ const AppContent = () => {
                 <Route path="/sistemas/multiloja" element={<SistemaMultiloja />} />
                 <Route path="/sistemas/tratamento-ponto" element={<SistemaTratamentoPonto />} />
                 <Route path="/sistemas/ondesk" element={<SistemaOnDesk />} />
+                {/* Rota dinâmica — captura sistemas criados pelo admin (deve vir após as rotas específicas) */}
+                <Route path="/sistemas/:slug" element={<SistemaDinamico />} />
                 <Route path="/equipamentos" element={<Equipamentos />} />
                 <Route path="/equipamentos/balancas" element={<EquipamentoBalancas />} />
                 <Route path="/equipamentos/impressoras" element={<EquipamentoImpressoras />} />
@@ -97,6 +101,8 @@ const AppContent = () => {
                 <Route path="/equipamentos/leitor-codigo" element={<EquipamentoLeitorCodigo />} />
                 <Route path="/equipamentos/embaladoras" element={<EquipamentoEmbaladoras />} />
                 <Route path="/equipamentos/computadores" element={<EquipamentoComputadores />} />
+                {/* Rota dinâmica — captura categorias de equipamentos criadas pelo admin */}
+                <Route path="/equipamentos/:slug" element={<EquipamentoDinamico />} />
                 <Route path="/servicos" element={<Servicos />} />
                 <Route path="/contato" element={<Contato />} />
                 <Route path="/obrigado" element={<Obrigado />} />

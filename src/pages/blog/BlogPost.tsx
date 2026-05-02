@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
+import DOMPurify from "dompurify";
 import {
   Calendar,
   Clock,
@@ -256,7 +257,18 @@ export default function BlogPost() {
                     "--tw-prose-quotes": "#d1d5db",
                   } as React.CSSProperties
                 }
-                dangerouslySetInnerHTML={{ __html: post.content }}
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize(post.content, {
+                    ALLOWED_TAGS: [
+                      "p","br","strong","b","em","i","u","s","ul","ol","li",
+                      "h2","h3","h4","h5","h6","blockquote","pre","code",
+                      "a","img","figure","figcaption","table","thead","tbody",
+                      "tr","th","td","hr","span","div",
+                    ],
+                    ALLOWED_ATTR: ["href","src","alt","title","class","target","rel"],
+                    ALLOW_DATA_ATTR: false,
+                  }),
+                }}
               />
 
               <div className="mt-12 border-t border-gray-800 pt-8">

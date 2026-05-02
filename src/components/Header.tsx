@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { User, Settings } from "lucide-react";
-import { User } from "lucide-react";
 
 function WhatsAppIcon({ className }: { className?: string }) {
   return (

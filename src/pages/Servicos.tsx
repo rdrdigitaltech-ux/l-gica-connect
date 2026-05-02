@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { ChevronRight, Check, MessageCircle } from "lucide-react";
 import { useSiteContent } from "@/hooks/useSiteContent";
 import { parseListField } from "@/data/defaultContent";
+import { useServicosExtras } from "@/lib/dynamicItems";
 
 const checkItemStyle = {
   background: "rgba(255, 71, 87, 0.2)",
@@ -9,6 +10,7 @@ const checkItemStyle = {
 
 export default function Servicos() {
   const { content: sv } = useSiteContent("servicos");
+  const servicosExtras = useServicosExtras();
 
   const assistenciaItens = parseListField(sv.assistencia_itens ?? "Informática em geral\nAutomação comercial em geral\nContrato de manutenção\nBalanças\nImpressoras Térmicas\nNobreak\nNotebook");
   const datacenterItens  = parseListField(sv.datacenter_itens  ?? "Servidores\nBanco de Dados\nSoluções de backup\nAntivírus\nRedes e cabeamento estruturado\nEstruturas em Rack");
@@ -267,6 +269,89 @@ export default function Servicos() {
           </div>
         </div>
       </section>
+
+      {/* ========== SERVIÇOS EXTRAS (criados pelo admin) ========== */}
+      {servicosExtras.map((servico, idx) => {
+        const itens = servico.itens ? servico.itens.split("\n").filter(Boolean) : [];
+        const isEven = idx % 2 === 0;
+        return (
+          <section
+            key={servico.id}
+            className="relative overflow-hidden py-24"
+            style={{ background: isEven ? "#12141A" : "#0A0C10" }}
+          >
+            <div
+              className="pointer-events-none absolute -right-[8%] -top-[12%] z-0"
+              style={{
+                width: 500, height: 500,
+                background: "radial-gradient(circle, rgba(255,71,87,0.1) 0%, transparent 70%)",
+                filter: "blur(110px)",
+              }}
+            />
+            <div className="relative z-10 mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
+              <div className={`grid grid-cols-1 items-center gap-12 lg:grid-cols-2`}>
+                <div className={isEven ? "order-1" : "order-2"}>
+                  <h2 className="mb-8 text-3xl font-extrabold text-gray-200 lg:text-4xl">
+                    {servico.titulo}
+                  </h2>
+                  {servico.descricao && (
+                    <p className="mb-6 text-base leading-relaxed text-gray-400">
+                      {servico.descricao}
+                    </p>
+                  )}
+                  {itens.length > 0 && (
+                    <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                      {itens.map((item) => (
+                        <div key={item} className="flex items-start gap-3">
+                          <div className="mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full" style={{ background: "rgba(255,71,87,0.2)" }}>
+                            <Check className="h-4 w-4 text-[#FF4757]" />
+                          </div>
+                          <span className="text-sm font-medium text-gray-300">{item}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() =>
+                      window.open(
+                        "https://wa.me/5547984218275?text=" +
+                          encodeURIComponent(
+                            servico.whatsapp_texto || `Olá! Preciso de informações sobre ${servico.titulo}.`
+                          ),
+                        "_blank"
+                      )
+                    }
+                    className="inline-flex items-center gap-3 rounded-lg px-8 py-3 text-sm font-bold text-white"
+                    style={{
+                      background: "linear-gradient(135deg, #25D366 0%, #128C7E 100%)",
+                      boxShadow: "0 6px 20px rgba(37,211,102,0.35)",
+                    }}
+                  >
+                    <MessageCircle className="h-5 w-5" />
+                    Falar no WhatsApp
+                  </button>
+                </div>
+                {servico.imagem ? (
+                  <div className={`${isEven ? "order-2" : "order-1"} overflow-hidden rounded-2xl`} style={{ boxShadow: "0 20px 60px rgba(0,0,0,0.5)" }}>
+                    <img
+                      src={servico.imagem}
+                      alt={servico.titulo}
+                      className="h-auto w-full object-cover"
+                      style={{ aspectRatio: "4/3" }}
+                      loading="lazy"
+                    />
+                  </div>
+                ) : (
+                  <div className={`${isEven ? "order-2" : "order-1"} flex h-64 items-center justify-center rounded-2xl border border-dashed border-gray-700/40`}>
+                    <span className="text-5xl">🛠️</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          </section>
+        );
+      })}
 
       {/* ========== 5. CTA FINAL ========== */}
       <section

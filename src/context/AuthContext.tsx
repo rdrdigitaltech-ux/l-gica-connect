@@ -1,9 +1,7 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 
-// Tipos de usuário
 export type UserType = "standard" | "premium";
 
-// Interface do usuário
 export interface User {
   id: string;
   name: string;
@@ -14,145 +12,93 @@ export interface User {
   registeredAt: string;
 }
 
-// Interface do contexto
 interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  login: (cnpj: string, password: string) => Promise<boolean>;
-  logout: () => void;
+  login: (cnpj: string, password: string) => Promise<{ ok: boolean; error?: string }>;
+  logout: () => Promise<void>;
   isPremium: () => boolean;
 }
 
-// Criar contexto
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Provider do contexto
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Verificar se há usuário logado ao carregar
+  // Ao carregar, verifica a sessão via cookie httpOnly (sem ler localStorage)
   useEffect(() => {
-    const checkAuth = () => {
-      const storedUser = localStorage.getItem("logica_portal_user");
-      if (storedUser) {
-        try {
-          setUser(JSON.parse(storedUser));
-        } catch (error) {
-          console.error("Erro ao recuperar usuário:", error);
-          localStorage.removeItem("logica_portal_user");
+    async function checkSession() {
+      try {
+        const res = await fetch("/api/auth/verify", { credentials: "include" });
+        if (res.ok) {
+          const { user: userData } = await res.json() as { user: User };
+          setUser(userData);
         }
+      } catch {
+        // Sem sessão ativa — comportamento normal
+      } finally {
+        setIsLoading(false);
       }
-      setIsLoading(false);
-    };
-
-    checkAuth();
+    }
+    checkSession();
   }, []);
 
-  // Função de login (MOCK - substituir por API real)
-  const login = async (cnpj: string, password: string): Promise<boolean> => {
+  /**
+   * Autentica via CNPJ + senha.
+   * A verificação ocorre no servidor (api/auth/login);
+   * o token JWT fica num cookie httpOnly — jamais acessível pelo browser JS.
+   */
+  const login = async (
+    cnpj: string,
+    password: string
+  ): Promise<{ ok: boolean; error?: string }> => {
     setIsLoading(true);
-
-    // SIMULAÇÃO DE API (remover quando tiver backend real)
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    // Usuários MOCK para testes
-    const mockUsers: Record<string, { password: string; user: User }> = {
-      "12345678000199": {
-        password: "demo123",
-        user: {
-          id: "1",
-          name: "João Silva",
-          email: "joao@empresa.com",
-          cnpj: "12.345.678/0001-99",
-          company: "Empresa Demo Ltda",
-          userType: "standard",
-          registeredAt: "2025-01-15",
-        },
-      },
-      "98765432000188": {
-        password: "premium123",
-        user: {
-          id: "2",
-          name: "Maria Santos",
-          email: "maria@empresapremium.com",
-          cnpj: "98.765.432/0001-88",
-          company: "Empresa Premium S/A",
-          userType: "premium",
-          registeredAt: "2024-06-20",
-        },
-      },
-    };
-
-    // Remover pontuação do CNPJ
-    const cleanCnpj = cnpj.replace(/\D/g, "");
-
-    // Verificar credenciais
-    const mockUser = mockUsers[cleanCnpj];
-
-    if (mockUser && mockUser.password === password) {
-      setUser(mockUser.user);
-      localStorage.setItem("logica_portal_user", JSON.stringify(mockUser.user));
-      setIsLoading(false);
-      return true;
-    } else {
-      setIsLoading(false);
-      return false;
-    }
-
-    /*
-    // SUBSTITUIR POR CHAMADA REAL DE API:
     try {
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ cnpj, password }),
       });
 
-      if (response.ok) {
-        const userData = await response.json();
-        setUser(userData);
-        localStorage.setItem('logica_portal_user', JSON.stringify(userData));
-        setIsLoading(false);
-        return true;
-      } else {
-        setIsLoading(false);
-        return false;
+      const data = (await res.json()) as { user?: User; error?: string };
+
+      if (res.ok && data.user) {
+        setUser(data.user);
+        return { ok: true };
       }
-    } catch (error) {
-      console.error('Erro no login:', error);
+
+      return { ok: false, error: data.error ?? "Erro ao autenticar." };
+    } catch {
+      return { ok: false, error: "Sem conexão com o servidor. Tente novamente." };
+    } finally {
       setIsLoading(false);
-      return false;
     }
-    */
   };
 
-  // Função de logout
-  const logout = () => {
+  const logout = async () => {
+    try {
+      await fetch("/api/auth/logout", { method: "POST", credentials: "include" });
+    } catch {
+      // Ignora falha de rede; o estado local já será limpo
+    }
     setUser(null);
-    localStorage.removeItem("logica_portal_user");
     window.location.href = "/portal/login";
   };
 
-  // Verificar se é usuário premium
-  const isPremium = (): boolean => {
-    return user?.userType === "premium";
-  };
+  const isPremium = (): boolean => user?.userType === "premium";
 
-  const value: AuthContextType = {
-    user,
-    isAuthenticated: !!user,
-    isLoading,
-    login,
-    logout,
-    isPremium,
-  };
-
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider
+      value={{ user, isAuthenticated: !!user, isLoading, login, logout, isPremium }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
 }
 
-// Hook para usar o contexto
 export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {

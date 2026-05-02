@@ -58,8 +58,9 @@ export async function saveContent(content: ContentValues): Promise<void> {
     .upsert(rows, { onConflict: "section,key" });
 
   if (error) {
-    console.error("[CMS] Erro ao salvar no Supabase:", error.message);
-    throw new Error(error.message);
+    // Log técnico somente no console (não expõe detalhes ao usuário final)
+    console.error("[CMS] Erro ao salvar:", error.code, error.message);
+    throw new Error("Não foi possível salvar as alterações. Tente novamente.");
   }
 }
 
@@ -148,7 +149,7 @@ export function useEquipamentoCatalogo(
 
   const modelos = useMemo(() => {
     const base = getModelosPorCategoria(categoria as ModeloEquipamento["categoria"]);
-    return base.map((modelo, idx) => {
+    const editados = base.map((modelo, idx) => {
       const i = idx + 1;
       return {
         ...modelo,
@@ -157,6 +158,27 @@ export function useEquipamentoCatalogo(
         descricao: content[`m${i}_desc`] ?? modelo.descricao,
       };
     });
+
+    // Modelos customizados adicionados pelo admin (armazenados como JSON)
+    let custom: ModeloEquipamento[] = [];
+    try {
+      const raw = content["_custom_models_json"];
+      if (raw) {
+        const parsed = JSON.parse(raw) as Array<{
+          id: string; nome: string; imagem: string; descricao: string; subcategoria?: string;
+        }>;
+        custom = parsed.map((m) => ({
+          id: m.id,
+          nome: m.nome,
+          imagem: m.imagem,
+          descricao: m.descricao,
+          categoria: categoria as ModeloEquipamento["categoria"],
+          subcategoria: m.subcategoria,
+        }));
+      }
+    } catch { /* ignora JSON inválido */ }
+
+    return [...editados, ...custom];
   }, [content, categoria]);
 
   return { modelos };

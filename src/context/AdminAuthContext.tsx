@@ -31,13 +31,34 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
     email: string,
     password: string
   ): Promise<{ error: string | null }> => {
-    if (!supabase)
-      return {
-        error: "Supabase não configurado. Verifique VITE_SUPABASE_URL e VITE_SUPABASE_ANON_KEY.",
-      };
+    if (!supabase) {
+      return { error: "Supabase não configurado. Verifique as variáveis de ambiente." };
+    }
 
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) return { error: "E-mail ou senha incorretos." };
+    // 1. Autentica via Supabase Auth
+    const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (authError || !authData.user) {
+      return { error: "E-mail ou senha incorretos." };
+    }
+
+    // 2. SEGURANÇA: verifica se o usuário está registrado em admin_profiles.
+    //    Isso bloqueia qualquer conta Supabase Auth que não seja admin explícito.
+    const { data: profile, error: profileError } = await supabase
+      .from("admin_profiles")
+      .select("id")
+      .eq("id", authData.user.id)
+      .maybeSingle();
+
+    if (profileError || !profile) {
+      // Não é admin — encerra a sessão imediatamente
+      await supabase.auth.signOut();
+      return { error: "Acesso não autorizado." };
+    }
+
     return { error: null };
   };
 

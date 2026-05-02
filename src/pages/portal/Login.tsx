@@ -83,14 +83,12 @@ export default function Login() {
     setIsLoading(true);
 
     try {
-      const success = await login(cnpjNumbers, formData.password);
+      const result = await login(cnpjNumbers, formData.password);
 
-      if (success) {
+      if (result.ok) {
         navigate("/portal/dashboard");
       } else {
-        setError(
-          "CNPJ ou senha incorretos. Verifique seus dados e tente novamente."
-        );
+        setError(result.error ?? "CNPJ ou senha incorretos. Verifique seus dados e tente novamente.");
       }
     } catch (err) {
       console.error("Erro no login:", err);

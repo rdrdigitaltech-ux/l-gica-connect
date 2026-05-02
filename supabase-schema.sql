@@ -187,22 +187,43 @@ create policy "Leitura pública do conteúdo"
   on public.site_content for select
   using (true);
 
--- Somente admins autenticados via Supabase Auth podem ESCREVER
+-- SEGURANÇA: escrita restrita a usuários presentes em admin_profiles.
+-- Isso impede que qualquer conta Supabase Auth (não-admin) modifique o CMS.
 drop policy if exists "Admin insere conteúdo" on public.site_content;
 create policy "Admin insere conteúdo"
   on public.site_content for insert
-  with check (auth.role() = 'authenticated');
+  with check (
+    auth.uid() is not null
+    and exists (
+      select 1 from public.admin_profiles where id = auth.uid()
+    )
+  );
 
 drop policy if exists "Admin atualiza conteúdo" on public.site_content;
 create policy "Admin atualiza conteúdo"
   on public.site_content for update
-  using  (auth.role() = 'authenticated')
-  with check (auth.role() = 'authenticated');
+  using (
+    auth.uid() is not null
+    and exists (
+      select 1 from public.admin_profiles where id = auth.uid()
+    )
+  )
+  with check (
+    auth.uid() is not null
+    and exists (
+      select 1 from public.admin_profiles where id = auth.uid()
+    )
+  );
 
 drop policy if exists "Admin deleta conteúdo" on public.site_content;
 create policy "Admin deleta conteúdo"
   on public.site_content for delete
-  using (auth.role() = 'authenticated');
+  using (
+    auth.uid() is not null
+    and exists (
+      select 1 from public.admin_profiles where id = auth.uid()
+    )
+  );
 
 -- ── site_settings ──
 alter table public.site_settings enable row level security;
@@ -212,11 +233,22 @@ create policy "Leitura pública das configurações"
   on public.site_settings for select
   using (true);
 
+-- SEGURANÇA: mesma restrição — somente admin_profiles pode alterar configurações.
 drop policy if exists "Admin gerencia configurações" on public.site_settings;
 create policy "Admin gerencia configurações"
   on public.site_settings for all
-  using  (auth.role() = 'authenticated')
-  with check (auth.role() = 'authenticated');
+  using (
+    auth.uid() is not null
+    and exists (
+      select 1 from public.admin_profiles where id = auth.uid()
+    )
+  )
+  with check (
+    auth.uid() is not null
+    and exists (
+      select 1 from public.admin_profiles where id = auth.uid()
+    )
+  );
 
 
 -- ─── 8. MIGRAÇÃO: renomear field_key → key (apenas se já existir a v1) ───────
@@ -271,24 +303,40 @@ create policy "Public read cms-images"
   on storage.objects for select
   using (bucket_id = 'cms-images');
 
--- Upload somente por admin autenticado via Supabase Auth
+-- Upload somente por admin cadastrado em admin_profiles
 drop policy if exists "Auth upload cms-images" on storage.objects;
 create policy "Auth upload cms-images"
   on storage.objects for insert
-  with check (bucket_id = 'cms-images' and auth.role() = 'authenticated');
+  with check (
+    bucket_id = 'cms-images'
+    and auth.uid() is not null
+    and exists (select 1 from public.admin_profiles where id = auth.uid())
+  );
 
 -- Substituição de arquivo (upsert)
 drop policy if exists "Auth update cms-images" on storage.objects;
 create policy "Auth update cms-images"
   on storage.objects for update
-  using  (bucket_id = 'cms-images' and auth.role() = 'authenticated')
-  with check (bucket_id = 'cms-images' and auth.role() = 'authenticated');
+  using (
+    bucket_id = 'cms-images'
+    and auth.uid() is not null
+    and exists (select 1 from public.admin_profiles where id = auth.uid())
+  )
+  with check (
+    bucket_id = 'cms-images'
+    and auth.uid() is not null
+    and exists (select 1 from public.admin_profiles where id = auth.uid())
+  );
 
 -- Exclusão de arquivo
 drop policy if exists "Auth delete cms-images" on storage.objects;
 create policy "Auth delete cms-images"
   on storage.objects for delete
-  using (bucket_id = 'cms-images' and auth.role() = 'authenticated');
+  using (
+    bucket_id = 'cms-images'
+    and auth.uid() is not null
+    and exists (select 1 from public.admin_profiles where id = auth.uid())
+  );
 
 
 -- ─── 11. VERIFICAÇÃO FINAL ────────────────────────────────────────────────────
@@ -311,3 +359,38 @@ where t.table_schema = 'public'
     'site_settings'
   )
 order by t.table_name;
+
+
+-- ─── 12. USUÁRIOS DO PORTAL (criação segura) ──────────────────────────────────
+-- Execute este bloco para adicionar clientes reais ao portal.
+--
+-- IMPORTANTE: o hash da senha deve ser gerado com bcrypt (custo ≥ 10).
+-- Ferramentas online seguras: https://bcrypt-generator.com  (custo 12)
+-- Ou via Node.js: require('bcryptjs').hashSync('senha_aqui', 12)
+--
+-- Substitua os valores antes de executar:
+
+/*
+INSERT INTO public.users (email, password_hash, name, cnpj, company, user_type)
+VALUES
+  (
+    'cliente@empresa.com.br',
+    '$2a$12$HASH_GERADO_COM_BCRYPT_AQUI',   -- bcrypt da senha real
+    'Nome do Cliente',
+    '12345678000199',                        -- somente dígitos (14 chars)
+    'Empresa LTDA',
+    'standard'                               -- ou 'premium'
+  )
+ON CONFLICT (email) DO NOTHING;
+*/
+
+-- ─── 13. VARIÁVEIS DE AMBIENTE OBRIGATÓRIAS (Vercel) ─────────────────────────
+-- Configure em: Vercel → seu projeto → Settings → Environment Variables
+--
+--  SUPABASE_URL              → mesma URL do projeto Supabase (sem VITE_)
+--  SUPABASE_SERVICE_ROLE_KEY → chave service_role (NUNCA no frontend)
+--  JWT_SECRET                → string aleatória ≥ 32 chars (ex: openssl rand -hex 32)
+--
+-- Variáveis de frontend (já existentes, mantidas):
+--  VITE_SUPABASE_URL         → mesmo valor de SUPABASE_URL
+--  VITE_SUPABASE_ANON_KEY    → chave anon (segura para o cliente)

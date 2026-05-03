@@ -34,9 +34,6 @@ const EquipamentoComputadores = lazy(() => import("./pages/EquipamentoComputador
 const Servicos = lazy(() => import("./pages/Servicos"));
 const Contato = lazy(() => import("./pages/Contato"));
 const Obrigado = lazy(() => import("./pages/Obrigado"));
-const BlogHome = lazy(() => import("./pages/blog/BlogHome"));
-const BlogPost = lazy(() => import("./pages/blog/BlogPost"));
-const BlogCategory = lazy(() => import("./pages/blog/BlogCategory"));
 const Login = lazy(() => import("./pages/portal/Login"));
 const SolicitarAcesso = lazy(() => import("./pages/portal/SolicitarAcesso"));
 const Dashboard = lazy(() => import("./pages/portal/Dashboard"));
@@ -106,9 +103,8 @@ const AppContent = () => {
                 <Route path="/servicos" element={<Servicos />} />
                 <Route path="/contato" element={<Contato />} />
                 <Route path="/obrigado" element={<Obrigado />} />
-                <Route path="/blog" element={<BlogHome />} />
-                <Route path="/blog/categoria/:categorySlug" element={<BlogCategory />} />
-                <Route path="/blog/:slug" element={<BlogPost />} />
+                <Route path="/blog" element={<Navigate to="/" replace />} />
+                <Route path="/blog/*" element={<Navigate to="/" replace />} />
                 <Route path="portal" element={<Outlet />}>
                   <Route index element={<Navigate to="/portal/dashboard" replace />} />
                   <Route path="login" element={<Login />} />

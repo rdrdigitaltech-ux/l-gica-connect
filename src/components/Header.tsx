@@ -20,7 +20,6 @@ const navItems = [
   { label: "Sistemas", path: "/sistemas" },
   { label: "Equipamentos", path: "/equipamentos" },
   { label: "Serviços", path: "/servicos" },
-  { label: "Blog", path: "/blog" },
   { label: "Contato", path: "/contato" },
 ];
 

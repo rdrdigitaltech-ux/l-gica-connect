@@ -156,8 +156,7 @@ export default function Equipamentos() {
             className="mb-6 font-extrabold text-gray-200"
             style={{ fontSize: "clamp(28px, 4vw, 48px)" }}
           >
-            {eq.hero_titulo ?? "EQUIPAMENTOS"}
-            EQUIPAMENTOS
+            {eq.hero_titulo ?? "Equipamentos"}
           </h1>
 
           <p
@@ -165,8 +164,6 @@ export default function Equipamentos() {
             style={{ fontSize: "clamp(14px, 1.5vw, 18px)" }}
           >
             {eq.hero_subtitulo ?? "Os melhores equipamentos de automação e informática. Escolhas inteligentes para o seu negócio."}
-            Os melhores equipamentos de automação e informática. Escolhas
-            inteligentes para o seu negócio.
           </p>
         </div>
       </section>

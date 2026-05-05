@@ -54,6 +54,7 @@ export interface ModeloCustom {
   descricao: string;
   imagem: string;
   subcategoria: string;
+  video_url?: string;
 }
 
 // ─── Keys de armazenamento ────────────────────────────────────────────────────

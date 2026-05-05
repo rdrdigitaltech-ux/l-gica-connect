@@ -384,6 +384,49 @@ VALUES
 ON CONFLICT (email) DO NOTHING;
 */
 
+-- ─── USUÁRIO DEMO (acesso de teste ao portal) ─────────────────────────────────
+-- Credenciais de acesso fictício para demonstração:
+--   CNPJ:  00000000000191
+--   Senha: Portal@Demo2025
+--
+-- Hash bcrypt (custo 12) gerado para a senha acima.
+-- Execute este INSERT no SQL Editor do Supabase para criar o acesso demo:
+
+INSERT INTO public.users (email, password_hash, name, cnpj, company, user_type)
+VALUES (
+  'demo@logica.inf.br',
+  '$2b$12$G5zhhdDATmT3/0L8QzcOMO0bDk1Rxr1nCpVIxoC.6O8PHNbj6RLS2',
+  'Demo Lógica',
+  '00000000000191',
+  'Lógica Automação (Demo)',
+  'premium'
+)
+ON CONFLICT (email) DO NOTHING;
+
+
+-- ─── 14. CAMPO video_url POR MODELO DE EQUIPAMENTO ───────────────────────────
+-- O sistema armazena o vídeo de cada modelo individualmente na tabela
+-- site_content, usando a convenção:
+--
+--   section : catalogo_balancas | catalogo_impressoras | catalogo_leitores | ...
+--   key     : m1_video_url | m2_video_url | m3_video_url | ...
+--   value   : URL completa do YouTube (ex: https://www.youtube.com/watch?v=ID)
+--
+-- Exemplo para adicionar vídeo ao 1º modelo de balanças:
+--
+-- INSERT INTO public.site_content (section, key, label, value, type)
+-- VALUES (
+--   'catalogo_balancas',
+--   'm1_video_url',
+--   'Vídeo — Balança Toledo Prix 3 Fit',
+--   'https://www.youtube.com/watch?v=SEU_VIDEO_ID',
+--   'link'
+-- )
+-- ON CONFLICT (section, key) DO UPDATE SET value = EXCLUDED.value;
+--
+-- O admin também pode inserir/editar esses campos via painel de administração
+-- (AdminEditor → seção do catálogo correspondente).
+
 -- ─── 13. VARIÁVEIS DE AMBIENTE OBRIGATÓRIAS (Vercel) ─────────────────────────
 -- Configure em: Vercel → seu projeto → Settings → Environment Variables
 --

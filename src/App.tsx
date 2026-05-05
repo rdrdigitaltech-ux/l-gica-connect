@@ -43,6 +43,7 @@ const TreinamentosPremium = lazy(() => import("./pages/portal/TreinamentosPremiu
 const NotFound = lazy(() => import("./pages/NotFound"));
 const SistemaDinamico = lazy(() => import("./pages/SistemaDinamico"));
 const EquipamentoDinamico = lazy(() => import("./pages/EquipamentoDinamico"));
+const EquipamentoDetalhe = lazy(() => import("./pages/EquipamentoDetalhe"));
 
 // Admin
 const AdminLayout = lazy(() => import("./admin/components/AdminLayout"));
@@ -98,6 +99,8 @@ const AppContent = () => {
                 <Route path="/equipamentos/leitor-codigo" element={<EquipamentoLeitorCodigo />} />
                 <Route path="/equipamentos/embaladoras" element={<EquipamentoEmbaladoras />} />
                 <Route path="/equipamentos/computadores" element={<EquipamentoComputadores />} />
+                {/* Rotas de detalhe de modelo — devem vir antes da rota dinâmica :slug */}
+                <Route path="/equipamentos/:categoriaSlug/:modeloId" element={<EquipamentoDetalhe />} />
                 {/* Rota dinâmica — captura categorias de equipamentos criadas pelo admin */}
                 <Route path="/equipamentos/:slug" element={<EquipamentoDinamico />} />
                 <Route path="/servicos" element={<Servicos />} />

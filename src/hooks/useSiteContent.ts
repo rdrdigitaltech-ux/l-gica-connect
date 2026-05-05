@@ -153,9 +153,10 @@ export function useEquipamentoCatalogo(
       const i = idx + 1;
       return {
         ...modelo,
-        nome:      content[`m${i}_nome`] ?? modelo.nome,
-        imagem:    content[`m${i}_img`]  ?? modelo.imagem,
-        descricao: content[`m${i}_desc`] ?? modelo.descricao,
+        nome:      content[`m${i}_nome`]      ?? modelo.nome,
+        imagem:    content[`m${i}_img`]        ?? modelo.imagem,
+        descricao: content[`m${i}_desc`]       ?? modelo.descricao,
+        video_url: content[`m${i}_video_url`]  ?? modelo.video_url,
       };
     });
 
@@ -165,7 +166,7 @@ export function useEquipamentoCatalogo(
       const raw = content["_custom_models_json"];
       if (raw) {
         const parsed = JSON.parse(raw) as Array<{
-          id: string; nome: string; imagem: string; descricao: string; subcategoria?: string;
+          id: string; nome: string; imagem: string; descricao: string; subcategoria?: string; video_url?: string;
         }>;
         custom = parsed.map((m) => ({
           id: m.id,
@@ -174,6 +175,7 @@ export function useEquipamentoCatalogo(
           descricao: m.descricao,
           categoria: categoria as ModeloEquipamento["categoria"],
           subcategoria: m.subcategoria,
+          video_url: m.video_url,
         }));
       }
     } catch { /* ignora JSON inválido */ }

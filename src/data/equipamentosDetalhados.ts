@@ -11,6 +11,7 @@ export interface ModeloEquipamento {
     | "impressoras"
     | "embaladoras";
   subcategoria?: string;
+  video_url?: string;
 }
 
 // Tipos de subcategorias (usados nos filtros das páginas)

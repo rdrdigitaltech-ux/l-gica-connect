@@ -586,10 +586,11 @@ const SCHEMA_SERVICO: FieldSchema[] = [
 ];
 
 const SCHEMA_MODELO: FieldSchema[] = [
-  { key: "nome",         label: "Nome do modelo",         type: "text",     required: true, placeholder: "Ex: Balança Toledo Prix 5 Pro" },
-  { key: "descricao",    label: "Descrição do modelo",    type: "textarea", required: true, placeholder: "Características, diferenciais, aplicação…" },
-  { key: "subcategoria", label: "Subcategoria (filtro)",  type: "text",     placeholder: "Ex: Etiquetadoras, Plataforma, Bancada…" },
-  { key: "imagem",       label: "Foto do produto",        type: "image" },
+  { key: "nome",         label: "Nome do modelo",                    type: "text",     required: true, placeholder: "Ex: Balança Toledo Prix 5 Pro" },
+  { key: "descricao",    label: "Descrição do modelo",               type: "textarea", required: true, placeholder: "Características, diferenciais, aplicação…" },
+  { key: "subcategoria", label: "Subcategoria (filtro)",             type: "text",     placeholder: "Ex: Etiquetadoras, Plataforma, Bancada…" },
+  { key: "imagem",       label: "Foto do produto",                   type: "image" },
+  { key: "video_url",    label: "Vídeo YouTube deste modelo (URL)",  type: "url",      placeholder: "https://www.youtube.com/watch?v=...", hint: "Cole a URL completa do YouTube. O vídeo aparecerá na página de detalhes deste modelo." },
 ];
 
 // Mapa: seção do editor → categoria do catálogo de modelos

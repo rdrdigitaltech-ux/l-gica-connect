@@ -3,15 +3,24 @@ export interface ModeloEquipamento {
   nome: string;
   imagem: string;
   descricao: string;
+  /** Resumo só para o card (listagem). Se vazio, usa `descricao`. */
+  descricao_resumo?: string;
+  /** Texto longo na página "Mais detalhes". Se vazio, usa `descricao`. */
+  descricao_detalhe?: string;
   categoria:
     | "balancas"
     | "leitores"
     | "relogio-ponto"
     | "computadores-hardware"
     | "impressoras"
-    | "embaladoras";
+    | "embaladoras"
+    | string;
   subcategoria?: string;
   video_url?: string;
+  /** Fotos adicionais na página de detalhes (além de `imagem`). */
+  imagens_extra?: string[];
+  /** Blocos opcionais (título + texto) na página de detalhes. */
+  secoes?: Array<{ titulo: string; texto: string }>;
 }
 
 // Tipos de subcategorias (usados nos filtros das páginas)

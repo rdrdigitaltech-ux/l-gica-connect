@@ -7,6 +7,11 @@
  */
 
 import { loadContent, saveContent } from "@/hooks/useSiteContent";
+import {
+  parseImagensExtraDeCampo,
+  parseSecoesExtrasJson,
+} from "@/lib/equipamentoDisplay";
+import type { ModeloEquipamento } from "@/data/equipamentosDetalhados";
 
 // ─── Tipos ────────────────────────────────────────────────────────────────────
 
@@ -52,9 +57,39 @@ export interface ModeloCustom {
   id: string;
   nome: string;
   descricao: string;
+  /** Texto curto só no card; se vazio, usa `descricao`. */
+  descricao_resumo?: string;
+  /** Texto longo na página "Mais detalhes"; se vazio, usa `descricao`. */
+  descricao_detalhe?: string;
   imagem: string;
+  /** Valor do filtro na listagem (ex.: Etiquetadoras). Deve coincidir com os botões de filtro ou será criado um novo. */
   subcategoria: string;
   video_url?: string;
+  /** URLs de fotos extras, uma por linha (painel). */
+  imagens_extra?: string;
+  /** JSON: [{"titulo":"...","texto":"..."}] */
+  secoes_json?: string;
+}
+
+export function modeloCustomToEquipamento(
+  m: ModeloCustom,
+  categoriaSlug: string
+): ModeloEquipamento {
+  return {
+    id: m.id,
+    nome: m.nome,
+    imagem: m.imagem,
+    descricao: m.descricao,
+    descricao_resumo: m.descricao_resumo?.trim() || undefined,
+    descricao_detalhe: m.descricao_detalhe?.trim() || undefined,
+    categoria: categoriaSlug,
+    subcategoria: m.subcategoria?.trim() || undefined,
+    video_url: m.video_url,
+    imagens_extra: m.imagens_extra
+      ? parseImagensExtraDeCampo(m.imagens_extra)
+      : undefined,
+    secoes: m.secoes_json ? parseSecoesExtrasJson(m.secoes_json) : undefined,
+  };
 }
 
 // ─── Keys de armazenamento ────────────────────────────────────────────────────

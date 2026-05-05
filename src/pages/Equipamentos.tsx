@@ -1,71 +1,8 @@
-import { useState, useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { ChevronRight, Filter, X } from "lucide-react";
 import { useSiteContent } from "@/hooks/useSiteContent";
-import { useEquipamentosExtras } from "@/lib/dynamicItems";
-
-const equipamentos = [
-  {
-    id: 1,
-    nome: "Balanças",
-    descricao: "Balanças eletrônicas de alta precisão",
-    imagem: "/img/balança.webp",
-    link: "/equipamentos/balancas",
-    categoria: "Pesagem",
-    marca: ["Toledo", "Filizola", "Urano"],
-    tipo: "Automação",
-  },
-  {
-    id: 2,
-    nome: "Impressoras Fiscais",
-    descricao: "Impressoras homologadas e térmicas",
-    imagem: "/img/impressora_fiscal.webp",
-    link: "/equipamentos/impressoras",
-    categoria: "Impressão",
-    marca: ["Bematech", "Epson", "Daruma"],
-    tipo: "Fiscal",
-  },
-  {
-    id: 3,
-    nome: "Relógios de Ponto",
-    descricao: "Controle de acesso e ponto eletrônico",
-    imagem: "/img/relogio_ponto.webp",
-    link: "/equipamentos/relogio-ponto",
-    categoria: "Controle de ponto",
-    marca: ["Henry", "Dimep", "Topdata"],
-    tipo: "Gestão",
-  },
-  {
-    id: 4,
-    nome: "Leitores de Código de Barras",
-    descricao: "Scanners e leitores de alta performance",
-    imagem: "/img/leitor_codigo_barras.webp",
-    link: "/equipamentos/leitor-codigo",
-    categoria: "Identificação",
-    marca: ["Symbol", "Honeywell", "Datalogic"],
-    tipo: "Automação",
-  },
-  {
-    id: 5,
-    nome: "Embaladoras",
-    descricao: "Seladoras e máquinas de embalar",
-    imagem: "/img/embaladoras.webp",
-    link: "/equipamentos/embaladoras",
-    categoria: "Embalagem",
-    marca: ["Barbi", "Selovac", "Cetro"],
-    tipo: "Automação",
-  },
-  {
-    id: 6,
-    nome: "Computadores e Hardwares",
-    descricao: "PCs, nobreaks, teclados e periféricos",
-    imagem: "/img/computadores.webp",
-    link: "/equipamentos/computadores",
-    categoria: "Informática",
-    marca: ["Bematech", "Elgin", "Sweda"],
-    tipo: "Hardware",
-  },
-];
+import { useEquipamentosCatalog } from "@/lib/equipamentosCatalog";
 
 const cardStyle = {
   background:
@@ -76,44 +13,47 @@ const cardStyle = {
 
 export default function Equipamentos() {
   const { content: eq } = useSiteContent("equipamentos");
-  const equipamentosExtras = useEquipamentosExtras();
+  const catalog = useEquipamentosCatalog();
 
-  const equipamentos = useMemo(() => [
-    { id: 1, nome: eq.balancas_nome ?? "Balanças",                    descricao: eq.balancas_descricao ?? "Balanças eletrônicas de alta precisão",       imagem: eq.balancas_imagem ?? "/img/balança.webp",             link: "/equipamentos/balancas",      categoria: "Pesagem",          tipo: "Automação" },
-    { id: 2, nome: eq.impressoras_nome ?? "Impressoras Fiscais",       descricao: eq.impressoras_descricao ?? "Impressoras homologadas e térmicas",        imagem: eq.impressoras_imagem ?? "/img/impressora_fiscal.webp",   link: "/equipamentos/impressoras",   categoria: "Impressão",        tipo: "Fiscal"    },
-    { id: 3, nome: eq.relogio_nome ?? "Relógios de Ponto",             descricao: eq.relogio_descricao ?? "Controle de acesso e ponto eletrônico",        imagem: eq.relogio_imagem ?? "/img/relogio_ponto.webp",       link: "/equipamentos/relogio-ponto", categoria: "Controle de ponto", tipo: "Gestão"    },
-    { id: 4, nome: eq.leitor_nome ?? "Leitores de Código de Barras",   descricao: eq.leitor_descricao ?? "Scanners e leitores de alta performance",        imagem: eq.leitor_imagem ?? "/img/leitor_codigo_barras.webp", link: "/equipamentos/leitor-codigo", categoria: "Identificação",    tipo: "Automação" },
-    { id: 5, nome: eq.embaladoras_nome ?? "Embaladoras",               descricao: eq.embaladoras_descricao ?? "Seladoras e máquinas de embalar",           imagem: eq.embaladoras_imagem ?? "/img/embaladoras.webp",         link: "/equipamentos/embaladoras",   categoria: "Embalagem",        tipo: "Automação" },
-    { id: 6, nome: eq.computadores_nome ?? "Computadores e Hardwares", descricao: eq.computadores_descricao ?? "PCs, nobreaks, teclados e periféricos",    imagem: eq.computadores_imagem ?? "/img/computadores.webp",        link: "/equipamentos/computadores",  categoria: "Informática",      tipo: "Hardware"  },
-  ], [eq]);
+  const hubCards = useMemo(
+    () =>
+      catalog.map((c, idx) => ({
+        id: c.id || String(idx),
+        nome: c.nome,
+        descricao: c.resumo_card || "",
+        imagem: c.imagem?.trim() || "",
+        link: `/equipamentos/${c.slug}`,
+        categoria: c.categoria_filtro?.trim() || "",
+        tipo: c.tipo_filtro?.trim() || "",
+      })),
+    [catalog]
+  );
 
   const [filtroCategoria, setFiltroCategoria] = useState<string>("");
   const [filtroTipo, setFiltroTipo] = useState<string>("");
   const [mostrarFiltros, setMostrarFiltros] = useState(false);
 
   const categorias = useMemo(() => {
-    const cats = equipamentos.map((eq) => eq.categoria);
+    const cats = hubCards.map((c) => c.categoria).filter(Boolean);
     return ["Todas", ...Array.from(new Set(cats))];
-  }, []);
+  }, [hubCards]);
 
   const tipos = useMemo(() => {
-    const allTipos = equipamentos.map((eq) => eq.tipo);
+    const allTipos = hubCards.map((c) => c.tipo).filter(Boolean);
     return ["Todos", ...Array.from(new Set(allTipos))];
-  }, []);
+  }, [hubCards]);
 
   const equipamentosFiltrados = useMemo(() => {
-    return equipamentos.filter((equipamento) => {
+    return hubCards.filter((item) => {
       const matchCategoria =
         !filtroCategoria ||
         filtroCategoria === "Todas" ||
-        equipamento.categoria === filtroCategoria;
+        item.categoria === filtroCategoria;
       const matchTipo =
-        !filtroTipo ||
-        filtroTipo === "Todos" ||
-        equipamento.tipo === filtroTipo;
+        !filtroTipo || filtroTipo === "Todos" || item.tipo === filtroTipo;
       return matchCategoria && matchTipo;
     });
-  }, [filtroCategoria, filtroTipo]);
+  }, [filtroCategoria, filtroTipo, hubCards]);
 
   const limparFiltros = () => {
     setFiltroCategoria("");
@@ -124,7 +64,6 @@ export default function Equipamentos() {
 
   return (
     <div className="min-h-screen bg-[#0A0C10]">
-      {/* 1. HERO */}
       <section
         className="relative overflow-hidden pt-32 pb-20"
         style={{
@@ -163,20 +102,20 @@ export default function Equipamentos() {
             className="max-w-3xl text-gray-400"
             style={{ fontSize: "clamp(14px, 1.5vw, 18px)" }}
           >
-            {eq.hero_subtitulo ?? "Os melhores equipamentos de automação e informática. Escolhas inteligentes para o seu negócio."}
+            {eq.hero_subtitulo ??
+              "Os melhores equipamentos de automação e informática. Escolhas inteligentes para o seu negócio."}
           </p>
         </div>
       </section>
 
-      {/* 2. BARRA DE FILTROS */}
       <section className="py-8" style={{ background: "#12141A" }}>
         <div className="mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
           <div className="mb-6 flex items-center justify-between lg:hidden">
             <h3 className="text-lg font-bold text-gray-200">
               {equipamentosFiltrados.length}{" "}
               {equipamentosFiltrados.length === 1
-                ? "equipamento encontrado"
-                : "equipamentos encontrados"}
+                ? "categoria encontrada"
+                : "categorias encontradas"}
             </h3>
             <button
               type="button"
@@ -203,7 +142,7 @@ export default function Equipamentos() {
               <div className="flex items-center gap-2">
                 <Filter className="h-5 w-5 text-[#FF4757]" />
                 <h3 className="text-lg font-bold text-gray-200">
-                  Filtrar Equipamentos
+                  Filtrar categorias
                 </h3>
               </div>
 
@@ -309,15 +248,14 @@ export default function Equipamentos() {
                 <span className="font-bold text-[#FF4757]">
                   {equipamentosFiltrados.length}
                 </span>{" "}
-                de <span className="font-bold">{equipamentos.length}</span>{" "}
-                equipamentos
+                de <span className="font-bold">{hubCards.length}</span>{" "}
+                categorias
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 3. GRID DE EQUIPAMENTOS */}
       <section
         className="relative overflow-hidden py-24"
         style={{ background: "#12141A" }}
@@ -373,19 +311,28 @@ export default function Equipamentos() {
                   />
 
                   <div className="relative z-10 mb-6 flex h-48 items-center justify-center">
-                    <img
-                      src={equipamento.imagem}
-                      alt={equipamento.nome}
-                      width={800}
-                      height={450}
-                      loading="lazy"
-                      decoding="async"
-                      className="h-full w-auto object-contain"
-                      style={{
-                        filter:
-                          "drop-shadow(0 10px 30px rgba(255, 71, 87, 0.2))",
-                      }}
-                    />
+                    {equipamento.imagem ? (
+                      <img
+                        src={equipamento.imagem}
+                        alt={equipamento.nome}
+                        width={800}
+                        height={450}
+                        loading="lazy"
+                        decoding="async"
+                        className="h-full w-auto object-contain"
+                        style={{
+                          filter:
+                            "drop-shadow(0 10px 30px rgba(255, 71, 87, 0.2))",
+                        }}
+                      />
+                    ) : (
+                      <div
+                        className="flex h-full w-full items-center justify-center rounded-xl border border-white/10 bg-white/5 text-sm text-gray-500"
+                        aria-hidden
+                      >
+                        Sem imagem
+                      </div>
+                    )}
                   </div>
 
                   <h3 className="relative z-10 mb-3 text-center text-xl font-bold text-gray-200">
@@ -407,7 +354,7 @@ export default function Equipamentos() {
           {equipamentosFiltrados.length === 0 && (
             <div className="py-20 text-center">
               <p className="mb-4 text-xl text-gray-400">
-                Nenhum equipamento encontrado com os filtros selecionados.
+                Nenhuma categoria encontrada com os filtros selecionados.
               </p>
               <button
                 type="button"
@@ -421,57 +368,6 @@ export default function Equipamentos() {
         </div>
       </section>
 
-      {/* Linhas de equipamentos extras criadas pelo admin */}
-      {equipamentosExtras.length > 0 && (
-        <section className="relative overflow-hidden py-16" style={{ background: "#0A0C10" }}>
-          <div className="relative z-10 mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
-            <h2 className="mb-10 text-center text-3xl font-extrabold text-gray-200">
-              Mais Linhas de Equipamentos
-            </h2>
-            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-              {equipamentosExtras.map((equip) => (
-                <Link
-                  key={equip.id}
-                  to={`/equipamentos/${equip.slug}`}
-                  className="group relative flex flex-col overflow-hidden rounded-2xl border p-6 text-center transition-all duration-300"
-                  style={{
-                    background: "linear-gradient(145deg, rgba(15,17,21,0.9) 0%, rgba(12,14,17,0.9) 100%)",
-                    borderColor: "rgba(255,71,87,0.2)",
-                    boxShadow: "0 8px 24px rgba(0,0,0,0.4)",
-                  }}
-                  onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,71,87,0.55)";
-                    (e.currentTarget as HTMLElement).style.boxShadow = "0 16px 40px rgba(0,0,0,0.5), 0 0 30px rgba(255,71,87,0.18)";
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,71,87,0.2)";
-                    (e.currentTarget as HTMLElement).style.boxShadow = "0 8px 24px rgba(0,0,0,0.4)";
-                  }}
-                >
-                  {equip.imagem && (
-                    <div className="mb-5 overflow-hidden rounded-xl">
-                      <img
-                        src={equip.imagem}
-                        alt={equip.nome}
-                        className="h-40 w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                        loading="lazy"
-                      />
-                    </div>
-                  )}
-                  <h3 className="mb-2 text-xl font-bold text-gray-200">{equip.nome}</h3>
-                  <p className="mb-4 flex-1 text-sm text-gray-400">{equip.descricao}</p>
-                  <div className="flex items-center justify-center gap-2 text-xs font-medium text-gray-500 transition-colors group-hover:text-[#FF4757]">
-                    <span>Ver Detalhes</span>
-                    <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* 4. CTA */}
       <section
         className="relative overflow-hidden py-24"
         style={{ background: "#12141A" }}
@@ -489,11 +385,13 @@ export default function Equipamentos() {
 
         <div className="relative z-10 mx-auto flex max-w-5xl flex-col items-center justify-center px-4 text-center md:px-6 lg:px-8">
           <h2 className="mb-6 text-3xl font-extrabold text-gray-200 lg:text-4xl">
-            {eq.cta_titulo ?? "Precisa de orientação para escolher o equipamento ideal?"}
+            {eq.cta_titulo ??
+              "Precisa de orientação para escolher o equipamento ideal?"}
           </h2>
 
           <p className="mb-8 text-base text-gray-400 lg:text-lg">
-            {eq.cta_subtitulo ?? "Nossa equipe está pronta para ajudar você a encontrar a melhor solução para o seu negócio"}
+            {eq.cta_subtitulo ??
+              "Nossa equipe está pronta para ajudar você a encontrar a melhor solução para o seu negócio"}
           </p>
 
           <button

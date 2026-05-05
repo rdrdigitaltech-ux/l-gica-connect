@@ -4,6 +4,10 @@ import {
   getModelosPorCategoria,
   type ModeloEquipamento,
 } from "@/data/equipamentosDetalhados";
+import {
+  parseImagensExtraDeCampo,
+  parseSecoesExtrasJson,
+} from "@/lib/equipamentoDisplay";
 import { supabase } from "@/lib/supabase";
 
 const STORAGE_KEY = "logica_cms_content";
@@ -132,7 +136,7 @@ export function useSiteContent(section: string): { content: Record<string, strin
 
 // ─── Hook: catálogo de equipamentos ─────────────────────────────────────────
 
-const CATALOGO_SECTION: Record<string, string> = {
+export const CATALOGO_SECTION: Record<string, string> = {
   balancas:              "catalogo_balancas",
   leitores:              "catalogo_leitores",
   impressoras:           "catalogo_impressoras",
@@ -141,47 +145,86 @@ const CATALOGO_SECTION: Record<string, string> = {
   embaladoras:           "catalogo_embaladoras",
 };
 
+/** Monta a lista de modelos (embutidos + extras) a partir do conteúdo do CMS — útil na página de detalhe. */
+export function buildEquipamentoModelosMerged(
+  categoria: string,
+  content: Record<string, string>
+): ModeloEquipamento[] {
+  const baseAll = getModelosPorCategoria(categoria as ModeloEquipamento["categoria"]);
+  const editados = baseAll.map((modelo, idx) => {
+    const i = idx + 1;
+    const sub =
+      content[`m${i}_subcategoria`]?.trim() || modelo.subcategoria;
+    const imagensExtraRaw = content[`m${i}_imagens_extra`];
+    const secoesRaw = content[`m${i}_secoes_json`];
+    return {
+      ...modelo,
+      nome: content[`m${i}_nome`] ?? modelo.nome,
+      imagem: content[`m${i}_img`] ?? modelo.imagem,
+      descricao: content[`m${i}_desc`] ?? modelo.descricao,
+      descricao_resumo: content[`m${i}_desc_resumo`]?.trim() || modelo.descricao_resumo,
+      descricao_detalhe:
+        content[`m${i}_desc_detalhe`]?.trim() || modelo.descricao_detalhe,
+      video_url: content[`m${i}_video_url`] ?? modelo.video_url,
+      subcategoria: sub,
+      imagens_extra: imagensExtraRaw
+        ? parseImagensExtraDeCampo(imagensExtraRaw)
+        : modelo.imagens_extra,
+      secoes: secoesRaw
+        ? parseSecoesExtrasJson(secoesRaw)
+        : modelo.secoes,
+    };
+  });
+
+  let custom: ModeloEquipamento[] = [];
+  try {
+    const raw = content["_custom_models_json"];
+    if (raw) {
+      const parsed = JSON.parse(raw) as Array<{
+        id: string;
+        nome: string;
+        imagem: string;
+        descricao: string;
+        subcategoria?: string;
+        video_url?: string;
+        descricao_resumo?: string;
+        descricao_detalhe?: string;
+        imagens_extra?: string;
+        secoes_json?: string;
+      }>;
+      custom = parsed.map((m) => ({
+        id: m.id,
+        nome: m.nome,
+        imagem: m.imagem,
+        descricao: m.descricao,
+        descricao_resumo: m.descricao_resumo?.trim() || undefined,
+        descricao_detalhe: m.descricao_detalhe?.trim() || undefined,
+        categoria,
+        subcategoria: m.subcategoria?.trim() || undefined,
+        video_url: m.video_url,
+        imagens_extra: m.imagens_extra
+          ? parseImagensExtraDeCampo(m.imagens_extra)
+          : undefined,
+        secoes: m.secoes_json ? parseSecoesExtrasJson(m.secoes_json) : undefined,
+      }));
+    }
+  } catch {
+    /* ignora JSON inválido */
+  }
+
+  return [...editados, ...custom];
+}
+
 export function useEquipamentoCatalogo(
   categoria: string
 ): { modelos: ModeloEquipamento[] } {
   const sectionKey = CATALOGO_SECTION[categoria] ?? `catalogo_${categoria}`;
   const { content } = useSiteContent(sectionKey);
 
-  const modelos = useMemo(() => {
-    const base = getModelosPorCategoria(categoria as ModeloEquipamento["categoria"]);
-    const editados = base.map((modelo, idx) => {
-      const i = idx + 1;
-      return {
-        ...modelo,
-        nome:      content[`m${i}_nome`]      ?? modelo.nome,
-        imagem:    content[`m${i}_img`]        ?? modelo.imagem,
-        descricao: content[`m${i}_desc`]       ?? modelo.descricao,
-        video_url: content[`m${i}_video_url`]  ?? modelo.video_url,
-      };
-    });
-
-    // Modelos customizados adicionados pelo admin (armazenados como JSON)
-    let custom: ModeloEquipamento[] = [];
-    try {
-      const raw = content["_custom_models_json"];
-      if (raw) {
-        const parsed = JSON.parse(raw) as Array<{
-          id: string; nome: string; imagem: string; descricao: string; subcategoria?: string; video_url?: string;
-        }>;
-        custom = parsed.map((m) => ({
-          id: m.id,
-          nome: m.nome,
-          imagem: m.imagem,
-          descricao: m.descricao,
-          categoria: categoria as ModeloEquipamento["categoria"],
-          subcategoria: m.subcategoria,
-          video_url: m.video_url,
-        }));
-      }
-    } catch { /* ignora JSON inválido */ }
-
-    return [...editados, ...custom];
-  }, [content, categoria]);
+  const modelos = useMemo(
+    () => buildEquipamentoModelosMerged(categoria, content),
+    [content, categoria]
+  );
 
   return { modelos };
 }

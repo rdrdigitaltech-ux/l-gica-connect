@@ -1,64 +1,97 @@
-import { useEffect } from "react";
-import { ArrowLeft, MessageCircle, Play } from "lucide-react";
+import { useEffect, useMemo } from "react";
+import { ArrowLeft, MessageCircle, Play, FileDown } from "lucide-react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { ImageZoom } from "@/components/ImageZoom";
-import { useEquipamentoCatalogo } from "@/hooks/useSiteContent";
 import { getYoutubeEmbedUrl } from "@/lib/utils";
-import type { ModeloEquipamento } from "@/data/equipamentosDetalhados";
-
-// Mapeia slug da URL → categoria interna + label para CTA
-const CATEGORIA_MAP: Record<string, { cat: ModeloEquipamento["categoria"]; label: string; backPath: string }> = {
-  balancas:       { cat: "balancas",            label: "Balança",               backPath: "/equipamentos/balancas" },
-  impressoras:    { cat: "impressoras",          label: "Impressora",            backPath: "/equipamentos/impressoras" },
-  "leitor-codigo":{ cat: "leitores",            label: "Leitor de Código",      backPath: "/equipamentos/leitor-codigo" },
-  "relogio-ponto":{ cat: "relogio-ponto",       label: "Relógio de Ponto",      backPath: "/equipamentos/relogio-ponto" },
-  embaladoras:    { cat: "embaladoras",          label: "Embaladora",            backPath: "/equipamentos/embaladoras" },
-  computadores:   { cat: "computadores-hardware",label: "Equipamento",           backPath: "/equipamentos/computadores" },
-};
+import {
+  findCategoriaBySlug,
+  findProdutoInCategoria,
+  useEquipamentosCatalog,
+} from "@/lib/equipamentosCatalog";
 
 const EquipamentoDetalhe = () => {
   const { categoriaSlug, modeloId } = useParams<{ categoriaSlug: string; modeloId: string }>();
   const navigate = useNavigate();
+  const catalog = useEquipamentosCatalog();
 
-  const categoriaInfo = CATEGORIA_MAP[categoriaSlug ?? ""] ?? null;
-  const { modelos } = useEquipamentoCatalogo(categoriaInfo?.cat ?? "balancas");
+  const resolved = useMemo(() => {
+    const slug = categoriaSlug ?? "";
+    const mid = modeloId ?? "";
+    const cat = findCategoriaBySlug(slug, catalog);
+    if (!cat) {
+      return { produto: null, nomeCategoria: "", categoriaInvalida: true as const };
+    }
+    const produto = findProdutoInCategoria(cat, mid);
+    if (!produto || produto.ativo === false) {
+      return {
+        produto: null,
+        nomeCategoria: cat.nome,
+        categoriaInvalida: false as const,
+        slug,
+      };
+    }
+    return {
+      produto,
+      categoria: cat,
+      nomeCategoria: cat.nome,
+      categoriaInvalida: false as const,
+      slug,
+    };
+  }, [categoriaSlug, modeloId, catalog]);
 
-  const modelo = modelos.find((m) => m.id === modeloId) ?? null;
-  const videoEmbedUrl = getYoutubeEmbedUrl(modelo?.video_url ?? "");
+  const videoEmbedUrl = getYoutubeEmbedUrl(resolved.produto?.video_url ?? "");
+
+  const galeriaUrls = useMemo(() => {
+    const p = resolved.produto;
+    if (!p) return [];
+    const main = p.foto_principal?.trim();
+    const rest = (p.galeria ?? []).map((u) => u.trim()).filter(Boolean);
+    const ordered = main ? [main, ...rest.filter((u) => u !== main)] : rest;
+    return Array.from(new Set(ordered));
+  }, [resolved.produto]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [modeloId]);
 
-  // Modelo não encontrado → redireciona de volta à categoria
   useEffect(() => {
-    if (categoriaInfo === null) {
+    if (resolved.categoriaInvalida) {
       navigate("/equipamentos", { replace: true });
     }
-  }, [categoriaInfo, navigate]);
+  }, [resolved.categoriaInvalida, navigate]);
 
-  if (!categoriaInfo) return null;
+  if (resolved.categoriaInvalida) return null;
 
-  const whatsappMsg = modelo
-    ? `Olá, gostaria de um orçamento para ${modelo.nome}!`
-    : `Olá, gostaria de um orçamento!`;
+  const backPath =
+    "slug" in resolved && resolved.slug
+      ? `/equipamentos/${resolved.slug}`
+      : "/equipamentos";
+
+  const produto = resolved.produto;
+  const whatsappMsg = produto
+    ? `Olá! Gostaria de solicitar um orçamento para o produto: ${produto.nome}`
+    : "Olá, gostaria de um orçamento!";
+
+  const blocosOrdenados =
+    produto?.blocos?.length && produto.blocos.length > 0
+      ? [...produto.blocos].sort((a, b) => a.ordem - b.ordem)
+      : [];
 
   return (
     <div className="min-h-screen bg-[#06080A]">
-      {/* Header com Voltar */}
       <section className="bg-[#000000] px-6 py-8">
         <div className="mx-auto max-w-7xl">
           <Link
-            to={categoriaInfo.backPath}
+            to={backPath}
             className="mb-6 inline-flex items-center gap-2 text-[#FF4757] transition-colors hover:text-[#FF4757]/80"
           >
             <ArrowLeft className="h-5 w-5" />
-            Voltar para {categoriaSlug === "leitor-codigo" ? "Leitores de Código" : categoriaSlug?.charAt(0).toUpperCase() + (categoriaSlug?.slice(1) ?? "")}
+            Voltar para {resolved.nomeCategoria || "equipamentos"}
           </Link>
 
-          {modelo ? (
+          {produto ? (
             <>
-              {modelo.subcategoria && (
+              {produto.subcategoria?.trim() && (
                 <div
                   className="mb-3 inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold"
                   style={{
@@ -67,14 +100,17 @@ const EquipamentoDetalhe = () => {
                     color: "#FF4757",
                   }}
                 >
-                  {modelo.subcategoria}
+                  {produto.subcategoria}
                 </div>
+              )}
+              {produto.marca?.trim() && (
+                <p className="mb-2 text-sm text-gray-500">Marca: {produto.marca}</p>
               )}
               <h1
                 className="font-bold text-white"
                 style={{ fontSize: "clamp(28px, 4.5vw, 52px)" }}
               >
-                {modelo.nome}
+                {produto.nome}
               </h1>
             </>
           ) : (
@@ -83,26 +119,55 @@ const EquipamentoDetalhe = () => {
         </div>
       </section>
 
-      {modelo ? (
+      {produto ? (
         <>
-          {/* Conteúdo principal */}
           <section className="px-6 py-16">
-            <div className="mx-auto max-w-7xl">
+            <div className="mx-auto max-w-7xl space-y-16 lg:space-y-20">
+              {/* Linha principal: galeria | título + descrição + PDF + WhatsApp */}
               <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16">
-                {/* Imagem */}
-                <div className="w-full">
-                  <ImageZoom src={modelo.imagem} alt={modelo.nome} />
+                <div className="w-full space-y-6">
+                  {galeriaUrls[0] ? (
+                    <ImageZoom src={galeriaUrls[0]} alt={produto.nome} />
+                  ) : (
+                    <div className="flex min-h-[280px] items-center justify-center rounded-xl border border-white/10 bg-white/5 text-gray-500">
+                      Sem imagem principal
+                    </div>
+                  )}
+                  {galeriaUrls.length > 1 && (
+                    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+                      {galeriaUrls.slice(1).map((url) => (
+                        <div key={url} className="overflow-hidden rounded-xl border border-white/10">
+                          <img src={url} alt="" className="h-40 w-full object-cover" loading="lazy" />
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
 
-                {/* Detalhes */}
                 <div className="flex flex-col justify-center space-y-6">
                   <h2 className="text-3xl font-bold text-white lg:text-4xl">
-                    {modelo.nome}
+                    {produto.nome}
                   </h2>
 
-                  <p className="text-lg leading-relaxed text-gray-400">
-                    {modelo.descricao}
-                  </p>
+                  {produto.texto_detalhado?.trim() ? (
+                    <p className="whitespace-pre-wrap text-lg leading-relaxed text-gray-400">
+                      {produto.texto_detalhado}
+                    </p>
+                  ) : (
+                    <p className="text-gray-500">Descrição detalhada em breve.</p>
+                  )}
+
+                  {produto.pdf_url?.trim() && (
+                    <a
+                      href={produto.pdf_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex w-fit items-center gap-2 rounded-lg border border-white/20 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/10"
+                    >
+                      <FileDown className="h-4 w-4" />
+                      Baixar especificações técnicas (PDF)
+                    </a>
+                  )}
 
                   <div className="pt-4">
                     <button
@@ -125,20 +190,54 @@ const EquipamentoDetalhe = () => {
                   </div>
                 </div>
               </div>
+
+              {/* Blocos extras: mesma grade — imagem à esquerda (alinhada à principal), texto à direita */}
+              {blocosOrdenados.map((sec) => {
+                const hasImage = Boolean(sec.imagem?.trim());
+                const hasText = Boolean(sec.texto?.trim());
+                const hasTitulo = Boolean(sec.titulo?.trim());
+                if (!hasImage && !hasText && !hasTitulo) return null;
+
+                return (
+                  <div
+                    key={sec.id}
+                    className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16"
+                  >
+                    <div className="w-full">
+                      {hasImage ? (
+                        <ImageZoom src={sec.imagem!.trim()} alt={sec.titulo?.trim() || "Seção"} />
+                      ) : (
+                        <span className="hidden lg:block" aria-hidden />
+                      )}
+                    </div>
+                    <div className="flex flex-col justify-center space-y-4">
+                      {hasTitulo && (
+                        <h2 className="text-3xl font-bold text-white lg:text-4xl">
+                          {sec.titulo}
+                        </h2>
+                      )}
+                      {hasText && (
+                        <p className="whitespace-pre-wrap text-lg leading-relaxed text-gray-400">
+                          {sec.texto}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </section>
 
-          {/* Seção Vídeo — específico deste modelo */}
           <section className="bg-[#0A0C10] px-6 py-20">
             <div className="mx-auto max-w-7xl">
               <h2
                 className="mb-4 text-center font-bold text-white"
                 style={{ fontSize: "clamp(26px, 3.5vw, 40px)" }}
               >
-                Veja o {modelo.nome} em Funcionamento
+                Veja o {produto.nome} em Funcionamento
               </h2>
               <p className="mb-12 text-center text-gray-400">
-                Assista ao tutorial específico deste equipamento
+                Assista ao vídeo deste equipamento
               </p>
 
               <div className="mx-auto max-w-4xl">
@@ -153,7 +252,7 @@ const EquipamentoDetalhe = () => {
                     <div className="relative" style={{ paddingBottom: "56.25%" }}>
                       <iframe
                         src={videoEmbedUrl}
-                        title={`Vídeo tutorial — ${modelo.nome}`}
+                        title={`Vídeo — ${produto.nome}`}
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowFullScreen
                         className="absolute inset-0 h-full w-full"
@@ -162,16 +261,11 @@ const EquipamentoDetalhe = () => {
                   </div>
                 ) : (
                   <div
-                    className="relative overflow-hidden rounded-2xl border p-12 text-center"
+                    className="relative flex min-h-[380px] flex-col items-center justify-center overflow-hidden rounded-2xl border p-12 text-center"
                     style={{
                       background: "linear-gradient(145deg, rgba(15,17,21,0.9) 0%, rgba(12,14,17,0.9) 100%)",
                       borderColor: "rgba(255, 71, 87, 0.3)",
                       boxShadow: "0 8px 24px rgba(0,0,0,0.4)",
-                      minHeight: "380px",
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      justifyContent: "center",
                     }}
                   >
                     <div
@@ -185,32 +279,20 @@ const EquipamentoDetalhe = () => {
                     >
                       <Play className="h-12 w-12 text-[#FF4757]" />
                     </div>
-                    <h3 className="mb-3 text-2xl font-bold text-white">Vídeo em Produção</h3>
+                    <h3 className="mb-3 text-2xl font-bold text-white">Vídeo não cadastrado</h3>
                     <p className="mb-6 max-w-xl text-base text-gray-400">
-                      Estamos produzindo o tutorial específico para o <strong className="text-gray-300">{modelo.nome}</strong>.
-                      Em breve você poderá ver este equipamento em funcionamento aqui.
+                      Quando houver um link do YouTube no cadastro do produto, o vídeo será exibido aqui.
                     </p>
-                    <div
-                      className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold"
-                      style={{
-                        background: "rgba(255, 71, 87, 0.15)",
-                        border: "1px solid rgba(255, 71, 87, 0.3)",
-                        color: "#FF4757",
-                      }}
-                    >
-                      Em Breve
-                    </div>
                   </div>
                 )}
               </div>
             </div>
           </section>
 
-          {/* CTA WhatsApp */}
           <section className="relative overflow-hidden py-24" style={{ background: "#12141A" }}>
             <div className="relative z-10 mx-auto max-w-5xl px-4 text-center md:px-6 lg:px-8">
               <h2 className="mb-4 text-3xl font-extrabold text-gray-200 lg:text-4xl">
-                Interessado no {modelo.nome}?
+                Interessado no {produto.nome}?
               </h2>
               <p className="mb-8 text-lg text-gray-400">
                 Fale com nossa equipe e receba um orçamento personalizado.
@@ -238,11 +320,10 @@ const EquipamentoDetalhe = () => {
           </section>
         </>
       ) : (
-        /* Produto não encontrado */
         <section className="flex min-h-[60vh] flex-col items-center justify-center px-6 py-20 text-center">
           <p className="mb-4 text-lg text-gray-400">Este produto não foi encontrado.</p>
           <Link
-            to={categoriaInfo.backPath}
+            to={backPath}
             className="inline-flex items-center gap-2 rounded-lg px-6 py-3 text-sm font-bold text-white"
             style={{ background: "#FF4757" }}
           >

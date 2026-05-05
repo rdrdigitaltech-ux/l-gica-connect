@@ -17,10 +17,14 @@ const BUCKET = "cms-images";
  * Requer que o bucket "cms-images" exista com acesso público no Supabase.
  * Em caso de erro, retorna null e o chamador deve usar fallback (base64 / URL manual).
  */
-export async function uploadImageToStorage(file: File): Promise<string | null> {
+/**
+ * Upload genérico para o bucket cms-images (imagens, PDF, etc.).
+ * Ajuste `allowed_mime_types` do bucket no Supabase se necessário.
+ */
+export async function uploadCmsFileToStorage(file: File): Promise<string | null> {
   if (!supabase) return null;
 
-  const ext = file.name.split(".").pop() ?? "webp";
+  const ext = file.name.split(".").pop() ?? "bin";
   const fileName = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
 
   const { data, error } = await supabase.storage
@@ -34,4 +38,9 @@ export async function uploadImageToStorage(file: File): Promise<string | null> {
 
   const { data: urlData } = supabase.storage.from(BUCKET).getPublicUrl(data.path);
   return urlData?.publicUrl ?? null;
+}
+
+/** @deprecated use uploadCmsFileToStorage */
+export async function uploadImageToStorage(file: File): Promise<string | null> {
+  return uploadCmsFileToStorage(file);
 }

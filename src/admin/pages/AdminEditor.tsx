@@ -24,10 +24,9 @@ import {
   Upload,
   Globe,
   Link as LinkIcon,
-  LayoutGrid,
   Layers,
-  Boxes,
 } from "lucide-react";
+import EquipamentosCatalogEditor from "@/admin/components/EquipamentosCatalogEditor";
 import { defaultContent, type ContentField } from "@/data/defaultContent";
 import { loadContent, saveContent } from "@/hooks/useSiteContent";
 import { uploadImageToStorage } from "@/lib/supabase";
@@ -37,17 +36,11 @@ import DynamicItemsPanel, { type DynamicItem, type FieldSchema } from "@/admin/c
 import {
   getSistemasExtras,
   saveSistemasExtras,
-  getEquipamentosExtras,
-  saveEquipamentosExtras,
   getServicosExtras,
   saveServicosExtras,
-  getModelosCustom,
-  saveModelosCustom,
   slugify,
   type SistemaCard,
-  type EquipamentoCategoria,
   type ServicoBloco,
-  type ModeloCustom,
 } from "@/lib/dynamicItems";
 
 // ─── Section metadata ────────────────────────────────────────────────────────
@@ -64,7 +57,7 @@ const SECTION_META: Record<
   contato:     { icon: Phone,                     label: "Contato",                   description: "Telefones, emails e endereços" },
   rodape:      { icon: AlignVerticalJustifyEnd,   label: "Rodapé",                    description: "Descrição e copyright" },
   geral:       { icon: Settings2,                 label: "Geral / Identidade Visual", description: "Nome, logo e cores globais" },
-  equipamentos:{ icon: Package,                   label: "Equipamentos",              description: "Cards e páginas de produtos" },
+  equipamentos:{ icon: Package,                   label: "Equipamentos",              description: "Catálogo: categorias, produtos e textos da página" },
   blog:        { icon: FileText,                  label: "Blog & Notícias",           description: "Títulos e textos do blog" },
   portal:      { icon: Lock,                      label: "Portal do Cliente",         description: "Login, dashboard e formulários" },
   obrigado:    { icon: CheckCircle,               label: "Página Obrigado",           description: "Mensagem pós-envio" },
@@ -400,14 +393,14 @@ function BoolCard({ fields, values, modifiedFields, onChange }: CardProps) {
 // ─── VIEW A: Grade de seções ─────────────────────────────────────────────────
 
 function SectionGrid({ onSelect }: { onSelect: (section: string) => void }) {
-  const sections = Object.keys(defaultContent);
+  const sections = Object.keys(defaultContent).filter(
+    (key) => !key.startsWith("catalogo_")
+  );
   const [sistemasExtras, setSistemasExtras] = useState<SistemaCard[]>(() => getSistemasExtras());
-  const [equipExtras, setEquipExtras]       = useState<EquipamentoCategoria[]>(() => getEquipamentosExtras());
 
   useEffect(() => {
     const refresh = () => {
       setSistemasExtras(getSistemasExtras());
-      setEquipExtras(getEquipamentosExtras());
     };
     window.addEventListener("cms-content-updated", refresh);
     window.addEventListener("storage", refresh);
@@ -484,36 +477,7 @@ function SectionGrid({ onSelect }: { onSelect: (section: string) => void }) {
     </button>
   );
 
-  /** Card para uma linha de equipamentos criada dinamicamente */
-  const EquipCard_UI = ({ eq }: { eq: EquipamentoCategoria }) => (
-    <button
-      onClick={() => onSelect(`_equip_${eq.id}`)}
-      className="group flex flex-col gap-3 rounded-xl border border-gray-800/50 bg-gray-900/50 p-5 text-left transition-all duration-200 hover:border-emerald-600/40 hover:bg-gray-900/80"
-      onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = "0 4px 24px rgba(16,185,129,0.1), 0 1px 3px rgba(0,0,0,0.3)"; }}
-      onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = ""; }}
-    >
-      <div className="flex items-start justify-between">
-        <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-600/10 text-emerald-400 transition-all duration-200 group-hover:bg-emerald-600/20">
-          <Boxes className="h-5 w-5" />
-        </div>
-        <ChevronRight className="h-4 w-4 text-gray-700 transition-all duration-200 group-hover:text-emerald-400" />
-      </div>
-      <div>
-        <p className="font-semibold text-gray-300 group-hover:text-white">{eq.nome}</p>
-        <p className="mt-0.5 text-xs text-gray-600">Linha de equipamentos · /equipamentos/{eq.slug}</p>
-      </div>
-      <div className="flex items-center gap-2">
-        <span className="rounded-full bg-emerald-600/15 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-emerald-400">
-          Equipamentos
-        </span>
-        {eq.categoria && (
-          <span className="text-[10px] text-gray-600">{eq.categoria}</span>
-        )}
-      </div>
-    </button>
-  );
-
-  const hasDynamic = sistemasExtras.length > 0 || equipExtras.length > 0;
+  const hasDynamic = sistemasExtras.length > 0;
 
   return (
     <div className="space-y-8">
@@ -543,7 +507,6 @@ function SectionGrid({ onSelect }: { onSelect: (section: string) => void }) {
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {sistemasExtras.map((s) => <SistemaCard_UI key={s.id} s={s} />)}
-            {equipExtras.map((eq)    => <EquipCard_UI  key={eq.id} eq={eq} />)}
           </div>
         </div>
       )}
@@ -566,17 +529,6 @@ const SCHEMA_SISTEMA: FieldSchema[] = [
   { key: "imagem",         label: "Imagem de destaque",       type: "image" },
 ];
 
-const SCHEMA_EQUIPAMENTO_CATEGORIA: FieldSchema[] = [
-  { key: "nome",            label: "Nome da linha/categoria",    type: "text",     required: true, placeholder: "Ex: Terminais de Autoatendimento" },
-  { key: "descricao",       label: "Descrição curta (card)",     type: "textarea", required: true, placeholder: "Texto exibido no card da página Equipamentos" },
-  { key: "slug",            label: "Slug (URL)",                 type: "text",     required: true, placeholder: "ex: terminais (será /equipamentos/terminais)", hint: "Letras minúsculas, sem espaços, sem acentos." },
-  { key: "categoria",       label: "Categoria (filtro)",         type: "text",     placeholder: "Ex: Automação, Informática…" },
-  { key: "tipo",            label: "Tipo (filtro)",              type: "text",     placeholder: "Ex: Hardware, Automação…" },
-  { key: "imagem",          label: "Imagem do card",             type: "image" },
-  { key: "hero_titulo",     label: "Título da página de detalhe", type: "text",   placeholder: "Ex: Terminais de Autoatendimento" },
-  { key: "hero_subtitulo",  label: "Subtítulo / descrição longa", type: "textarea", placeholder: "Texto da seção hero da página de detalhe" },
-];
-
 const SCHEMA_SERVICO: FieldSchema[] = [
   { key: "titulo",         label: "Título do serviço",        type: "text",     required: true, placeholder: "Ex: Treinamento e Capacitação" },
   { key: "descricao",      label: "Descrição",                type: "textarea", required: true, placeholder: "Parágrafo explicativo sobre o serviço" },
@@ -584,24 +536,6 @@ const SCHEMA_SERVICO: FieldSchema[] = [
   { key: "imagem",         label: "Imagem ilustrativa",       type: "image" },
   { key: "whatsapp_texto", label: "Texto de abertura do WhatsApp", type: "text", placeholder: "Ex: Olá! Quero saber mais sobre treinamento." },
 ];
-
-const SCHEMA_MODELO: FieldSchema[] = [
-  { key: "nome",         label: "Nome do modelo",                    type: "text",     required: true, placeholder: "Ex: Balança Toledo Prix 5 Pro" },
-  { key: "descricao",    label: "Descrição do modelo",               type: "textarea", required: true, placeholder: "Características, diferenciais, aplicação…" },
-  { key: "subcategoria", label: "Subcategoria (filtro)",             type: "text",     placeholder: "Ex: Etiquetadoras, Plataforma, Bancada…" },
-  { key: "imagem",       label: "Foto do produto",                   type: "image" },
-  { key: "video_url",    label: "Vídeo YouTube deste modelo (URL)",  type: "url",      placeholder: "https://www.youtube.com/watch?v=...", hint: "Cole a URL completa do YouTube. O vídeo aparecerá na página de detalhes deste modelo." },
-];
-
-// Mapa: seção do editor → categoria do catálogo de modelos
-const CATALOG_SECTION_TO_CATEGORIA: Record<string, string> = {
-  catalogo_balancas:   "balancas",
-  catalogo_leitores:   "leitores",
-  catalogo_impressoras:"impressoras",
-  catalogo_relogio:    "relogio-ponto",
-  catalogo_computadores:"computadores-hardware",
-  catalogo_embaladoras:"embaladoras",
-};
 
 // ─── VIEW B: Editor de seção ─────────────────────────────────────────────────
 
@@ -701,15 +635,8 @@ function SectionEditor({
   const [sistemaItems, setSistemaItems]  = useState<DynamicItem[]>(() =>
     section === "sistemas" ? (getSistemasExtras() as unknown as DynamicItem[]) : []
   );
-  const [equipItems, setEquipItems] = useState<DynamicItem[]>(() =>
-    section === "equipamentos" ? (getEquipamentosExtras() as unknown as DynamicItem[]) : []
-  );
   const [servicoItems, setServicoItems] = useState<DynamicItem[]>(() =>
     section === "servicos" ? (getServicosExtras() as unknown as DynamicItem[]) : []
-  );
-  const catalogoCategoria = CATALOG_SECTION_TO_CATEGORIA[section] ?? null;
-  const [modeloItems, setModeloItems] = useState<DynamicItem[]>(() =>
-    catalogoCategoria ? (getModelosCustom(catalogoCategoria) as unknown as DynamicItem[]) : []
   );
 
   const handleSaveSistemas = async (items: DynamicItem[]) => {
@@ -718,20 +645,9 @@ function SectionEditor({
     );
     setSistemaItems(items);
   };
-  const handleSaveEquipamentos = async (items: DynamicItem[]) => {
-    await saveEquipamentosExtras(
-      items.map((it) => ({ ...it, slug: it.slug || slugify(it.nome) } as EquipamentoCategoria))
-    );
-    setEquipItems(items);
-  };
   const handleSaveServicos = async (items: DynamicItem[]) => {
     await saveServicosExtras(items as unknown as ServicoBloco[]);
     setServicoItems(items);
-  };
-  const handleSaveModelos = async (items: DynamicItem[]) => {
-    if (!catalogoCategoria) return;
-    await saveModelosCustom(catalogoCategoria, items as unknown as ModeloCustom[]);
-    setModeloItems(items);
   };
 
   return (
@@ -790,21 +706,6 @@ function SectionEditor({
         />
       )}
 
-      {section === "equipamentos" && (
-        <DynamicItemsPanel
-          title="Novas Linhas de Equipamentos"
-          subtitle="Crie novas categorias que aparecerão na página /equipamentos e gerarão sua própria página de catálogo"
-          icon={<Boxes className="h-4 w-4" />}
-          accentColor="#FF4757"
-          items={equipItems}
-          schema={SCHEMA_EQUIPAMENTO_CATEGORIA}
-          onSave={handleSaveEquipamentos}
-          addLabel="+ Nova Linha"
-          emptyState="Nenhuma linha extra criada. Adicione quando a Lógica começar a trabalhar com uma nova categoria de equipamentos."
-          createsPage
-        />
-      )}
-
       {section === "servicos" && (
         <DynamicItemsPanel
           title="Novos Serviços"
@@ -816,20 +717,6 @@ function SectionEditor({
           onSave={handleSaveServicos}
           addLabel="+ Novo Serviço"
           emptyState="Nenhum serviço extra cadastrado. Adicione quando a Lógica oferecer um novo serviço."
-        />
-      )}
-
-      {catalogoCategoria && (
-        <DynamicItemsPanel
-          title="Adicionar Modelos ao Catálogo"
-          subtitle={`Cadastre novos modelos de ${meta.label} além dos que já aparecem por padrão. Eles serão exibidos ao final do catálogo.`}
-          icon={<LayoutGrid className="h-4 w-4" />}
-          accentColor="#FF4757"
-          items={modeloItems}
-          schema={SCHEMA_MODELO}
-          onSave={handleSaveModelos}
-          addLabel="+ Novo Modelo"
-          emptyState="Nenhum modelo extra cadastrado. Adicione novos produtos conforme o estoque for crescendo."
         />
       )}
 
@@ -890,41 +777,27 @@ function SectionEditor({
   );
 }
 
-// ─── Editor para item dinâmico (sistema ou equipamento criado pelo admin) ─────
-
-type DynamicEditorMode = "sistema" | "equip";
+// ─── Editor para sistema criado pelo admin ───────────────────────────────────
 
 function DynamicItemSectionEditor({
-  mode,
   itemId,
   onBack,
 }: {
-  mode: DynamicEditorMode;
   itemId: string;
   onBack: () => void;
 }) {
-  const isSistema = mode === "sistema";
-  const schema = isSistema ? SCHEMA_SISTEMA : SCHEMA_EQUIPAMENTO_CATEGORIA;
+  const schema = SCHEMA_SISTEMA;
 
-  /* ── Carrega o item atual ─────────────────────────────────────── */
   const loadItem = useCallback((): DynamicItem | null => {
-    const arr = isSistema
-      ? (getSistemasExtras() as unknown as DynamicItem[])
-      : (getEquipamentosExtras() as unknown as DynamicItem[]);
+    const arr = getSistemasExtras() as unknown as DynamicItem[];
     return arr.find((it) => it.id === itemId) ?? null;
-  }, [isSistema, itemId]);
+  }, [itemId]);
 
   const [values, setValues] = useState<DynamicItem | null>(loadItem);
   const [modifiedFields, setModifiedFields] = useState<Set<string>>(new Set());
   const [saving, setSaving] = useState(false);
   const originalRef = useRef<DynamicItem | null>(null);
   if (originalRef.current === null) originalRef.current = loadItem();
-
-  /* Modelos embutidos para equipamentos */
-  const [modeloItems, setModeloItems] = useState<DynamicItem[]>(() => {
-    if (isSistema) return [];
-    try { return JSON.parse(loadItem()?.modelos_json ?? "[]") as DynamicItem[]; } catch { return []; }
-  });
 
   const [uploading, setUploading] = useState<Record<string, boolean>>({});
   const [urlMode, setUrlMode]     = useState<Record<string, boolean>>({});
@@ -976,15 +849,8 @@ function DynamicItemSectionEditor({
     setSaving(true);
     try {
       const updatedItem = { ...values, slug: values.slug || slugify(values.nome) };
-      if (isSistema) {
-        const arr = getSistemasExtras() as unknown as DynamicItem[];
-        await saveSistemasExtras(arr.map((it) => it.id === itemId ? updatedItem as SistemaCard : it as SistemaCard));
-      } else {
-        const arr = getEquipamentosExtras() as unknown as DynamicItem[];
-        await saveEquipamentosExtras(
-          arr.map((it) => it.id === itemId ? { ...updatedItem, modelos_json: JSON.stringify(modeloItems) } as EquipamentoCategoria : it as EquipamentoCategoria)
-        );
-      }
+      const arr = getSistemasExtras() as unknown as DynamicItem[];
+      await saveSistemasExtras(arr.map((it) => it.id === itemId ? updatedItem as SistemaCard : it as SistemaCard));
       originalRef.current = updatedItem;
       setModifiedFields(new Set());
       toast.success("Alterações salvas!");
@@ -993,17 +859,6 @@ function DynamicItemSectionEditor({
     } finally {
       setSaving(false);
     }
-  };
-
-  const handleSaveModelos = async (items: DynamicItem[]) => {
-    setModeloItems(items);
-    if (!values) return;
-    const updatedItem = { ...values, modelos_json: JSON.stringify(items) };
-    const arr = getEquipamentosExtras() as unknown as DynamicItem[];
-    await saveEquipamentosExtras(
-      arr.map((it) => it.id === itemId ? updatedItem as EquipamentoCategoria : it as EquipamentoCategoria)
-    );
-    toast.success("Modelos salvos!");
   };
 
   const inputClass = (key: string) =>
@@ -1018,7 +873,6 @@ function DynamicItemSectionEditor({
 
   return (
     <div className="space-y-5 pb-24">
-      {/* Header */}
       <div className="flex items-start gap-4">
         <button
           onClick={onBack}
@@ -1031,31 +885,29 @@ function DynamicItemSectionEditor({
           <nav className="mb-1 flex items-center gap-1.5 text-xs text-gray-600">
             <span>Editor</span>
             <ChevronRight className="h-3 w-3" />
-            <span>{isSistema ? "Sistemas" : "Equipamentos"}</span>
+            <span>Sistemas</span>
             <ChevronRight className="h-3 w-3" />
             <span className="text-gray-500">{values.nome || "(sem nome)"}</span>
           </nav>
           <div className="flex items-center gap-3">
             <div
               className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl text-xl"
-              style={{ background: isSistema ? "rgba(139,92,246,0.15)" : "rgba(16,185,129,0.15)" }}
+              style={{ background: "rgba(139,92,246,0.15)" }}
             >
-              {isSistema ? (values.emoji || "🖥️") : <Boxes className="h-5 w-5 text-emerald-400" />}
+              {values.emoji || "🖥️"}
             </div>
             <div>
               <h1 className="text-xl font-bold tracking-tight text-white">
                 {values.nome || "(sem nome)"}
               </h1>
               <p className="text-xs text-gray-600">
-                {isSistema ? "Sistema personalizado" : "Linha de equipamentos"} ·{" "}
-                {isSistema ? `/sistemas/${values.slug}` : `/equipamentos/${values.slug}`}
+                Sistema personalizado · /sistemas/{values.slug}
               </p>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Card: Textos */}
       {textFields.length > 0 && (
         <div className="overflow-hidden rounded-xl border border-gray-800/50 bg-gray-900/60">
           <div className="flex items-center gap-2.5 border-b border-gray-800/40 px-5 py-4">
@@ -1103,7 +955,6 @@ function DynamicItemSectionEditor({
         </div>
       )}
 
-      {/* Card: Imagens */}
       {imageFields.length > 0 && (
         <div className="overflow-hidden rounded-xl border border-gray-800/50 bg-gray-900/60">
           <div className="flex items-center gap-2.5 border-b border-gray-800/40 px-5 py-4">
@@ -1174,22 +1025,6 @@ function DynamicItemSectionEditor({
         </div>
       )}
 
-      {/* Painel de modelos (apenas para equipamentos) */}
-      {!isSistema && (
-        <DynamicItemsPanel
-          title="Modelos desta linha"
-          subtitle="Adicione os produtos/modelos que aparecem na página desta linha de equipamentos"
-          icon={<LayoutGrid className="h-4 w-4" />}
-          accentColor="#10b981"
-          items={modeloItems}
-          schema={SCHEMA_MODELO}
-          onSave={handleSaveModelos}
-          addLabel="+ Novo Modelo"
-          emptyState="Nenhum modelo cadastrado ainda. Adicione os produtos desta linha."
-        />
-      )}
-
-      {/* Sticky save bar */}
       <div className="fixed bottom-0 left-0 right-0 z-50 lg:left-64">
         <div
           className="h-px w-full"
@@ -1239,21 +1074,26 @@ export default function AdminEditor() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // Seção estática do defaultContent
+  const handleEquipamentosTextosBack = () => {
+    setSearchParams({ section: "equipamentos" });
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  if (activeSection === "equipamentos") {
+    return <EquipamentosCatalogEditor onBack={handleBack} />;
+  }
+
+  if (activeSection === "_equipamentos_textos") {
+    return <SectionEditor key="_equipamentos_textos" section="equipamentos" onBack={handleEquipamentosTextosBack} />;
+  }
+
   if (activeSection && defaultContent[activeSection]) {
     return <SectionEditor key={activeSection} section={activeSection} onBack={handleBack} />;
   }
 
-  // Seção dinâmica: sistema criado pelo admin
   if (activeSection?.startsWith("_sistema_")) {
     const itemId = activeSection.slice("_sistema_".length);
-    return <DynamicItemSectionEditor key={activeSection} mode="sistema" itemId={itemId} onBack={handleBack} />;
-  }
-
-  // Seção dinâmica: linha de equipamentos criada pelo admin
-  if (activeSection?.startsWith("_equip_")) {
-    const itemId = activeSection.slice("_equip_".length);
-    return <DynamicItemSectionEditor key={activeSection} mode="equip" itemId={itemId} onBack={handleBack} />;
+    return <DynamicItemSectionEditor key={activeSection} itemId={itemId} onBack={handleBack} />;
   }
 
   return <SectionGrid onSelect={handleSelect} />;

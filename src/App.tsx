@@ -25,12 +25,6 @@ const SistemaMultiloja = lazy(() => import("./pages/SistemaMultiloja"));
 const SistemaTratamentoPonto = lazy(() => import("./pages/SistemaTratamentoPonto"));
 const SistemaOnDesk = lazy(() => import("./pages/SistemaOnDesk"));
 const Equipamentos = lazy(() => import("./pages/Equipamentos"));
-const EquipamentoBalancas = lazy(() => import("./pages/EquipamentoBalancas"));
-const EquipamentoImpressoras = lazy(() => import("./pages/EquipamentoImpressoras"));
-const EquipamentoRelogioPonto = lazy(() => import("./pages/EquipamentoRelogioPonto"));
-const EquipamentoLeitorCodigo = lazy(() => import("./pages/EquipamentoLeitorCodigo"));
-const EquipamentoEmbaladoras = lazy(() => import("./pages/EquipamentoEmbaladoras"));
-const EquipamentoComputadores = lazy(() => import("./pages/EquipamentoComputadores"));
 const Servicos = lazy(() => import("./pages/Servicos"));
 const Contato = lazy(() => import("./pages/Contato"));
 const Obrigado = lazy(() => import("./pages/Obrigado"));
@@ -93,15 +87,7 @@ const AppContent = () => {
                 {/* Rota dinâmica — captura sistemas criados pelo admin (deve vir após as rotas específicas) */}
                 <Route path="/sistemas/:slug" element={<SistemaDinamico />} />
                 <Route path="/equipamentos" element={<Equipamentos />} />
-                <Route path="/equipamentos/balancas" element={<EquipamentoBalancas />} />
-                <Route path="/equipamentos/impressoras" element={<EquipamentoImpressoras />} />
-                <Route path="/equipamentos/relogio-ponto" element={<EquipamentoRelogioPonto />} />
-                <Route path="/equipamentos/leitor-codigo" element={<EquipamentoLeitorCodigo />} />
-                <Route path="/equipamentos/embaladoras" element={<EquipamentoEmbaladoras />} />
-                <Route path="/equipamentos/computadores" element={<EquipamentoComputadores />} />
-                {/* Rotas de detalhe de modelo — devem vir antes da rota dinâmica :slug */}
                 <Route path="/equipamentos/:categoriaSlug/:modeloId" element={<EquipamentoDetalhe />} />
-                {/* Rota dinâmica — captura categorias de equipamentos criadas pelo admin */}
                 <Route path="/equipamentos/:slug" element={<EquipamentoDinamico />} />
                 <Route path="/servicos" element={<Servicos />} />
                 <Route path="/contato" element={<Contato />} />

@@ -1,8 +1,9 @@
 import { useEffect } from "react";
-import { ArrowLeft, MessageCircle } from "lucide-react";
+import { ArrowLeft, MessageCircle, Info } from "lucide-react";
 import { Link } from "react-router-dom";
 import { ImageZoom } from "@/components/ImageZoom";
 import { useSiteContent, useEquipamentoCatalogo } from "@/hooks/useSiteContent";
+import { textoCardModelo } from "@/lib/equipamentoDisplay";
 import { getYoutubeEmbedUrl } from "@/lib/utils";
 
 const EquipamentoEmbaladoras = () => {
@@ -62,9 +63,40 @@ const EquipamentoEmbaladoras = () => {
                   <h2 className="text-2xl font-bold text-white lg:text-3xl">
                     {modelo.nome}
                   </h2>
-                  <p className="text-base leading-relaxed text-gray-400 lg:text-lg">
-                    {modelo.descricao}
+                  <p className="whitespace-pre-wrap text-base leading-relaxed text-gray-400 lg:text-lg">
+                    {textoCardModelo(modelo)}
                   </p>
+                  <div className="flex flex-wrap gap-3 pt-2">
+                    <Link
+                      to={`/equipamentos/embaladoras/${modelo.id}`}
+                      className="inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+                      style={{
+                        background: "linear-gradient(135deg, #FF4757 0%, #c9384a 100%)",
+                        boxShadow: "0 4px 14px rgba(255,71,87,0.35)",
+                      }}
+                    >
+                      <Info className="h-4 w-4" />
+                      Mais Detalhes
+                    </Link>
+                    <button
+                      type="button"
+                      className="inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+                      style={{
+                        background: "linear-gradient(135deg, #25D366 0%, #128C7E 100%)",
+                        boxShadow: "0 4px 14px rgba(37,211,102,0.3)",
+                      }}
+                      onClick={() =>
+                        window.open(
+                          "https://wa.me/5547984218275?text=" +
+                            encodeURIComponent(`Olá, gostaria de um orçamento para ${modelo.nome}!`),
+                          "_blank"
+                        )
+                      }
+                    >
+                      <MessageCircle className="h-4 w-4" />
+                      Orçar
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}

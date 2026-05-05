@@ -15,6 +15,39 @@ export interface ContentField {
 export type SectionMeta = Record<string, ContentField>;
 export type AllContentMeta = Record<string, SectionMeta>;
 
+/** Campos opcionais por modelo (card vs. detalhe, filtro, galeria e seções). */
+function withCatalogModelExtras(section: SectionMeta, modelCount: number): SectionMeta {
+  const extra: SectionMeta = {};
+  for (let i = 1; i <= modelCount; i++) {
+    extra[`m${i}_desc_resumo`] = {
+      label: `Modelo ${i} — Resumo (texto curto só no card)`,
+      value: "",
+      type: "text",
+    };
+    extra[`m${i}_desc_detalhe`] = {
+      label: `Modelo ${i} — Texto completo (página "Mais detalhes")`,
+      value: "",
+      type: "text",
+    };
+    extra[`m${i}_subcategoria`] = {
+      label: `Modelo ${i} — Filtro / finalidade (ex.: Etiquetadoras, Bancada)`,
+      value: "",
+      type: "text",
+    };
+    extra[`m${i}_imagens_extra`] = {
+      label: `Modelo ${i} — Fotos extras na página de detalhes (uma URL por linha)`,
+      value: "",
+      type: "text",
+    };
+    extra[`m${i}_secoes_json`] = {
+      label: `Modelo ${i} — Seções extras (JSON, opcional)`,
+      value: "",
+      type: "text",
+    };
+  }
+  return { ...section, ...extra };
+}
+
 export const defaultContent: AllContentMeta = {
 
   // ── HERO (página inicial) ─────────────────────────────────────────────────
@@ -173,41 +206,9 @@ export const defaultContent: AllContentMeta = {
   equipamentos: {
     hero_titulo:    { label: "Título da página",   value: "EQUIPAMENTOS",                                                              type: "text" },
     hero_subtitulo: { label: "Subtítulo da página", value: "Os melhores equipamentos de automação e informática. Escolhas inteligentes para o seu negócio.", type: "text" },
-    cta_titulo:     { label: "Título CTA",          value: "Precisa de orientação para escolher o equipamento ideal?",                 type: "text" },
+    cta_titulo:     { label: "Título CTA",         value: "Precisa de orientação para escolher o equipamento ideal?",                 type: "text" },
     cta_subtitulo:  { label: "Subtítulo CTA",       value: "Nossa equipe está pronta para ajudar você a encontrar a melhor solução para o seu negócio", type: "text" },
-    // Cartões da listagem
-    balancas_nome:       { label: "Card — Balanças (nome)",             value: "Balanças",                              type: "text" },
-    balancas_descricao:  { label: "Card — Balanças (descrição)",        value: "Balanças eletrônicas de alta precisão", type: "text" },
-    impressoras_nome:    { label: "Card — Impressoras (nome)",          value: "Impressoras Fiscais",                   type: "text" },
-    impressoras_descricao: { label: "Card — Impressoras (descrição)",   value: "Impressoras homologadas e térmicas",    type: "text" },
-    relogio_nome:        { label: "Card — Relógio de Ponto (nome)",     value: "Relógios de Ponto",                     type: "text" },
-    relogio_descricao:   { label: "Card — Relógio de Ponto (descrição)", value: "Controle de acesso e ponto eletrônico", type: "text" },
-    leitor_nome:         { label: "Card — Leitor de Código (nome)",     value: "Leitores de Código de Barras",          type: "text" },
-    leitor_descricao:    { label: "Card — Leitor de Código (descrição)", value: "Scanners e leitores de alta performance", type: "text" },
-    embaladoras_nome:    { label: "Card — Embaladoras (nome)",          value: "Embaladoras",                           type: "text" },
-    embaladoras_descricao: { label: "Card — Embaladoras (descrição)",   value: "Seladoras e máquinas de embalar",       type: "text" },
-    computadores_nome:   { label: "Card — Computadores (nome)",         value: "Computadores e Hardwares",              type: "text" },
-    computadores_descricao: { label: "Card — Computadores (descrição)", value: "PCs, nobreaks, teclados e periféricos", type: "text" },
-    // Páginas individuais — hero
-    balancas_page_titulo:       { label: "Página Balanças — título",         value: "Balanças",                                                     type: "text" },
-    balancas_page_descricao:    { label: "Página Balanças — descrição",      value: "Balanças eletrônicas de alta precisão para pesagem comercial",  type: "text" },
-    impressoras_page_titulo:    { label: "Página Impressoras — título",      value: "Impressoras Fiscais",                                          type: "text" },
-    impressoras_page_descricao: { label: "Página Impressoras — descrição",   value: "Impressoras homologadas e térmicas para emissão fiscal",  type: "text" },
-    relogio_page_titulo:        { label: "Página Relógio de Ponto — título", value: "Relógios de Ponto",                                            type: "text" },
-    relogio_page_descricao:     { label: "Página Relógio de Ponto — descrição", value: "Controle de acesso e ponto eletrônico para empresas",       type: "text" },
-    leitor_page_titulo:         { label: "Página Leitor de Código — título", value: "Leitores de Código de Barras",                                 type: "text" },
-    leitor_page_descricao:      { label: "Página Leitor de Código — descrição", value: "Scanners e leitores de alta performance para automação",    type: "text" },
-    embaladoras_page_titulo:    { label: "Página Embaladoras — título",      value: "Embaladoras",                                                  type: "text" },
-    embaladoras_page_descricao: { label: "Página Embaladoras — descrição",   value: "Seladoras e máquinas de embalar para seu negócio",             type: "text" },
-    computadores_page_titulo:   { label: "Página Computadores — título",     value: "Computadores e Hardwares",                                     type: "text" },
-    computadores_page_descricao: { label: "Página Computadores — descrição", value: "PCs, nobreaks, teclados e periféricos para sua empresa",       type: "text" },
-    // Imagens dos cards na listagem /equipamentos
-    balancas_imagem:     { label: "Card Balanças — Imagem",      value: "/img/balança.webp",                type: "image_url" },
-    impressoras_imagem:  { label: "Card Impressoras — Imagem",   value: "/img/impressora_fiscal.webp",      type: "image_url" },
-    relogio_imagem:      { label: "Card Relógios — Imagem",      value: "/img/relogio_ponto.webp",          type: "image_url" },
-    leitor_imagem:       { label: "Card Leitores — Imagem",      value: "/img/leitor_codigo_barras.webp",   type: "image_url" },
-    embaladoras_imagem:  { label: "Card Embaladoras — Imagem",   value: "/img/embaladoras.webp",            type: "image_url" },
-    computadores_imagem: { label: "Card Computadores — Imagem",  value: "/img/computadores.webp",           type: "image_url" },
+    /* Cards das categorias vêm do catálogo hierárquico (painel Equipamentos). */
   },
 
   // ── BLOG ─────────────────────────────────────────────────────────────────
@@ -419,7 +420,7 @@ export const defaultContent: AllContentMeta = {
   },
 
   // ── CATÁLOGO — BALANÇAS ───────────────────────────────────────────────────
-  catalogo_balancas: {
+  catalogo_balancas: withCatalogModelExtras({
     video_url: { label: "Vídeo Tutorial geral — URL do YouTube", value: "", type: "link" },
     m1_nome:      { label: "Modelo 1 — Nome  (Toledo Prix 3 Fit)",       value: "Balança Toledo Prix 3 Fit",   type: "text" },
     m1_img:       { label: "Modelo 1 — Imagem (Toledo Prix 3 Fit)",      value: "/img/Prix 3 Fit.webp",        type: "image_url" },
@@ -433,10 +434,10 @@ export const defaultContent: AllContentMeta = {
     m3_img:       { label: "Modelo 3 — Imagem (Urano US 31)",            value: "/img/Urano US 31 2.webp",    type: "image_url" },
     m3_desc:      { label: "Modelo 3 — Descrição (Urano US 31)",         value: "Balança de plataforma robusta para pesagem comercial. Estrutura reforçada, alta precisão e display de fácil leitura.", type: "text" },
     m3_video_url: { label: "Modelo 3 — Vídeo YouTube (Urano US 31)",     value: "", type: "link" },
-  },
+  }, 3),
 
   // ── CATÁLOGO — LEITORES DE CÓDIGO DE BARRAS ───────────────────────────────
-  catalogo_leitores: {
+  catalogo_leitores: withCatalogModelExtras({
     video_url:    { label: "Vídeo Tutorial geral — URL do YouTube", value: "", type: "link" },
     m1_nome:      { label: "Leitor 1 — Nome  (Elgin QW 2120)",          value: "Leitor Elgin QW 2120",       type: "text" },
     m1_img:       { label: "Leitor 1 — Imagem (Elgin QW 2120)",         value: "/img/Elgin QW 2120.webp",    type: "image_url" },
@@ -458,10 +459,10 @@ export const defaultContent: AllContentMeta = {
     m5_img:       { label: "Leitor 5 — Imagem (Elgin EL-250)",           value: "/img/Elgin EL-250.webp",     type: "image_url" },
     m5_desc:      { label: "Leitor 5 — Descrição (Elgin EL-250)",        value: "Equipamento Elgin para automação comercial. Compacto e versátil para integração com sistemas de PDV.", type: "text" },
     m5_video_url: { label: "Leitor 5 — Vídeo YouTube (Elgin EL-250)",    value: "", type: "link" },
-  },
+  }, 5),
 
   // ── CATÁLOGO — IMPRESSORAS ────────────────────────────────────────────────
-  catalogo_impressoras: {
+  catalogo_impressoras: withCatalogModelExtras({
     video_url:     { label: "Vídeo Tutorial geral — URL do YouTube", value: "", type: "link" },
     m1_nome:       { label: "Impressora 1 — Nome  (Elgin L-42 PRO)",            value: "Elgin L-42 PRO",              type: "text" },
     m1_img:        { label: "Impressora 1 — Imagem (Elgin L-42 PRO)",           value: "/img/Elgin L-42 PRO.webp",    type: "image_url" },
@@ -511,10 +512,10 @@ export const defaultContent: AllContentMeta = {
     m12_img:       { label: "Impressora 12 — Imagem (Zebra ZT421 RFID)",         value: "/img/ZT421 RFID.webp",        type: "image_url" },
     m12_desc:      { label: "Impressora 12 — Descrição (Zebra ZT421 RFID)",      value: "Combina impressão de grande formato com codificação RFID para operações que integram identificação visual e eletrônica.", type: "text" },
     m12_video_url: { label: "Impressora 12 — Vídeo YouTube (Zebra ZT421 RFID)", value: "", type: "link" },
-  },
+  }, 12),
 
   // ── CATÁLOGO — RELÓGIOS DE PONTO E CATRACAS ───────────────────────────────
-  catalogo_relogio: {
+  catalogo_relogio: withCatalogModelExtras({
     video_url: { label: "Vídeo Tutorial — URL do YouTube", value: "", type: "link" },
     m1_nome:  { label: "Produto 1 — Nome  (Control iD)",              value: "Relógio de Ponto Control iD",             type: "text" },
     m1_img:   { label: "Produto 1 — Imagem (Control iD)",             value: "/img/RELOGIO PONTO CONTROL ID.webp",      type: "image_url" },
@@ -585,10 +586,10 @@ export const defaultContent: AllContentMeta = {
     m23_nome: { label: "Produto 23 — Nome  (idBlock Next Contador)",  value: "idBlock Next com contador de giros",     type: "text" },
     m23_img:  { label: "Produto 23 — Imagem (idBlock Next Contador)", value: "/img/idblock-next-contador-giros-list.webp", type: "image_url" },
     m23_desc: { label: "Produto 23 — Descrição (idBlock Next Contador)", value: "Monitoramento e contagem de passagens para operação e auditoria.", type: "text" },
-  },
+  }, 23),
 
   // ── CATÁLOGO — COMPUTADORES E HARDWARE ───────────────────────────────────
-  catalogo_computadores: {
+  catalogo_computadores: withCatalogModelExtras({
     video_url: { label: "Vídeo Tutorial — URL do YouTube", value: "", type: "link" },
     m1_nome: { label: "Hardware 1 — Nome  (Nobreak SMS)",   value: "Nobreak SMS 1200VA",             type: "text" },
     m1_img:  { label: "Hardware 1 — Imagem (Nobreak SMS)",  value: "/img/NOBREAK SMS 1200va.webp",   type: "image_url" },
@@ -599,15 +600,15 @@ export const defaultContent: AllContentMeta = {
     m3_nome: { label: "Hardware 3 — Nome  (Impressora térmica)", value: "Impressora térmica profissional", type: "text" },
     m3_img:  { label: "Hardware 3 — Imagem (Impressora térmica)", value: "/img/impressora.webp",    type: "image_url" },
     m3_desc: { label: "Hardware 3 — Descrição (Impressora térmica)", value: "Periférico para impressão de comprovantes, recibos e documentos em ambientes comerciais, com foco em confiabilidade no dia a dia do PDV.", type: "text" },
-  },
+  }, 3),
 
   // ── CATÁLOGO — EMBALADORAS ────────────────────────────────────────────────
-  catalogo_embaladoras: {
+  catalogo_embaladoras: withCatalogModelExtras({
     video_url: { label: "Vídeo Tutorial — URL do YouTube", value: "", type: "link" },
     m1_nome: { label: "Embaladora 1 — Nome",    value: "Embaladoras e Seladoras",   type: "text" },
     m1_img:  { label: "Embaladora 1 — Imagem",  value: "/img/embaladoras.webp",     type: "image_url" },
     m1_desc: { label: "Embaladora 1 — Descrição", value: "Linha completa de embaladoras, seladoras e máquinas de embalar. Equipamentos para proteção e apresentação de produtos com eficiência.", type: "text" },
-  },
+  }, 1),
 };
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────

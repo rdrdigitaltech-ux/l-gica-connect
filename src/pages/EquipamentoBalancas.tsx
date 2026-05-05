@@ -7,6 +7,7 @@ import { FiltroEquipamentos } from "@/components/FiltroEquipamentos";
 import {
   SubcategoriaBalanca,
 } from "@/data/equipamentosDetalhados";
+import { textoCardModelo } from "@/lib/equipamentoDisplay";
 import { useSiteContent, useEquipamentoCatalogo } from "@/hooks/useSiteContent";
 
 const EquipamentoBalancas = () => {
@@ -19,13 +20,20 @@ const EquipamentoBalancas = () => {
 
   const [filtroAtivo, setFiltroAtivo] = useState<string>("todos");
 
-  const opcoesSubcategorias: readonly SubcategoriaBalanca[] = [
+  const opcoesBase: readonly SubcategoriaBalanca[] = [
     "Etiquetadoras",
     "Bancada",
     "Plataforma",
     "Checkout",
     "Precisão",
   ];
+
+  const opcoesSubcategorias = useMemo((): readonly string[] => {
+    const fromData = [
+      ...new Set(todosModelos.map((m) => m.subcategoria).filter(Boolean)),
+    ] as string[];
+    return [...new Set([...opcoesBase, ...fromData])];
+  }, [todosModelos]);
 
   const modelosFiltrados = useMemo(() => {
     if (filtroAtivo === "todos") return todosModelos;
@@ -66,7 +74,7 @@ const EquipamentoBalancas = () => {
       <section className="px-6 pb-6 pt-10">
         <div className="mx-auto max-w-7xl">
           <FiltroEquipamentos
-            opcoes={opcoesSubcategorias}
+            opcoes={opcoesSubcategorias as readonly string[]}
             filtroAtivo={filtroAtivo}
             onFiltroChange={handleFiltroChange}
           />
@@ -134,8 +142,8 @@ const EquipamentoBalancas = () => {
                       {modelo.nome}
                     </h2>
 
-                    <p className="text-base leading-relaxed text-gray-400 lg:text-lg">
-                      {modelo.descricao}
+                    <p className="whitespace-pre-wrap text-base leading-relaxed text-gray-400 lg:text-lg">
+                      {textoCardModelo(modelo)}
                     </p>
 
                     <div className="flex flex-wrap gap-3 pt-2">

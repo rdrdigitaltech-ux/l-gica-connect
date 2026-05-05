@@ -3,6 +3,7 @@ import { ArrowLeft, MessageCircle, Info } from "lucide-react";
 import { Link } from "react-router-dom";
 import { ImageZoom } from "@/components/ImageZoom";
 import { useSiteContent, useEquipamentoCatalogo } from "@/hooks/useSiteContent";
+import { textoCardModelo } from "@/lib/equipamentoDisplay";
 
 const EquipamentoImpressoras = () => {
   const { content: eq } = useSiteContent("equipamentos");
@@ -59,8 +60,8 @@ const EquipamentoImpressoras = () => {
                   <h2 className="text-2xl font-bold text-white lg:text-3xl">
                     {modelo.nome}
                   </h2>
-                  <p className="text-base leading-relaxed text-gray-400 lg:text-lg">
-                    {modelo.descricao}
+                  <p className="whitespace-pre-wrap text-base leading-relaxed text-gray-400 lg:text-lg">
+                    {textoCardModelo(modelo)}
                   </p>
                   <div className="flex flex-wrap gap-3 pt-2">
                     <Link

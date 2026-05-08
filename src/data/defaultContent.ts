@@ -172,7 +172,7 @@ export const defaultContent: AllContentMeta = {
     form_titulo: { label: "Título do formulário", value: "Envie sua Mensagem", type: "text" },
     email: { label: "E-mail de atendimento", value: "atendimento@logica.inf.br", type: "text" },
     whatsapp: { label: "WhatsApp (só dígitos)", value: "5547984218275", type: "text" },
-    whatsapp_mensagem: { label: "Mensagem padrão WhatsApp", value: "Olá, gostaria de falar com a Lógica Automação Comercial!", type: "text" },
+    whatsapp_mensagem: { label: "Mensagem padrão WhatsApp", value: "Olá! Vim pelo site e gostaria de falar com a Lógica", type: "text" },
     telefone_brusque: { label: "Telefone Brusque", value: "(47) 3351-5497", type: "text" },
     telefone_blumenau: { label: "Telefone Blumenau", value: "(47) 3328-0077", type: "text" },
     endereco_brusque: { label: "Endereço Brusque", value: "Av. Dom Joaquim, 437 - Jardim Maluche", type: "text" },

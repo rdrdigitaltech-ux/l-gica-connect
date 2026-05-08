@@ -108,7 +108,10 @@ export default function Header() {
                 className="flex min-h-[44px] items-center gap-2 rounded-lg bg-[#FF4757] px-6 py-2.5 text-sm font-bold text-white transition-all duration-300 hover:scale-105 hover:shadow-lg active:scale-95 active:opacity-90"
                 onClick={() =>
                   window.open(
-                    "https://wa.me/5547984218275?text=Olá,%20gostaria%20de%20falar%20com%20a%20Lógica!",
+                    "https://wa.me/5547984218275?text=" +
+                      encodeURIComponent(
+                        "Olá! Vim pelo site e gostaria de falar com a Lógica"
+                      ),
                     "_blank"
                   )
                 }
@@ -193,7 +196,10 @@ export default function Header() {
               onClick={() => {
                 setMobileMenuOpen(false);
                 window.open(
-                  "https://wa.me/5547984218275?text=Olá,%20gostaria%20de%20falar%20com%20a%20Lógica!",
+                  "https://wa.me/5547984218275?text=" +
+                    encodeURIComponent(
+                      "Olá! Vim pelo site e gostaria de falar com a Lógica"
+                    ),
                   "_blank"
                 );
               }}

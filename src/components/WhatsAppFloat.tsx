@@ -15,7 +15,7 @@ export default function WhatsAppFloat() {
   const handleWhatsAppClick = () => {
     const phoneNumber = "5547984218275";
     const message = encodeURIComponent(
-      "Olá, gostaria de falar com a Lógica Automação Comercial!"
+      "Olá! Vim pelo site e gostaria de falar com a Lógica"
     );
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
     window.open(whatsappUrl, "_blank");

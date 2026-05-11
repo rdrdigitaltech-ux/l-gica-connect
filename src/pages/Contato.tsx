@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   MapPin,
@@ -19,6 +20,45 @@ const inputBaseStyle = {
 export default function Contato() {
   const { content: ct } = useSiteContent("contato");
 
+  const [nome, setNome] = useState("");
+  const [email, setEmail] = useState("");
+  const [telefone, setTelefone] = useState("");
+  const [empresa, setEmpresa] = useState("");
+  const [cidade, setCidade] = useState("");
+  const [assunto, setAssunto] = useState("");
+  const [mensagem, setMensagem] = useState("");
+
+  const whatsappNumber = ct.whatsapp_contato ?? "554784218275";
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const assuntoLabels: Record<string, string> = {
+      orcamento: "Orçamento",
+      suporte: "Suporte",
+      duvidas: "Dúvidas",
+      outros: "Outros",
+    };
+
+    const linhas = [
+      "📋 *Nova mensagem pelo site*",
+      "",
+      `👤 *Nome:* ${nome}`,
+      `📧 *Email:* ${email}`,
+      `📱 *Telefone:* ${telefone}`,
+      empresa ? `🏢 *Empresa:* ${empresa}` : null,
+      cidade ? `📍 *Cidade:* ${cidade}` : null,
+      `📌 *Assunto:* ${assuntoLabels[assunto] ?? assunto}`,
+      "",
+      `💬 *Mensagem:*`,
+      mensagem,
+    ].filter(Boolean);
+
+    const texto = linhas.join("\n");
+    const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(texto)}`;
+    window.open(url, "_blank");
+  };
+
   const units = [
     {
       city: "Brusque",
@@ -36,8 +76,6 @@ export default function Contato() {
     },
   ];
 
-  const formspreeId = ct.formspree_id ?? "xzdjwzpe";
-  const redirectUrl = ct.redirect_obrigado ?? "https://l-gica-connect.vercel.app/obrigado";
 
   return (
     <div className="min-h-screen" style={{ background: "#06080A" }}>
@@ -141,8 +179,7 @@ export default function Contato() {
                 {ct.form_titulo ?? "Envie sua Mensagem"}
               </h2>
               <form
-                action={`https://formspree.io/f/${formspreeId}`}
-                method="POST"
+                onSubmit={handleSubmit}
                 className="space-y-4"
               >
                 <div>
@@ -150,10 +187,11 @@ export default function Contato() {
                     Nome *
                   </label>
                   <input
-                    name="name"
                     type="text"
                     required
                     placeholder="Seu nome completo"
+                    value={nome}
+                    onChange={(e) => setNome(e.target.value)}
                     className="w-full rounded-lg border px-4 py-3 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[#FF4757]/50"
                     style={inputBaseStyle}
                   />
@@ -164,10 +202,11 @@ export default function Contato() {
                     Email *
                   </label>
                   <input
-                    name="email"
                     type="email"
                     required
                     placeholder="seu@email.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     className="w-full rounded-lg border px-4 py-3 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[#FF4757]/50"
                     style={inputBaseStyle}
                   />
@@ -178,10 +217,11 @@ export default function Contato() {
                     Telefone / WhatsApp *
                   </label>
                   <input
-                    name="phone"
                     type="text"
                     required
-                    placeholder="(47) 99999-9999"
+                    placeholder="(31) 99999-9999"
+                    value={telefone}
+                    onChange={(e) => setTelefone(e.target.value)}
                     className="w-full rounded-lg border px-4 py-3 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[#FF4757]/50"
                     style={inputBaseStyle}
                   />
@@ -193,9 +233,10 @@ export default function Contato() {
                       Empresa
                     </label>
                     <input
-                      name="company"
                       type="text"
                       placeholder="Nome da empresa"
+                      value={empresa}
+                      onChange={(e) => setEmpresa(e.target.value)}
                       className="w-full rounded-lg border px-4 py-3 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[#FF4757]/50"
                       style={inputBaseStyle}
                     />
@@ -205,9 +246,10 @@ export default function Contato() {
                       Cidade
                     </label>
                     <input
-                      name="city"
                       type="text"
                       placeholder="Sua cidade"
+                      value={cidade}
+                      onChange={(e) => setCidade(e.target.value)}
                       className="w-full rounded-lg border px-4 py-3 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[#FF4757]/50"
                       style={inputBaseStyle}
                     />
@@ -219,11 +261,11 @@ export default function Contato() {
                     Assunto *
                   </label>
                   <select
-                    name="subject"
                     required
+                    value={assunto}
+                    onChange={(e) => setAssunto(e.target.value)}
                     className="w-full rounded-lg border px-4 py-3 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[#FF4757]/50"
                     style={inputBaseStyle}
-                    defaultValue=""
                   >
                     <option value="">Selecione...</option>
                     <option value="orcamento">Orçamento</option>
@@ -238,30 +280,21 @@ export default function Contato() {
                     Mensagem *
                   </label>
                   <textarea
-                    name="message"
                     rows={5}
                     required
                     placeholder="Descreva como podemos ajudar..."
+                    value={mensagem}
+                    onChange={(e) => setMensagem(e.target.value)}
                     className="w-full resize-none rounded-lg border px-4 py-3 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-[#FF4757]/50"
                     style={inputBaseStyle}
                   />
                 </div>
 
-                {/* Anti-spam (honeypot) */}
-                <input
-                  type="text"
-                  name="_gotcha"
-                  style={{ display: "none" }}
-                  tabIndex={-1}
-                  autoComplete="off"
-                />
-                <input type="hidden" name="_next" value={redirectUrl} />
-
                 <button
                   type="submit"
                   className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#FF4757] px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-[#E63946]"
                 >
-                  Enviar Mensagem
+                  Enviar pelo WhatsApp
                   <Send className="h-4 w-4" />
                 </button>
               </form>

@@ -86,10 +86,13 @@ export default function Footer() {
         <div className="mb-8 h-px" style={{ background: "linear-gradient(90deg, transparent, rgba(255, 71, 87, 0.35), transparent)", boxShadow: "0 0 12px rgba(255, 71, 87, 0.2)" }} />
 
         <div className="flex flex-col items-center gap-4 pt-6 text-center text-xs text-gray-500 sm:flex-row sm:justify-between sm:text-left">
-          <p>{copyright}</p>
+          <div>
+            <p>{copyright}</p>
+            <p className="mt-1">CNPJ: 07.982.400/0001-99</p>
+          </div>
           <div className="flex gap-6">
             <Link to="/politica-privacidade" className="flex min-h-[44px] items-center text-gray-500 transition-colors hover:text-[#E63946] active:opacity-70">Política de Privacidade</Link>
-            <Link to="/trabalhe-conosco" className="flex min-h-[44px] items-center text-gray-500 transition-colors hover:text-[#E63946] active:opacity-70">Trabalhe Conosco</Link>
+            <a href="mailto:vagas@logica.inf.br" className="flex min-h-[44px] items-center text-gray-500 transition-colors hover:text-[#E63946] active:opacity-70">Trabalhe Conosco</a>
           </div>
         </div>
       </div>

@@ -6,6 +6,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import {
   ArrowLeft,
+  ArrowRightLeft,
   ChevronDown,
   ChevronRight,
   ChevronUp,
@@ -14,6 +15,7 @@ import {
   Trash2,
   Upload,
   FileText,
+  X,
 } from "lucide-react";
 import { toast } from "sonner";
 import { uploadCmsFileToStorage } from "@/lib/supabase";
@@ -261,6 +263,26 @@ function CategoryProductsView({
   const fileRef = useRef<HTMLInputElement>(null);
   const [dirty, setDirty] = useState(false);
 
+  // Transferência de produto
+  const [transferProdId, setTransferProdId] = useState<string | null>(null);
+  const [transferDestId, setTransferDestId] = useState("");
+
+  const otherCategories = catalog.filter((c) => c.id !== cat.id);
+
+  const doTransfer = async () => {
+    if (!transferProdId || !transferDestId) return;
+    const produto = cat.produtos.find((p) => p.id === transferProdId);
+    if (!produto) return;
+    const next = catalog.map((c) => {
+      if (c.id === cat.id) return { ...c, produtos: c.produtos.filter((p) => p.id !== transferProdId) };
+      if (c.id === transferDestId) return { ...c, produtos: [...c.produtos, { ...produto, ordem: c.produtos.length }] };
+      return c;
+    });
+    await onPersist(next);
+    setTransferProdId(null);
+    setTransferDestId("");
+  };
+
   const saveCatMeta = async () => {
     const o = parseInt(ordem, 10) || 0;
     const next = catalog.map((c) =>
@@ -439,6 +461,7 @@ function CategoryProductsView({
               <th className="px-4 py-3">Subcategoria</th>
               <th className="px-4 py-3">Ativo</th>
               <th className="px-4 py-3 text-right">Ações</th>
+              {otherCategories.length > 0 && <th className="px-4 py-3 text-right">Transferir</th>}
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-800/60">
@@ -465,11 +488,74 @@ function CategoryProductsView({
                     <Trash2 className="inline h-4 w-4" />
                   </button>
                 </td>
+                {otherCategories.length > 0 && (
+                  <td className="px-4 py-3 text-right">
+                    <button
+                      type="button"
+                      onClick={() => { setTransferProdId(p.id); setTransferDestId(""); }}
+                      className="text-blue-400 hover:text-blue-300"
+                      title="Transferir para outra categoria"
+                    >
+                      <ArrowRightLeft className="inline h-4 w-4" />
+                    </button>
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+
+      {/* Modal de transferência */}
+      {transferProdId && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4">
+          <div className="w-full max-w-md rounded-xl border border-gray-700 bg-gray-900 p-6 shadow-2xl">
+            <div className="mb-4 flex items-center justify-between">
+              <h3 className="text-base font-semibold text-white">Transferir produto</h3>
+              <button type="button" onClick={() => setTransferProdId(null)} className="text-gray-400 hover:text-white">
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+            <p className="mb-1 text-sm text-gray-400">
+              Produto: <span className="font-medium text-white">{cat.produtos.find((p) => p.id === transferProdId)?.nome || "(sem nome)"}</span>
+            </p>
+            <p className="mb-4 text-sm text-gray-400">
+              Categoria atual: <span className="font-medium text-white">{cat.nome}</span>
+            </p>
+            <label className="block text-xs text-gray-400">
+              Mover para a categoria:
+              <select
+                className={`mt-1 ${inputClass}`}
+                value={transferDestId}
+                onChange={(e) => setTransferDestId(e.target.value)}
+              >
+                <option value="">Selecione a categoria destino...</option>
+                {otherCategories.sort((a, b) => a.ordem - b.ordem).map((c) => (
+                  <option key={c.id} value={c.id}>{c.nome || "(sem nome)"}</option>
+                ))}
+              </select>
+            </label>
+            <div className="mt-5 flex justify-end gap-3">
+              <button
+                type="button"
+                onClick={() => setTransferProdId(null)}
+                className="rounded-lg border border-gray-700 px-4 py-2 text-sm text-gray-400 hover:bg-gray-800"
+              >
+                Cancelar
+              </button>
+              <button
+                type="button"
+                disabled={!transferDestId}
+                onClick={() => void doTransfer()}
+                className="inline-flex items-center gap-1.5 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white disabled:opacity-40 hover:bg-blue-500"
+              >
+                <ArrowRightLeft className="h-4 w-4" />
+                Transferir
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

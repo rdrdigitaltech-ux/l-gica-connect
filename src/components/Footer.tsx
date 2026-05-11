@@ -76,7 +76,7 @@ export default function Footer() {
           <div>
             <h4 className="mb-4 text-sm font-bold uppercase tracking-wider text-gray-200">Outros</h4>
             <ul className="space-y-3">
-              <li><Link to="/trabalhe-conosco" className="group flex min-h-[44px] items-center gap-2 text-sm text-gray-400 transition-colors hover:text-[#E63946] active:opacity-70"><span className="h-1 w-1 rounded-full bg-gray-600 transition-all group-hover:h-1.5 group-hover:w-1.5 group-hover:bg-[#E63946]" />Trabalhe Conosco</Link></li>
+              <li><a href="mailto:vagas@logica.inf.br" className="group flex min-h-[44px] items-center gap-2 text-sm text-gray-400 transition-colors hover:text-[#E63946] active:opacity-70"><span className="h-1 w-1 rounded-full bg-gray-600 transition-all group-hover:h-1.5 group-hover:w-1.5 group-hover:bg-[#E63946]" />Trabalhe Conosco</a></li>
               <li><Link to="/politica-privacidade" className="group flex min-h-[44px] items-center gap-2 text-sm text-gray-400 transition-colors hover:text-[#E63946] active:opacity-70"><span className="h-1 w-1 rounded-full bg-gray-600 transition-all group-hover:h-1.5 group-hover:w-1.5 group-hover:bg-[#E63946]" />Política de Privacidade</Link></li>
               <li><Link to="/contato" className="group flex min-h-[44px] items-center gap-2 text-sm text-gray-400 transition-colors hover:text-[#E63946] active:opacity-70"><span className="h-1 w-1 rounded-full bg-gray-600 transition-all group-hover:h-1.5 group-hover:w-1.5 group-hover:bg-[#E63946]" />Contato</Link></li>
             </ul>

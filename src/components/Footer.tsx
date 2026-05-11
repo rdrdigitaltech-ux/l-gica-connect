@@ -2,6 +2,32 @@ import { Link } from "react-router-dom";
 import { Mail, Phone } from "lucide-react";
 import { useSiteContent } from "@/hooks/useSiteContent";
 
+function abrirEmailVagas(e: React.MouseEvent) {
+  e.preventDefault();
+  const destino = "vagas@logica.inf.br";
+  const assunto = encodeURIComponent("Candidatura - Trabalhe Conosco");
+  const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+  const isAndroid = /Android/i.test(navigator.userAgent);
+
+  if (isIOS) {
+    // Tenta abrir app Gmail; fallback para mailto: após 600ms
+    window.location.href = `googlegmail://co?to=${destino}&subject=${assunto}`;
+    setTimeout(() => {
+      window.location.href = `mailto:${destino}?subject=${assunto}`;
+    }, 600);
+  } else if (isAndroid) {
+    // Android: mailto abre Gmail se for app padrão, ou mostra seletor
+    window.location.href = `mailto:${destino}?subject=${assunto}`;
+  } else {
+    // Desktop: abre Gmail Web em nova aba
+    window.open(
+      `https://mail.google.com/mail/?view=cm&to=${destino}&su=${assunto}`,
+      "_blank",
+      "noopener,noreferrer"
+    );
+  }
+}
+
 export default function Footer() {
   const { content: rodape } = useSiteContent("rodape");
   const { content: geral } = useSiteContent("geral");
@@ -76,7 +102,7 @@ export default function Footer() {
           <div>
             <h4 className="mb-4 text-sm font-bold uppercase tracking-wider text-gray-200">Outros</h4>
             <ul className="space-y-3">
-              <li><a href="mailto:vagas@logica.inf.br" className="group flex min-h-[44px] items-center gap-2 text-sm text-gray-400 transition-colors hover:text-[#E63946] active:opacity-70"><span className="h-1 w-1 rounded-full bg-gray-600 transition-all group-hover:h-1.5 group-hover:w-1.5 group-hover:bg-[#E63946]" />Trabalhe Conosco</a></li>
+              <li><a href="#" onClick={abrirEmailVagas} className="group flex min-h-[44px] items-center gap-2 text-sm text-gray-400 transition-colors hover:text-[#E63946] active:opacity-70"><span className="h-1 w-1 rounded-full bg-gray-600 transition-all group-hover:h-1.5 group-hover:w-1.5 group-hover:bg-[#E63946]" />Trabalhe Conosco</a></li>
               <li><Link to="/politica-privacidade" className="group flex min-h-[44px] items-center gap-2 text-sm text-gray-400 transition-colors hover:text-[#E63946] active:opacity-70"><span className="h-1 w-1 rounded-full bg-gray-600 transition-all group-hover:h-1.5 group-hover:w-1.5 group-hover:bg-[#E63946]" />Política de Privacidade</Link></li>
               <li><Link to="/contato" className="group flex min-h-[44px] items-center gap-2 text-sm text-gray-400 transition-colors hover:text-[#E63946] active:opacity-70"><span className="h-1 w-1 rounded-full bg-gray-600 transition-all group-hover:h-1.5 group-hover:w-1.5 group-hover:bg-[#E63946]" />Contato</Link></li>
             </ul>
@@ -92,7 +118,7 @@ export default function Footer() {
           </div>
           <div className="flex gap-6">
             <Link to="/politica-privacidade" className="flex min-h-[44px] items-center text-gray-500 transition-colors hover:text-[#E63946] active:opacity-70">Política de Privacidade</Link>
-            <a href="mailto:vagas@logica.inf.br" className="flex min-h-[44px] items-center text-gray-500 transition-colors hover:text-[#E63946] active:opacity-70">Trabalhe Conosco</a>
+            <a href="#" onClick={abrirEmailVagas} className="flex min-h-[44px] items-center text-gray-500 transition-colors hover:text-[#E63946] active:opacity-70">Trabalhe Conosco</a>
           </div>
         </div>
       </div>

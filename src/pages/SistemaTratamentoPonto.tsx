@@ -242,15 +242,21 @@ export default function SistemaTratamentoPonto() {
           </section>
         );
         return (
-          <section className="px-6 py-20" style={{ background: "#0A0C10" }}>
-            <div className="mx-auto max-w-7xl">
-              <h2 className="mb-10 text-center font-extrabold text-gray-200" style={{ fontSize: "clamp(22px, 3vw, 34px)" }}>
+          <section className="px-6 py-16" style={{ background: "#0A0C10" }}>
+            <div className="mx-auto max-w-6xl">
+              <h2 className="mb-8 text-center font-extrabold text-gray-200" style={{ fontSize: "clamp(20px, 2.5vw, 30px)" }}>
                 {cms.galeria_titulo || "Conheça o Sistema"}
               </h2>
-              <div className={`grid gap-4 ${imgs.length === 1 ? "grid-cols-1" : imgs.length === 2 ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1 md:grid-cols-2"}`}>
+              <div className={`grid gap-6 ${imgs.length === 1 ? "grid-cols-1" : "grid-cols-1 md:grid-cols-2"}`}>
                 {imgs.map((src, i) => (
-                  <div key={i} className="overflow-hidden rounded-xl border" style={{ borderColor: `${ACCENT}33` }}>
-                    <img src={src} alt={`${cms.galeria_titulo || "Sistema"} — Imagem ${i + 1}`} className="h-auto w-full object-cover" loading="lazy" />
+                  <div key={i} className="flex items-center justify-center overflow-hidden rounded-2xl">
+                    <img
+                      src={src}
+                      alt={`${cms.galeria_titulo || "Sistema"} — Imagem ${i + 1}`}
+                      className="h-auto object-contain"
+                      style={{ maxHeight: "1170px", width: "auto", maxWidth: "100%" }}
+                      loading="lazy"
+                    />
                   </div>
                 ))}
               </div>

@@ -1,8 +1,9 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ArrowLeft, MessageCircle, Play, FileDown } from "lucide-react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { ImageZoom } from "@/components/ImageZoom";
 import { getYoutubeEmbedUrl } from "@/lib/utils";
+import { useSiteContent } from "@/hooks/useSiteContent";
 import {
   findCategoriaBySlug,
   findProdutoInCategoria,
@@ -13,6 +14,7 @@ const EquipamentoDetalhe = () => {
   const { categoriaSlug, modeloId } = useParams<{ categoriaSlug: string; modeloId: string }>();
   const navigate = useNavigate();
   const catalog = useEquipamentosCatalog();
+  const { content: eq } = useSiteContent("equipamentos");
 
   const resolved = useMemo(() => {
     const slug = categoriaSlug ?? "";
@@ -50,8 +52,11 @@ const EquipamentoDetalhe = () => {
     return Array.from(new Set(ordered));
   }, [resolved.produto]);
 
+  const [fotoAtiva, setFotoAtiva] = useState(0);
+
   useEffect(() => {
     window.scrollTo(0, 0);
+    setFotoAtiva(0);
   }, [modeloId]);
 
   useEffect(() => {
@@ -125,20 +130,33 @@ const EquipamentoDetalhe = () => {
             <div className="mx-auto max-w-7xl space-y-16 lg:space-y-20">
               {/* Linha principal: galeria | título + descrição + PDF + WhatsApp */}
               <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16">
-                <div className="w-full space-y-6">
-                  {galeriaUrls[0] ? (
-                    <ImageZoom src={galeriaUrls[0]} alt={produto.nome} />
+                <div className="w-full space-y-4">
+                  {galeriaUrls[fotoAtiva] ? (
+                    <ImageZoom
+                      src={galeriaUrls[fotoAtiva]}
+                      alt={produto.nome}
+                      images={galeriaUrls.length > 1 ? galeriaUrls : undefined}
+                    />
                   ) : (
                     <div className="flex min-h-[280px] items-center justify-center rounded-xl border border-white/10 bg-white/5 text-gray-500">
                       Sem imagem principal
                     </div>
                   )}
                   {galeriaUrls.length > 1 && (
-                    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-                      {galeriaUrls.slice(1).map((url) => (
-                        <div key={url} className="overflow-hidden rounded-xl border border-white/10">
-                          <img src={url} alt="" className="h-40 w-full object-cover" loading="lazy" />
-                        </div>
+                    <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
+                      {galeriaUrls.map((url, i) => (
+                        <button
+                          key={url}
+                          type="button"
+                          onClick={() => setFotoAtiva(i)}
+                          className="overflow-hidden rounded-lg border transition-all hover:opacity-90 focus:outline-none"
+                          style={{
+                            borderColor: i === fotoAtiva ? "rgba(255,71,87,0.8)" : "rgba(255,255,255,0.1)",
+                            boxShadow: i === fotoAtiva ? "0 0 0 2px rgba(255,71,87,0.4)" : "none",
+                          }}
+                        >
+                          <img src={url} alt={`${produto.nome} — foto ${i + 1}`} className="h-20 w-full object-cover" loading="lazy" />
+                        </button>
                       ))}
                     </div>
                   )}
@@ -185,7 +203,7 @@ const EquipamentoDetalhe = () => {
                       }
                     >
                       <MessageCircle className="h-5 w-5" />
-                      Orçar pelo WhatsApp
+                      {eq.cta_detalhe_btn ?? "Orçar pelo WhatsApp"}
                     </button>
                   </div>
                 </div>
@@ -295,7 +313,7 @@ const EquipamentoDetalhe = () => {
                 Interessado no {produto.nome}?
               </h2>
               <p className="mb-8 text-lg text-gray-400">
-                Fale com nossa equipe e receba um orçamento personalizado.
+                {eq.cta_detalhe_subtitulo ?? "Fale com nossa equipe e receba um orçamento personalizado."}
               </p>
               <div className="flex justify-center">
                 <button
@@ -313,7 +331,7 @@ const EquipamentoDetalhe = () => {
                   }
                 >
                   <MessageCircle className="h-5 w-5" />
-                  Orçar pelo WhatsApp
+                  {eq.cta_detalhe_btn ?? "Orçar pelo WhatsApp"}
                 </button>
               </div>
             </div>

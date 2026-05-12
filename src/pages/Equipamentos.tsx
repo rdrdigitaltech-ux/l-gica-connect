@@ -108,9 +108,9 @@ export default function Equipamentos() {
         </div>
       </section>
 
-      <section className="py-8" style={{ background: "#12141A" }}>
+      <section className="py-4" style={{ background: "#12141A" }}>
         <div className="mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
-          <div className="mb-6 flex items-center justify-between lg:hidden">
+          <div className="mb-4 flex items-center justify-between lg:hidden">
             <h3 className="text-lg font-bold text-gray-200">
               {equipamentosFiltrados.length}{" "}
               {equipamentosFiltrados.length === 1
@@ -129,7 +129,7 @@ export default function Equipamentos() {
           </div>
 
           <div
-            className={`overflow-hidden rounded-2xl border p-6 ${
+            className={`overflow-hidden rounded-2xl border p-4 ${
               !mostrarFiltros ? "hidden lg:block" : ""
             }`}
             style={{
@@ -282,7 +282,7 @@ export default function Equipamentos() {
         />
 
         <div className="relative z-10 mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {equipamentosFiltrados.map((equipamento) => (
               <Link
                 key={equipamento.id}
@@ -290,7 +290,7 @@ export default function Equipamentos() {
                 className="block"
               >
                 <div
-                  className="group relative cursor-pointer overflow-hidden rounded-2xl border p-8 transition-all duration-500"
+                  className="group relative cursor-pointer overflow-hidden rounded-2xl border p-6 transition-all duration-500"
                   style={cardStyle}
                 >
                   <div
@@ -322,7 +322,7 @@ export default function Equipamentos() {
                         className="h-full w-auto object-contain"
                         style={{
                           filter:
-                            "drop-shadow(0 10px 30px rgba(255, 71, 87, 0.2))",
+                            "drop-shadow(0 8px 20px rgba(255, 71, 87, 0.2))",
                         }}
                       />
                     ) : (
@@ -335,14 +335,14 @@ export default function Equipamentos() {
                     )}
                   </div>
 
-                  <h3 className="relative z-10 mb-3 text-center text-xl font-bold text-gray-200">
+                  <h3 className="relative z-10 mb-2 text-center text-base font-bold text-gray-200">
                     {equipamento.nome}
                   </h3>
-                  <p className="relative z-10 text-center text-sm text-gray-400">
+                  <p className="relative z-10 text-center text-xs text-gray-400 line-clamp-2">
                     {equipamento.descricao}
                   </p>
 
-                  <div className="relative z-10 mt-4 flex items-center justify-center gap-2 text-xs font-medium text-gray-500 transition-colors group-hover:text-[#FF4757]">
+                  <div className="relative z-10 mt-3 flex items-center justify-center gap-2 text-xs font-medium text-gray-500 transition-colors group-hover:text-[#FF4757]">
                     <span>Ver Detalhes</span>
                     <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                   </div>
@@ -411,7 +411,7 @@ export default function Equipamentos() {
               boxShadow: "0 6px 20px rgba(37, 211, 102, 0.35)",
             }}
           >
-            Fale com um Especialista
+            {eq.cta_btn ?? "Fale com um Especialista"}
           </button>
         </div>
       </section>

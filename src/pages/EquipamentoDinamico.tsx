@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { ArrowLeft, MessageCircle, Info } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
-import { ImageZoom } from "@/components/ImageZoom";
 import { CardEmBreve } from "@/components/CardEmBreve";
 import { FiltroEquipamentos } from "@/components/FiltroEquipamentos";
 import {
@@ -165,60 +164,79 @@ export default function EquipamentoDinamico() {
               </p>
             </div>
           ) : modelosFiltrados.length > 0 ? (
-            <div id="grid-produtos" className="space-y-12 transition-all duration-300">
+            <div id="grid-produtos" className="flex flex-col gap-4 transition-all duration-300">
               {modelosFiltrados.map((modelo) => (
                 <div
                   key={modelo.id}
-                  className="grid grid-cols-1 items-center gap-8 rounded-2xl border p-8 lg:grid-cols-2 lg:gap-12"
+                  className="group relative flex flex-row overflow-hidden rounded-2xl border transition-all duration-300 hover:scale-[1.005]"
                   style={{
                     background: "linear-gradient(145deg, rgba(15,17,21,0.9) 0%, rgba(12,14,17,0.9) 100%)",
-                    borderColor: "rgba(255, 71, 87, 0.25)",
-                    boxShadow: "0 8px 24px rgba(0,0,0,0.4)",
+                    borderColor: "rgba(255, 71, 87, 0.22)",
+                    boxShadow: "0 4px 16px rgba(0,0,0,0.4)",
                   }}
                 >
-                  <div className="w-full">
+                  <div
+                    className="pointer-events-none absolute left-0 top-0 bottom-0 w-px opacity-60"
+                    style={{
+                      background: "linear-gradient(180deg, transparent, rgba(255,71,87,0.6), transparent)",
+                    }}
+                  />
+
+                  {/* Imagem */}
+                  <div className="flex w-48 shrink-0 items-center justify-center p-4 sm:w-56">
                     {modelo.foto_principal ? (
-                      <ImageZoom src={modelo.foto_principal} alt={modelo.nome} />
+                      <img
+                        src={modelo.foto_principal}
+                        alt={modelo.nome}
+                        className="h-full w-full object-contain"
+                        style={{ maxHeight: "160px", filter: "drop-shadow(0 4px 10px rgba(255,71,87,0.15))" }}
+                        loading="lazy"
+                      />
                     ) : (
-                      <div className="flex min-h-[200px] items-center justify-center rounded-xl border border-white/10 bg-white/5 text-gray-500">
+                      <div className="flex h-36 w-full items-center justify-center rounded-lg border border-white/10 bg-white/5 text-sm text-gray-500">
                         Sem foto
                       </div>
                     )}
                   </div>
 
-                  <div className="space-y-4">
-                    {modelo.subcategoria?.trim() && (
-                      <div
-                        className="inline-flex w-fit items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold"
-                        style={{
-                          background: "rgba(255, 71, 87, 0.15)",
-                          border: "1px solid rgba(255, 71, 87, 0.3)",
-                          color: "#FF4757",
-                        }}
-                      >
-                        {modelo.subcategoria}
-                      </div>
-                    )}
+                  {/* Separador */}
+                  <div className="w-px self-stretch shrink-0" style={{ background: "rgba(255,71,87,0.12)" }} />
 
-                    <h2 className="text-2xl font-bold text-white lg:text-3xl">
-                      {modelo.nome}
-                    </h2>
+                  {/* Conteúdo */}
+                  <div className="flex flex-1 flex-col justify-between gap-3 p-5">
+                    <div className="flex flex-col gap-2">
+                      {modelo.subcategoria?.trim() && (
+                        <span
+                          className="w-fit rounded-full px-2.5 py-0.5 text-xs font-semibold"
+                          style={{
+                            background: "rgba(255, 71, 87, 0.15)",
+                            border: "1px solid rgba(255, 71, 87, 0.3)",
+                            color: "#FF4757",
+                          }}
+                        >
+                          {modelo.subcategoria}
+                        </span>
+                      )}
 
-                    <p className="pt-1 whitespace-pre-wrap text-base leading-relaxed text-gray-400 lg:text-lg">
-                      {modelo.texto_resumido ||
-                        "Confira mais detalhes deste equipamento."}
-                    </p>
+                      <h3 className="text-base font-bold leading-snug text-white">
+                        {modelo.nome}
+                      </h3>
 
-                    <div className="flex flex-wrap gap-3 pt-2">
+                      <p className="text-sm leading-relaxed text-gray-400">
+                        {modelo.texto_resumido || "Confira mais detalhes deste equipamento."}
+                      </p>
+                    </div>
+
+                    <div className="flex flex-wrap gap-2">
                       <Link
                         to={`/equipamentos/${slug}/${modelo.id}`}
-                        className="inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+                        className="inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold text-white transition-opacity hover:opacity-90"
                         style={{
                           background: "linear-gradient(135deg, #FF4757 0%, #c9384a 100%)",
-                          boxShadow: "0 4px 14px rgba(255,71,87,0.35)",
+                          boxShadow: "0 3px 10px rgba(255,71,87,0.3)",
                         }}
                       >
-                        <Info className="h-4 w-4" />
+                        <Info className="h-3.5 w-3.5" />
                         Mais Detalhes
                       </Link>
                       <button
@@ -232,13 +250,13 @@ export default function EquipamentoDinamico() {
                             "_blank"
                           )
                         }
-                        className="inline-flex items-center gap-2 rounded-lg px-6 py-3 text-sm font-bold text-white"
+                        className="inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-bold text-white transition-opacity hover:opacity-90"
                         style={{
                           background: "linear-gradient(135deg, #25D366 0%, #128C7E 100%)",
-                          boxShadow: "0 6px 20px rgba(37,211,102,0.35)",
+                          boxShadow: "0 3px 10px rgba(37,211,102,0.3)",
                         }}
                       >
-                        <MessageCircle className="h-4 w-4" />
+                        <MessageCircle className="h-3.5 w-3.5" />
                         Orçar pelo WhatsApp
                       </button>
                     </div>

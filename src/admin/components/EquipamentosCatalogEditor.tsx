@@ -457,6 +457,7 @@ function CategoryProductsView({
         <table className="w-full text-left text-sm">
           <thead className="border-b border-gray-800 bg-gray-900/80 text-xs uppercase text-gray-500">
             <tr>
+              <th className="px-4 py-3">Ordem</th>
               <th className="px-4 py-3">Nome</th>
               <th className="px-4 py-3">Subcategoria</th>
               <th className="px-4 py-3">Ativo</th>
@@ -465,8 +466,48 @@ function CategoryProductsView({
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-800/60">
-            {prods.map((p) => (
+            {prods.map((p, idx) => (
               <tr key={p.id} className="text-gray-300">
+                <td className="px-3 py-3">
+                  <div className="flex flex-col gap-0.5">
+                    <button
+                      type="button"
+                      disabled={idx === 0}
+                      onClick={async () => {
+                        const arr = [...prods];
+                        [arr[idx - 1], arr[idx]] = [arr[idx], arr[idx - 1]];
+                        const next = catalog.map((c) =>
+                          c.id === cat.id
+                            ? { ...c, produtos: arr.map((x, i) => ({ ...x, ordem: i })) }
+                            : c
+                        );
+                        await onPersist(next);
+                      }}
+                      className="rounded border border-gray-700 p-0.5 disabled:opacity-30 hover:bg-gray-800"
+                      title="Mover para cima"
+                    >
+                      <ChevronUp className="h-3 w-3" />
+                    </button>
+                    <button
+                      type="button"
+                      disabled={idx >= prods.length - 1}
+                      onClick={async () => {
+                        const arr = [...prods];
+                        [arr[idx], arr[idx + 1]] = [arr[idx + 1], arr[idx]];
+                        const next = catalog.map((c) =>
+                          c.id === cat.id
+                            ? { ...c, produtos: arr.map((x, i) => ({ ...x, ordem: i })) }
+                            : c
+                        );
+                        await onPersist(next);
+                      }}
+                      className="rounded border border-gray-700 p-0.5 disabled:opacity-30 hover:bg-gray-800"
+                      title="Mover para baixo"
+                    >
+                      <ChevronDown className="h-3 w-3" />
+                    </button>
+                  </div>
+                </td>
                 <td className="px-4 py-3 font-medium text-white">{p.nome || "(sem nome)"}</td>
                 <td className="px-4 py-3">{p.subcategoria || "—"}</td>
                 <td className="px-4 py-3">{p.ativo !== false ? "Sim" : "Não"}</td>

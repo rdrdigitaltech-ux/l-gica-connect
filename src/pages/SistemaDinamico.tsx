@@ -28,6 +28,7 @@ import {
   Layers,
 } from "lucide-react";
 import { useSistemasExtras } from "@/lib/dynamicItems";
+import { ImageZoom } from "@/components/ImageZoom";
 
 /** Pool de ícones que rotacionam pelos cards de vantagem */
 const ICONS_POOL = [
@@ -173,7 +174,7 @@ export default function SistemaDinamico() {
                 <h2 className="mb-6 text-3xl font-extrabold text-gray-200 lg:text-4xl">
                   Como funciona?
                 </h2>
-                <p className="mb-8 text-base leading-relaxed text-gray-400 lg:text-lg">
+                <p className="mb-8 whitespace-pre-wrap text-base leading-relaxed text-gray-400 lg:text-lg">
                   {sistema.descricao || sistema.hero_subtitulo}
                 </p>
                 <button
@@ -276,7 +277,71 @@ export default function SistemaDinamico() {
         </section>
       )}
 
-      {/* ── 4. CTA FINAL ─────────────────────────────────────────────── */}
+      {/* ── 4. GALERIA DE IMAGENS ───────────────────────────────────── */}
+      {sistema.galeria && sistema.galeria.length > 0 && (
+        <section className="relative overflow-hidden py-16" style={{ background: "#0A0C10" }}>
+          <div className="relative z-10 mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
+            <h2 className="mb-8 text-center text-2xl font-extrabold text-gray-200 lg:text-3xl">
+              Imagens do Sistema
+            </h2>
+            <div className={`grid gap-4 ${sistema.galeria.length === 1 ? "grid-cols-1 max-w-2xl mx-auto" : sistema.galeria.length === 2 ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"}`}>
+              {sistema.galeria.map((url, i) => (
+                <div key={i}>
+                  <ImageZoom
+                    src={url}
+                    alt={`${sistema.nome} — imagem ${i + 1}`}
+                    images={sistema.galeria!.length > 1 ? sistema.galeria : undefined}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ── 5. BLOCOS EXTRAS (texto + imagem) ────────────────────────── */}
+      {sistema.blocos && sistema.blocos.length > 0 && (
+        <section className="relative overflow-hidden py-16" style={{ background: "#12141A" }}>
+          <div className="relative z-10 mx-auto max-w-7xl space-y-16 px-4 md:px-6 lg:px-8">
+            {[...sistema.blocos]
+              .sort((a, b) => a.ordem - b.ordem)
+              .map((bloco) => {
+                const hasImg = Boolean(bloco.imagem?.trim());
+                const hasTxt = Boolean(bloco.texto?.trim());
+                const hasTit = Boolean(bloco.titulo?.trim());
+                if (!hasImg && !hasTxt && !hasTit) return null;
+                return (
+                  <div
+                    key={bloco.id}
+                    className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-16"
+                  >
+                    <div className="w-full">
+                      {hasImg ? (
+                        <ImageZoom src={bloco.imagem.trim()} alt={bloco.titulo?.trim() || "Seção"} />
+                      ) : (
+                        <span className="hidden lg:block" aria-hidden />
+                      )}
+                    </div>
+                    <div className="flex flex-col justify-center space-y-4">
+                      {hasTit && (
+                        <h2 className="text-2xl font-bold text-white lg:text-3xl">
+                          {bloco.titulo}
+                        </h2>
+                      )}
+                      {hasTxt && (
+                        <p className="whitespace-pre-wrap text-base leading-relaxed text-gray-400 lg:text-lg">
+                          {bloco.texto}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+          </div>
+        </section>
+      )}
+
+      {/* ── 6. CTA FINAL ─────────────────────────────────────────────── */}
       <section className="relative overflow-hidden py-20" style={{ background: "#0A0C10" }}>
         <div className="relative z-10 mx-auto max-w-4xl px-4 text-center md:px-6 lg:px-8">
           <h2 className="mb-4 text-3xl font-extrabold text-white md:text-4xl">

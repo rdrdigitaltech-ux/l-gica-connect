@@ -206,8 +206,11 @@ export const defaultContent: AllContentMeta = {
   equipamentos: {
     hero_titulo:    { label: "Título da página",   value: "EQUIPAMENTOS",                                                              type: "text" },
     hero_subtitulo: { label: "Subtítulo da página", value: "Os melhores equipamentos de automação e informática. Escolhas inteligentes para o seu negócio.", type: "text" },
-    cta_titulo:     { label: "Título CTA",         value: "Precisa de orientação para escolher o equipamento ideal?",                 type: "text" },
-    cta_subtitulo:  { label: "Subtítulo CTA",       value: "Nossa equipe está pronta para ajudar você a encontrar a melhor solução para o seu negócio", type: "text" },
+    cta_titulo:         { label: "Título CTA (página /equipamentos)",        value: "Precisa de orientação para escolher o equipamento ideal?",          type: "text" },
+    cta_subtitulo:      { label: "Subtítulo CTA (página /equipamentos)",    value: "Nossa equipe está pronta para ajudar você a encontrar a melhor solução para o seu negócio", type: "text" },
+    cta_btn:            { label: "Texto do botão CTA",                      value: "Fale com um Especialista",                                          type: "text" },
+    cta_detalhe_subtitulo: { label: "Subtítulo CTA (página do produto)",   value: "Fale com nossa equipe e receba um orçamento personalizado.",         type: "text" },
+    cta_detalhe_btn:    { label: "Texto do botão na página do produto",     value: "Orçar pelo WhatsApp",                                               type: "text" },
     /* Cards das categorias vêm do catálogo hierárquico (painel Equipamentos). */
   },
 

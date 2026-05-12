@@ -15,6 +15,14 @@ import type { ModeloEquipamento } from "@/data/equipamentosDetalhados";
 
 // ─── Tipos ────────────────────────────────────────────────────────────────────
 
+export interface SistemaBloco {
+  id: string;
+  titulo: string;
+  texto: string;
+  imagem: string;
+  ordem: number;
+}
+
 export interface SistemaCard {
   id: string;
   nome: string;
@@ -28,6 +36,10 @@ export interface SistemaCard {
   hero_badge: string;
   features: string; // separadas por \n
   imagem: string;
+  /** Galeria de imagens adicionais */
+  galeria?: string[];
+  /** Seções extras com título, texto e imagem */
+  blocos?: SistemaBloco[];
 }
 
 export interface EquipamentoCategoria {

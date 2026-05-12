@@ -21,15 +21,20 @@ import {
   Save,
   RotateCcw,
   ChevronRight,
+  ChevronUp,
+  ChevronDown,
   Upload,
   Globe,
   Link as LinkIcon,
   Layers,
+  Plus,
+  Trash2,
+  X as XIcon,
 } from "lucide-react";
 import EquipamentosCatalogEditor from "@/admin/components/EquipamentosCatalogEditor";
 import { defaultContent, type ContentField } from "@/data/defaultContent";
 import { loadContent, saveContent } from "@/hooks/useSiteContent";
-import { uploadImageToStorage } from "@/lib/supabase";
+import { uploadImageToStorage, uploadCmsFileToStorage } from "@/lib/supabase";
 import { toast } from "sonner";
 import { Switch } from "@/components/ui/switch";
 import DynamicItemsPanel, { type DynamicItem, type FieldSchema } from "@/admin/components/DynamicItemsPanel";
@@ -39,7 +44,9 @@ import {
   getServicosExtras,
   saveServicosExtras,
   slugify,
+  generateId,
   type SistemaCard,
+  type SistemaBloco,
   type ServicoBloco,
 } from "@/lib/dynamicItems";
 
@@ -793,6 +800,10 @@ function DynamicItemSectionEditor({
     return arr.find((it) => it.id === itemId) ?? null;
   }, [itemId]);
 
+  const loadSistema = useCallback((): SistemaCard | null => {
+    return getSistemasExtras().find((it) => it.id === itemId) ?? null;
+  }, [itemId]);
+
   const [values, setValues] = useState<DynamicItem | null>(loadItem);
   const [modifiedFields, setModifiedFields] = useState<Set<string>>(new Set());
   const [saving, setSaving] = useState(false);
@@ -802,6 +813,14 @@ function DynamicItemSectionEditor({
   const [uploading, setUploading] = useState<Record<string, boolean>>({});
   const [urlMode, setUrlMode]     = useState<Record<string, boolean>>({});
   const fileRefs = useRef<Record<string, HTMLInputElement | null>>({});
+
+  // Galeria e blocos
+  const [galeria, setGaleria] = useState<string[]>(() => loadSistema()?.galeria ?? []);
+  const [blocos, setBlocos] = useState<SistemaBloco[]>(() => loadSistema()?.blocos ?? []);
+  const [galeriaDirty, setGaleriaDirty] = useState(false);
+  const [blocosDirty, setBlocosDirty] = useState(false);
+  const [uploadingGal, setUploadingGal] = useState(false);
+  const galRef = useRef<HTMLInputElement>(null);
 
   if (!values) {
     return (
@@ -814,7 +833,7 @@ function DynamicItemSectionEditor({
     );
   }
 
-  const isDirty = modifiedFields.size > 0;
+  const isDirty = modifiedFields.size > 0 || galeriaDirty || blocosDirty;
 
   const handleChange = (key: string, val: string) => {
     setValues((prev) => prev ? { ...prev, [key]: val } : prev);
@@ -848,11 +867,18 @@ function DynamicItemSectionEditor({
     if (!values) return;
     setSaving(true);
     try {
-      const updatedItem = { ...values, slug: values.slug || slugify(values.nome) };
-      const arr = getSistemasExtras() as unknown as DynamicItem[];
-      await saveSistemasExtras(arr.map((it) => it.id === itemId ? updatedItem as SistemaCard : it as SistemaCard));
-      originalRef.current = updatedItem;
+      const updatedItem = {
+        ...values,
+        slug: values.slug || slugify(values.nome),
+        galeria,
+        blocos: blocos.map((b, i) => ({ ...b, ordem: i })),
+      } as unknown as SistemaCard;
+      const arr = getSistemasExtras();
+      await saveSistemasExtras(arr.map((it) => it.id === itemId ? updatedItem : it));
+      originalRef.current = updatedItem as unknown as DynamicItem;
       setModifiedFields(new Set());
+      setGaleriaDirty(false);
+      setBlocosDirty(false);
       toast.success("Alterações salvas!");
     } catch {
       toast.error("Erro ao salvar.");
@@ -868,11 +894,13 @@ function DynamicItemSectionEditor({
         : "border-gray-800 focus:border-red-600/50 focus:ring-1 focus:ring-red-600/15"
     }`;
 
+  const inputBase = "w-full rounded-lg border border-gray-700/60 bg-gray-950/60 px-3 py-2 text-sm text-white outline-none focus:border-red-600/50";
+
   const textFields  = schema.filter((f) => f.type === "text" || f.type === "textarea" || f.type === "url");
   const imageFields = schema.filter((f) => f.type === "image");
 
   return (
-    <div className="space-y-5 pb-24">
+    <div className="space-y-5 pb-32">
       <div className="flex items-start gap-4">
         <button
           onClick={onBack}
@@ -934,9 +962,9 @@ function DynamicItemSectionEditor({
                     <textarea
                       value={val}
                       onChange={(e) => handleChange(field.key, e.target.value)}
-                      rows={field.key === "features" || field.key === "itens" ? 6 : 3}
+                      rows={field.key === "features" || field.key === "itens" ? 6 : 4}
                       placeholder={field.placeholder}
-                      className={`${inputClass(field.key)} resize-none`}
+                      className={`${inputClass(field.key)} resize-y`}
                     />
                   ) : (
                     <input
@@ -961,7 +989,7 @@ function DynamicItemSectionEditor({
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-purple-500/10 text-purple-400">
               <ImageIcon className="h-4 w-4" />
             </div>
-            <h3 className="font-semibold text-gray-200">Imagens</h3>
+            <h3 className="font-semibold text-gray-200">Imagem de Destaque</h3>
           </div>
           <div className="grid grid-cols-1 gap-4 p-5 sm:grid-cols-2">
             {imageFields.map((field) => {
@@ -1025,6 +1053,210 @@ function DynamicItemSectionEditor({
         </div>
       )}
 
+      {/* ── GALERIA DE IMAGENS ─────────────────────────────────────────── */}
+      <div className="overflow-hidden rounded-xl border border-gray-800/50 bg-gray-900/60">
+        <div className="flex items-center gap-2.5 border-b border-gray-800/40 px-5 py-4">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-500/10 text-indigo-400">
+            <ImageIcon className="h-4 w-4" />
+          </div>
+          <div className="flex-1">
+            <h3 className="font-semibold text-gray-200">Galeria de Imagens</h3>
+            <p className="text-xs text-gray-600">Imagens adicionais exibidas na página do sistema</p>
+          </div>
+          <button
+            type="button"
+            disabled={uploadingGal}
+            onClick={() => galRef.current?.click()}
+            className="flex items-center gap-1.5 rounded-lg bg-indigo-600/80 px-3 py-1.5 text-xs font-semibold text-white hover:bg-indigo-600 disabled:opacity-50"
+          >
+            <Plus className="h-3.5 w-3.5" />
+            {uploadingGal ? "Enviando…" : "Adicionar imagens"}
+          </button>
+          <input
+            ref={galRef}
+            type="file"
+            accept="image/*"
+            multiple
+            className="hidden"
+            onChange={async (e) => {
+              const files = e.target.files;
+              if (!files?.length) return;
+              setUploadingGal(true);
+              try {
+                const urls: string[] = [];
+                for (let i = 0; i < files.length; i++) {
+                  const url = await uploadCmsFileToStorage(files[i]);
+                  if (url) urls.push(url);
+                }
+                if (urls.length) {
+                  setGaleria((prev) => [...prev, ...urls]);
+                  setGaleriaDirty(true);
+                  toast.success(`${urls.length} imagem(ns) adicionada(s).`);
+                }
+              } finally {
+                setUploadingGal(false);
+                if (galRef.current) galRef.current.value = "";
+              }
+            }}
+          />
+        </div>
+        {galeria.length === 0 ? (
+          <div className="flex flex-col items-center justify-center gap-2 py-8 text-center">
+            <ImageIcon className="h-8 w-8 text-gray-700" />
+            <p className="text-xs text-gray-600">Nenhuma imagem na galeria. Clique em "Adicionar imagens".</p>
+          </div>
+        ) : (
+          <div className="flex flex-wrap gap-3 p-5">
+            {galeria.map((url, i) => (
+              <div key={url + i} className="group relative">
+                <img src={url} alt={`galeria ${i + 1}`} className="h-24 w-32 rounded-lg object-cover" />
+                <div className="absolute inset-0 flex items-center justify-center gap-1 rounded-lg bg-black/50 opacity-0 transition group-hover:opacity-100">
+                  <button
+                    type="button"
+                    disabled={i === 0}
+                    onClick={() => {
+                      const arr = [...galeria];
+                      [arr[i - 1], arr[i]] = [arr[i], arr[i - 1]];
+                      setGaleria(arr);
+                      setGaleriaDirty(true);
+                    }}
+                    className="rounded bg-white/20 p-1 disabled:opacity-30"
+                  >
+                    <ChevronUp className="h-3 w-3 text-white" />
+                  </button>
+                  <button
+                    type="button"
+                    disabled={i >= galeria.length - 1}
+                    onClick={() => {
+                      const arr = [...galeria];
+                      [arr[i], arr[i + 1]] = [arr[i + 1], arr[i]];
+                      setGaleria(arr);
+                      setGaleriaDirty(true);
+                    }}
+                    className="rounded bg-white/20 p-1 disabled:opacity-30"
+                  >
+                    <ChevronDown className="h-3 w-3 text-white" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setGaleria((prev) => prev.filter((_, j) => j !== i));
+                      setGaleriaDirty(true);
+                    }}
+                    className="rounded bg-red-600/80 p-1"
+                  >
+                    <Trash2 className="h-3 w-3 text-white" />
+                  </button>
+                </div>
+                <span className="absolute left-1 top-1 rounded bg-black/60 px-1.5 py-0.5 text-[10px] text-white">{i + 1}</span>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* ── SEÇÕES EXTRAS (BLOCOS) ────────────────────────────────────── */}
+      <div className="space-y-3">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-lg font-semibold text-white">Seções extras</h2>
+            <p className="text-xs text-gray-500">Blocos de texto e imagem exibidos abaixo das vantagens</p>
+          </div>
+          <button
+            type="button"
+            onClick={() => {
+              const nb: SistemaBloco = { id: generateId(), titulo: "", texto: "", imagem: "", ordem: blocos.length };
+              setBlocos((prev) => [...prev, nb]);
+              setBlocosDirty(true);
+            }}
+            className="text-sm text-red-400 hover:underline"
+          >
+            + Adicionar seção
+          </button>
+        </div>
+
+        {blocos.map((bloco, idx) => (
+          <div key={bloco.id} className="rounded-xl border border-gray-800/60 bg-gray-900/30 p-4 space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-medium text-gray-500">Seção {idx + 1}</span>
+              <div className="flex gap-1">
+                <button
+                  type="button"
+                  disabled={idx === 0}
+                  onClick={() => {
+                    const arr = [...blocos];
+                    [arr[idx - 1], arr[idx]] = [arr[idx], arr[idx - 1]];
+                    setBlocos(arr);
+                    setBlocosDirty(true);
+                  }}
+                  className="rounded border border-gray-700 p-1 disabled:opacity-30"
+                >
+                  <ChevronUp className="h-4 w-4" />
+                </button>
+                <button
+                  type="button"
+                  disabled={idx >= blocos.length - 1}
+                  onClick={() => {
+                    const arr = [...blocos];
+                    [arr[idx], arr[idx + 1]] = [arr[idx + 1], arr[idx]];
+                    setBlocos(arr);
+                    setBlocosDirty(true);
+                  }}
+                  className="rounded border border-gray-700 p-1 disabled:opacity-30"
+                >
+                  <ChevronDown className="h-4 w-4" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setBlocos((prev) => prev.filter((b) => b.id !== bloco.id));
+                    setBlocosDirty(true);
+                  }}
+                  className="rounded border border-red-900/50 p-1 text-red-400"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
+
+            <label className="block text-xs text-gray-400">
+              Título
+              <input
+                className={`mt-1 ${inputBase}`}
+                value={bloco.titulo}
+                onChange={(e) => {
+                  setBlocos((prev) => prev.map((b) => b.id === bloco.id ? { ...b, titulo: e.target.value } : b));
+                  setBlocosDirty(true);
+                }}
+              />
+            </label>
+
+            <label className="block text-xs text-gray-400">
+              Texto (suporta quebras de linha)
+              <textarea
+                className={`mt-1 ${inputBase} min-h-[100px] resize-y`}
+                value={bloco.texto}
+                onChange={(e) => {
+                  setBlocos((prev) => prev.map((b) => b.id === bloco.id ? { ...b, texto: e.target.value } : b));
+                  setBlocosDirty(true);
+                }}
+              />
+            </label>
+
+            <div className="text-xs text-gray-400">
+              Imagem (opcional)
+              <BlocoImageUpload
+                value={bloco.imagem}
+                onChange={(url) => {
+                  setBlocos((prev) => prev.map((b) => b.id === bloco.id ? { ...b, imagem: url } : b));
+                  setBlocosDirty(true);
+                }}
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+
       <div className="fixed bottom-0 left-0 right-0 z-50 lg:left-64">
         <div
           className="h-px w-full"
@@ -1038,7 +1270,7 @@ function DynamicItemSectionEditor({
           <div className="mx-auto flex max-w-5xl items-center justify-between gap-3">
             <p className="text-sm">
               {isDirty
-                ? <span className="text-amber-400">{modifiedFields.size} campo{modifiedFields.size !== 1 ? "s" : ""} alterado{modifiedFields.size !== 1 ? "s" : ""}</span>
+                ? <span className="text-amber-400">Alterações pendentes</span>
                 : <span className="text-gray-600">Sem alterações pendentes</span>
               }
             </p>
@@ -1054,6 +1286,78 @@ function DynamicItemSectionEditor({
           </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+/** Componente auxiliar para upload de imagem em bloco de sistema */
+function BlocoImageUpload({ value, onChange }: { value: string; onChange: (url: string) => void }) {
+  const ref = useRef<HTMLInputElement>(null);
+  const [uploading, setUploading] = useState(false);
+  const [showUrl, setShowUrl] = useState(false);
+
+  const inputBase = "w-full rounded-lg border border-gray-700/60 bg-gray-950/60 px-3 py-2 text-sm text-white outline-none focus:border-red-600/50";
+
+  return (
+    <div className="mt-1 space-y-2">
+      {value && (
+        <img src={value} alt="" className="h-20 rounded object-cover" />
+      )}
+      {showUrl && (
+        <input
+          type="text"
+          className={inputBase}
+          value={value}
+          placeholder="https://..."
+          onChange={(e) => onChange(e.target.value)}
+        />
+      )}
+      <div className="flex gap-2">
+        <button
+          type="button"
+          disabled={uploading}
+          onClick={() => ref.current?.click()}
+          className="flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-gray-700/60 bg-gray-900/60 px-2 py-1.5 text-xs text-gray-400 transition hover:text-gray-200 disabled:opacity-50"
+        >
+          <Upload className="h-3 w-3" />
+          {uploading ? "Enviando…" : "Upload"}
+        </button>
+        <button
+          type="button"
+          onClick={() => setShowUrl((v) => !v)}
+          className={`flex flex-1 items-center justify-center gap-1.5 rounded-lg border px-2 py-1.5 text-xs transition ${showUrl ? "border-red-600/40 bg-red-600/10 text-red-400" : "border-gray-700/60 bg-gray-900/60 text-gray-400 hover:text-gray-200"}`}
+        >
+          <Globe className="h-3 w-3" />
+          URL
+        </button>
+        {value && (
+          <button
+            type="button"
+            onClick={() => onChange("")}
+            className="rounded-lg border border-gray-700/60 bg-gray-900/60 px-2 py-1.5 text-xs text-gray-500 hover:text-red-400"
+          >
+            <XIcon className="h-3 w-3" />
+          </button>
+        )}
+      </div>
+      <input
+        ref={ref}
+        type="file"
+        accept="image/*"
+        className="hidden"
+        onChange={async (e) => {
+          const f = e.target.files?.[0];
+          if (!f) return;
+          setUploading(true);
+          try {
+            const url = await uploadCmsFileToStorage(f);
+            if (url) onChange(url);
+            else toast.error("Falha no upload.");
+          } finally {
+            setUploading(false);
+          }
+        }}
+      />
     </div>
   );
 }

@@ -77,6 +77,12 @@ const EquipamentoDetalhe = () => {
     ? `Olá! Gostaria de solicitar um orçamento para o produto: ${produto.nome}`
     : "Olá, gostaria de um orçamento!";
 
+  const ctaTitulo    = produto?.cta_titulo?.trim()    || eq.cta_detalhe_titulo    || `Interessado no ${produto?.nome}?`;
+  const ctaSubtitulo = produto?.cta_subtitulo?.trim() || eq.cta_detalhe_subtitulo || "Fale com nossa equipe e receba um orçamento personalizado.";
+  const ctaTexto     = produto?.cta_texto?.trim()     || eq.cta_detalhe_btn       || "Orçar pelo WhatsApp";
+  const ctaHref      = produto?.cta_link?.trim()
+    || `https://wa.me/5547984218275?text=${encodeURIComponent(whatsappMsg)}`;
+
   const blocosOrdenados =
     produto?.blocos?.length && produto.blocos.length > 0
       ? [...produto.blocos].sort((a, b) => a.ordem - b.ordem)
@@ -195,15 +201,10 @@ const EquipamentoDetalhe = () => {
                         background: "linear-gradient(135deg, #25D366 0%, #128C7E 100%)",
                         boxShadow: "0 6px 20px rgba(37, 211, 102, 0.35)",
                       }}
-                      onClick={() =>
-                        window.open(
-                          "https://wa.me/5547984218275?text=" + encodeURIComponent(whatsappMsg),
-                          "_blank"
-                        )
-                      }
+                      onClick={() => window.open(ctaHref, "_blank")}
                     >
                       <MessageCircle className="h-5 w-5" />
-                      {eq.cta_detalhe_btn ?? "Orçar pelo WhatsApp"}
+                      {ctaTexto}
                     </button>
                   </div>
                 </div>
@@ -310,10 +311,10 @@ const EquipamentoDetalhe = () => {
           <section className="relative overflow-hidden py-24" style={{ background: "#12141A" }}>
             <div className="relative z-10 mx-auto max-w-5xl px-4 text-center md:px-6 lg:px-8">
               <h2 className="mb-4 text-3xl font-extrabold text-gray-200 lg:text-4xl">
-                Interessado no {produto.nome}?
+                {ctaTitulo}
               </h2>
               <p className="mb-8 text-lg text-gray-400">
-                {eq.cta_detalhe_subtitulo ?? "Fale com nossa equipe e receba um orçamento personalizado."}
+                {ctaSubtitulo}
               </p>
               <div className="flex justify-center">
                 <button
@@ -323,15 +324,10 @@ const EquipamentoDetalhe = () => {
                     background: "linear-gradient(135deg, #25D366 0%, #128C7E 100%)",
                     boxShadow: "0 6px 20px rgba(37, 211, 102, 0.35)",
                   }}
-                  onClick={() =>
-                    window.open(
-                      "https://wa.me/5547984218275?text=" + encodeURIComponent(whatsappMsg),
-                      "_blank"
-                    )
-                  }
+                  onClick={() => window.open(ctaHref, "_blank")}
                 >
                   <MessageCircle className="h-5 w-5" />
-                  {eq.cta_detalhe_btn ?? "Orçar pelo WhatsApp"}
+                  {ctaTexto}
                 </button>
               </div>
             </div>

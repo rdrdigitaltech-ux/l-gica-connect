@@ -45,6 +45,10 @@ function newProduto(ordem: number): EquipamentoProdutoV2 {
     marca: "",
     video_url: "",
     pdf_url: "",
+    cta_titulo: "",
+    cta_subtitulo: "",
+    cta_texto: "",
+    cta_link: "",
     preco_venda: "",
     preco_promocional: "",
     peso: "",
@@ -81,6 +85,7 @@ export default function EquipamentosCatalogEditor({ onBack }: { onBack: () => vo
 
   const [catalog, setCatalog] = useState<EquipamentoCategoriaV2[]>(() => getEquipamentosCatalog());
   const [showEco, setShowEco] = useState(false);
+
 
   const persist = async (next: EquipamentoCategoriaV2[]) => {
     try {
@@ -619,13 +624,27 @@ function ProductEditorView({
   onPersist: (c: EquipamentoCategoriaV2[]) => Promise<void>;
 }) {
   const [, setSearchParams] = useSearchParams();
-  const [draft, setDraft] = useState<EquipamentoProdutoV2>(() => ({ ...prod, galeria: [...prod.galeria] }));
+  const withCtaDefaults = useCallback((p: EquipamentoProdutoV2): EquipamentoProdutoV2 => {
+    const defaultLink = `https://wa.me/5547984218275?text=${encodeURIComponent(
+      `Olá! Gostaria de solicitar um orçamento para o produto: ${p.nome}`
+    )}`;
+    return {
+      ...p,
+      galeria: [...p.galeria],
+      cta_titulo:    p.cta_titulo    ?? `Interessado no ${p.nome}?`,
+      cta_subtitulo: p.cta_subtitulo ?? "Fale com nossa equipe e receba um orçamento personalizado.",
+      cta_texto:     p.cta_texto     ?? "Orçar pelo WhatsApp",
+      cta_link:      p.cta_link      ?? defaultLink,
+    };
+  }, []);
+
+  const [draft, setDraft] = useState<EquipamentoProdutoV2>(() => withCtaDefaults(prod));
   const [dirty, setDirty] = useState(false);
 
   useEffect(() => {
-    setDraft({ ...prod, galeria: [...prod.galeria] });
+    setDraft(withCtaDefaults(prod));
     setDirty(false);
-  }, [prod.id, cat.id]);
+  }, [prod.id, cat.id, withCtaDefaults]);
   const mainRef = useRef<HTMLInputElement>(null);
   const galRef = useRef<HTMLInputElement>(null);
   const pdfRef = useRef<HTMLInputElement>(null);
@@ -688,7 +707,24 @@ function ProductEditorView({
       <div className="grid gap-4 rounded-xl border border-gray-800/60 bg-gray-900/40 p-5 md:grid-cols-2">
         <label className="block text-xs text-gray-400">
           Nome do produto *
-          <input className={`mt-1 ${inputClass}`} value={draft.nome} onChange={(e) => patch({ nome: e.target.value })} />
+          <input
+            className={`mt-1 ${inputClass}`}
+            value={draft.nome}
+            onChange={(e) => {
+              const newNome = e.target.value;
+              const defaultLink = (nome: string) =>
+                `https://wa.me/5547984218275?text=${encodeURIComponent(
+                  `Olá! Gostaria de solicitar um orçamento para o produto: ${nome}`
+                )}`;
+              const isDefaultLink   = draft.cta_link   === defaultLink(draft.nome);
+              const isDefaultTitulo = draft.cta_titulo === `Interessado no ${draft.nome}?`;
+              patch({
+                nome: newNome,
+                ...(isDefaultLink   ? { cta_link:   defaultLink(newNome) }            : {}),
+                ...(isDefaultTitulo ? { cta_titulo: `Interessado no ${newNome}?` }    : {}),
+              });
+            }}
+          />
         </label>
         <label className="block text-xs text-gray-400">
           Marca
@@ -781,6 +817,52 @@ function ProductEditorView({
               <FileText className="inline h-3.5 w-3.5" /> Enviar PDF
             </button>
             <input className={`flex-1 ${inputClass}`} value={draft.pdf_url} onChange={(e) => patch({ pdf_url: e.target.value })} placeholder="URL do PDF se já estiver hospedado" />
+          </div>
+        </div>
+
+        {/* ── CTA do produto ───────────────────────────────────────────── */}
+        <div className="md:col-span-2 overflow-hidden rounded-xl border border-green-900/30 bg-green-950/10">
+          <div className="flex items-center gap-2 border-b border-green-900/20 px-4 py-3">
+            <div className="h-2 w-2 rounded-full bg-green-500" />
+            <span className="text-xs font-semibold text-green-400">CTA — Chamada para Ação deste produto</span>
+          </div>
+          <div className="grid grid-cols-1 gap-3 p-4 md:grid-cols-2">
+            <label className="md:col-span-2 block text-xs text-gray-400">
+              Título (h1)
+              <input
+                className={`mt-1 ${inputClass}`}
+                value={draft.cta_titulo ?? ""}
+                onChange={(e) => patch({ cta_titulo: e.target.value })}
+                placeholder={`Interessado no ${draft.nome}?`}
+              />
+            </label>
+            <label className="md:col-span-2 block text-xs text-gray-400">
+              Subtítulo / descrição
+              <input
+                className={`mt-1 ${inputClass}`}
+                value={draft.cta_subtitulo ?? ""}
+                onChange={(e) => patch({ cta_subtitulo: e.target.value })}
+                placeholder="Fale com nossa equipe e receba um orçamento personalizado."
+              />
+            </label>
+            <label className="block text-xs text-gray-400">
+              Texto do botão
+              <input
+                className={`mt-1 ${inputClass}`}
+                value={draft.cta_texto ?? ""}
+                onChange={(e) => patch({ cta_texto: e.target.value })}
+                placeholder="Orçar pelo WhatsApp"
+              />
+            </label>
+            <label className="block text-xs text-gray-400">
+              Link do botão (URL ou WhatsApp)
+              <input
+                className={`mt-1 ${inputClass}`}
+                value={draft.cta_link ?? ""}
+                onChange={(e) => patch({ cta_link: e.target.value })}
+                placeholder="https://wa.me/5547984218275?text=..."
+              />
+            </label>
           </div>
         </div>
       </div>

@@ -189,30 +189,30 @@ const EquipamentoLeitorCodigo = () => {
         style={{ background: "#12141A" }}
       >
         <div className="relative z-10 mx-auto max-w-5xl px-4 text-center md:px-6 lg:px-8">
-          <h2 className="mb-6 text-3xl font-extrabold text-gray-200 lg:text-4xl">
-            Interessado em leitores de código?
+          <h2 className="mb-4 text-3xl font-extrabold text-gray-200 lg:text-4xl">
+            {eq.cta_cat_titulo ?? "Interessado em leitores de código?"}
           </h2>
+          {eq.cta_cat_subtitulo && (
+            <p className="mb-6 text-lg text-gray-400">{eq.cta_cat_subtitulo}</p>
+          )}
           <div className="flex justify-center">
             <button
               type="button"
               className="flex items-center justify-center gap-2 rounded-lg px-8 py-4 text-base font-bold text-white"
               style={{
-                background:
-                  "linear-gradient(135deg, #25D366 0%, #128C7E 100%)",
+                background: "linear-gradient(135deg, #25D366 0%, #128C7E 100%)",
                 boxShadow: "0 6px 20px rgba(37, 211, 102, 0.35)",
               }}
               onClick={() =>
                 window.open(
                   "https://wa.me/5547984218275?text=" +
-                    encodeURIComponent(
-                      "Olá, gostaria de um orçamento para Leitor de Código de Barras!"
-                    ),
+                    encodeURIComponent("Olá, gostaria de um orçamento para Leitor de Código de Barras!"),
                   "_blank"
                 )
               }
             >
               <MessageCircle className="h-5 w-5" />
-              Orçar pelo WhatsApp
+              {eq.cta_cat_btn ?? "Orçar pelo WhatsApp"}
             </button>
           </div>
         </div>

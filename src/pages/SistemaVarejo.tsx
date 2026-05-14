@@ -12,6 +12,8 @@ import {
   MessageCircle,
 } from "lucide-react";
 import { useSiteContent } from "@/hooks/useSiteContent";
+import { ImageZoom } from "@/components/ImageZoom";
+import type { SistemaBloco } from "@/lib/dynamicItems";
 
 const VANTAGEM_ICONS = [FileText, Tag, DollarSign, Package, Monitor, ShoppingBag];
 
@@ -25,6 +27,11 @@ export default function SistemaVarejo() {
   }));
 
   const segmentos = (cms.seg_lista ?? "").split("\n").filter(Boolean);
+
+  const blocos: SistemaBloco[] = (() => {
+    try { return JSON.parse(cms.blocos || "[]") as SistemaBloco[]; }
+    catch { return []; }
+  })().sort((a, b) => a.ordem - b.ordem);
 
   return (
     <div className="min-h-screen bg-[#0A0C10]">
@@ -64,7 +71,7 @@ export default function SistemaVarejo() {
                 toda Santa Catarina
               </span></>}
           </h1>
-          <p className="mb-8 max-w-3xl text-gray-400" style={{ fontSize: "clamp(14px, 1.5vw, 18px)" }}>
+          <p className="mb-8 max-w-3xl whitespace-pre-wrap text-gray-400" style={{ fontSize: "clamp(14px, 1.5vw, 18px)" }}>
             {cms.hero_subtitulo ?? "Automação e Controle para Comércio e Varejo"}
           </p>
         </div>
@@ -107,17 +114,17 @@ export default function SistemaVarejo() {
               <h2 className="mb-6 text-3xl font-extrabold text-gray-200 lg:text-4xl">
                 {cms.func_titulo ?? "Como funciona?"}
               </h2>
-              <p className="mb-8 text-base leading-relaxed text-gray-400 lg:text-lg">
+              <p className="mb-8 whitespace-pre-wrap text-base leading-relaxed text-gray-400 lg:text-lg">
                 {cms.func_desc ?? "Nosso software de varejo é a solução de gestão e emissão fiscal mais utilizada no micro e pequeno varejo brasileiro. Completo, estável e com o melhor custo-benefício do mercado."}
               </p>
               <button
                 type="button"
-                onClick={() => window.open("https://wa.me/5547984218275?text=" + encodeURIComponent("Olá! Tenho interesse no Sistema para Comércio & Varejo. Gostaria de falar com um especialista sobre funcionalidades, valores e implantação."), "_blank")}
+                onClick={() => window.open(cms.func_link || "https://wa.me/5547984218275?text=" + encodeURIComponent("Olá! Tenho interesse no Sistema para Comércio & Varejo. Gostaria de falar com um especialista sobre funcionalidades, valores e implantação."), "_blank")}
                 className="inline-flex items-center gap-3 rounded-lg px-8 py-3 text-sm font-bold text-white"
                 style={{ background: "linear-gradient(135deg, #25D366 0%, #128C7E 100%)", boxShadow: "0 6px 20px rgba(37, 211, 102, 0.35)" }}
               >
                 <MessageCircle className="h-5 w-5" />
-                Falar no WhatsApp
+                {cms.func_btn || "Falar no WhatsApp"}
               </button>
             </div>
           </div>
@@ -215,23 +222,62 @@ export default function SistemaVarejo() {
         </div>
       </section>
 
+      {/* BLOCOS EXTRAS */}
+      {blocos.map((sec, idx) => {
+        const hasImage = Boolean(sec.imagem?.trim());
+        const hasTitulo = Boolean(sec.titulo?.trim());
+        const hasTexto = Boolean(sec.texto?.trim());
+        if (!hasImage && !hasTitulo && !hasTexto) return null;
+        const bg = idx % 2 === 0 ? "#12141A" : "#0A0C10";
+        return (
+          <section key={sec.id} className="relative overflow-hidden py-24" style={{ background: bg }}>
+            <div
+              className="pointer-events-none absolute z-0"
+              style={{
+                width: 500, height: 500, top: "-15%",
+                [idx % 2 === 0 ? "right" : "left"]: "-10%",
+                background: "radial-gradient(circle, rgba(255, 71, 87, 0.07) 0%, transparent 70%)",
+                filter: "blur(100px)",
+              }}
+            />
+            <div className="relative z-10 mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
+              <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
+                {hasImage ? (
+                  <ImageZoom src={sec.imagem} alt={sec.titulo || "Seção"} />
+                ) : (
+                  <span className="hidden lg:block" aria-hidden />
+                )}
+                <div className="flex flex-col justify-center space-y-4">
+                  {hasTitulo && (
+                    <h2 className="text-3xl font-extrabold text-gray-200 lg:text-4xl">{sec.titulo}</h2>
+                  )}
+                  {hasTexto && (
+                    <p className="whitespace-pre-wrap text-base leading-relaxed text-gray-400 lg:text-lg">{sec.texto}</p>
+                  )}
+                </div>
+              </div>
+            </div>
+          </section>
+        );
+      })}
+
       {/* CTA */}
       <section className="relative overflow-hidden py-20" style={{ background: "#0A0C10" }}>
         <div className="relative z-10 mx-auto max-w-4xl px-4 text-center md:px-6 lg:px-8">
           <h2 className="mb-4 text-3xl font-extrabold text-white md:text-4xl">
             {cms.cta_titulo ?? "Pronto para melhorar sua empresa?"}
           </h2>
-          <p className="mb-8 text-lg text-gray-400">
+          <p className="mb-8 whitespace-pre-wrap text-lg text-gray-400">
             {cms.cta_desc ?? "Converse com nossos especialistas e descubra como nosso sistema pode transformar a gestão da sua loja."}
           </p>
           <button
             type="button"
-            onClick={() => window.open("https://wa.me/5547984218275?text=" + encodeURIComponent("Olá! Tenho interesse no Sistema de Varejo da Lógica. Gostaria de saber mais sobre funcionalidades, valores e implantação."), "_blank")}
+            onClick={() => window.open(cms.cta_link || "https://wa.me/5547984218275?text=" + encodeURIComponent("Olá! Tenho interesse no Sistema de Varejo da Lógica. Gostaria de saber mais sobre funcionalidades, valores e implantação."), "_blank")}
             className="inline-flex items-center gap-3 rounded-lg px-8 py-4 text-lg font-bold text-white"
             style={{ background: "linear-gradient(135deg, #25D366 0%, #128C7E 100%)", boxShadow: "0 8px 24px rgba(37, 211, 102, 0.4)" }}
           >
             <MessageCircle className="h-6 w-6" />
-            Falar com um especialista
+            {cms.cta_btn || "Falar com Especialista em Varejo"}
           </button>
         </div>
       </section>

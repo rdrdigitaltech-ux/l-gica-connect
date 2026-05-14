@@ -209,8 +209,14 @@ export const defaultContent: AllContentMeta = {
     cta_titulo:         { label: "Título CTA (página /equipamentos)",        value: "Precisa de orientação para escolher o equipamento ideal?",          type: "text" },
     cta_subtitulo:      { label: "Subtítulo CTA (página /equipamentos)",    value: "Nossa equipe está pronta para ajudar você a encontrar a melhor solução para o seu negócio", type: "text" },
     cta_btn:            { label: "Texto do botão CTA",                      value: "Fale com um Especialista",                                          type: "text" },
-    cta_detalhe_subtitulo: { label: "Subtítulo CTA (página do produto)",   value: "Fale com nossa equipe e receba um orçamento personalizado.",         type: "text" },
-    cta_detalhe_btn:    { label: "Texto do botão na página do produto",     value: "Orçar pelo WhatsApp",                                               type: "text" },
+    // CTA da página de categoria (ex: /equipamentos/balancas)
+    cta_cat_titulo:     { label: "CTA Categoria — Título",                  value: "Interessado nesta linha de equipamentos?",                          type: "text" },
+    cta_cat_subtitulo:  { label: "CTA Categoria — Subtítulo (opcional)",    value: "",                                                                  type: "text" },
+    cta_cat_btn:        { label: "CTA Categoria — Texto do botão",          value: "Orçar pelo WhatsApp",                                               type: "text" },
+    // CTA da página do produto específico (ex: /equipamentos/balancas/toledo-prix-3-fit)
+    cta_detalhe_titulo: { label: "CTA Produto — Título (vazio = usa nome do produto)", value: "",                                                        type: "text" },
+    cta_detalhe_subtitulo: { label: "CTA Produto — Subtítulo",             value: "Fale com nossa equipe e receba um orçamento personalizado.",         type: "text" },
+    cta_detalhe_btn:    { label: "CTA Produto — Texto do botão",            value: "Orçar pelo WhatsApp",                                               type: "text" },
     /* Cards das categorias vêm do catálogo hierárquico (painel Equipamentos). */
   },
 
@@ -267,6 +273,10 @@ export const defaultContent: AllContentMeta = {
     seg_imagem: { label: "Imagem seção segmentos", value: "/img/imagem-varejo.jpg", type: "image_url" },
     cta_titulo: { label: "Título CTA final", value: "Pronto para melhorar sua empresa?", type: "text" },
     cta_desc:   { label: "Descrição CTA final", value: "Converse com nossos especialistas e descubra como nosso sistema pode transformar a gestão da sua loja.", type: "text" },
+    func_btn:   { label: "'Como funciona' — Texto do botão", value: "Falar no WhatsApp", type: "text" },
+    func_link:  { label: "'Como funciona' — Link do botão", value: "https://wa.me/5547984218275?text=Olá!%20Tenho%20interesse%20no%20Sistema%20para%20Comércio%20%26%20Varejo.%20Gostaria%20de%20falar%20com%20um%20especialista%20sobre%20funcionalidades%2C%20valores%20e%20implantação.", type: "text" },
+    cta_btn:    { label: "CTA final — Texto do botão", value: "Falar com Especialista em Varejo", type: "text" },
+    cta_link:   { label: "CTA final — Link do botão", value: "https://wa.me/5547984218275?text=Olá!%20Tenho%20interesse%20no%20Sistema%20de%20Varejo%20da%20Lógica.%20Gostaria%20de%20saber%20mais%20sobre%20funcionalidades%2C%20valores%20e%20implantação.", type: "text" },
   },
 
   // ── PÁGINA SISTEMA GASTRONOMIA ────────────────────────────────────────────
@@ -295,6 +305,10 @@ export const defaultContent: AllContentMeta = {
     seg_imagem: { label: "Imagem seção segmentos", value: "/img/gastronomia-segmentos.webp", type: "image_url" },
     cta_titulo: { label: "Título CTA final", value: "Pronto para transformar seu negócio?", type: "text" },
     cta_desc:   { label: "Descrição CTA final", value: "Fale com nossa equipe e descubra como simplificar a gestão do seu restaurante.", type: "text" },
+    func_btn:   { label: "'Como funciona' — Texto do botão", value: "Falar no WhatsApp", type: "text" },
+    func_link:  { label: "'Como funciona' — Link do botão", value: "https://wa.me/5547984218275?text=Olá!%20Tenho%20interesse%20no%20Sistema%20para%20Gastronomia%20(Bares%20%26%20Restaurantes).%20Gostaria%20de%20falar%20com%20um%20especialista%20sobre%20funcionalidades%2C%20valores%20e%20implantação.", type: "text" },
+    cta_btn:    { label: "CTA final — Texto do botão", value: "Falar com Especialista em Gastronomia", type: "text" },
+    cta_link:   { label: "CTA final — Link do botão", value: "https://wa.me/5547984218275?text=Olá!%20Tenho%20interesse%20no%20Sistema%20para%20Bares%20e%20Restaurantes%20da%20Lógica.%20Gostaria%20de%20conhecer%20as%20funcionalidades%20específicas%20para%20gastronomia%2C%20valores%20e%20demonstração.", type: "text" },
   },
 
   // ── PÁGINA SISTEMA MULTILOJA ──────────────────────────────────────────────
@@ -323,6 +337,10 @@ export const defaultContent: AllContentMeta = {
     seg_imagem: { label: "Imagem seção segmentos", value: "/img/shopping-erp.webp", type: "image_url" },
     cta_titulo: { label: "Título CTA final", value: "Pronto para expandir sua empresa?", type: "text" },
     cta_desc:   { label: "Descrição CTA final", value: "Converse com nossos especialistas e descubra como nosso sistema pode centralizar a gestão de suas lojas.", type: "text" },
+    func_btn:   { label: "'Como funciona' — Texto do botão", value: "Falar no WhatsApp", type: "text" },
+    func_link:  { label: "'Como funciona' — Link do botão", value: "https://wa.me/5547984218275?text=Olá!%20Tenho%20interesse%20no%20Sistema%20para%20Supermercados%20%26%20Multilojas.%20Gostaria%20de%20falar%20com%20um%20especialista%20sobre%20funcionalidades%2C%20valores%20e%20implantação.", type: "text" },
+    cta_btn:    { label: "CTA final — Texto do botão", value: "Falar com Especialista em Multiloja", type: "text" },
+    cta_link:   { label: "CTA final — Link do botão", value: "https://wa.me/5547984218275?text=Olá!%20Tenho%20interesse%20no%20Sistema%20Multiloja%20da%20Lógica.%20Gostaria%20de%20saber%20mais%20sobre%20funcionalidades%2C%20valores%20e%20implantação.", type: "text" },
   },
 
   // ── PÁGINA SISTEMA TRATAMENTO DE PONTO ───────────────────────────────────
@@ -360,6 +378,8 @@ export const defaultContent: AllContentMeta = {
     b4_desc:   { label: "Benefício 4 — Descrição", value: "Evite cálculos manuais e exporte informações prontas para a folha de pagamento.", type: "text" },
     cta_titulo: { label: "Título CTA final", value: "Quer automatizar o fechamento do ponto?", type: "text" },
     cta_desc:   { label: "Descrição CTA final", value: "A Lógica comercializa e implanta soluções de tratamento de ponto com foco em resultado, conformidade e suporte de verdade.", type: "text" },
+    cta_btn:    { label: "CTA final — Texto do botão", value: "Falar com um Especialista", type: "text" },
+    cta_link:   { label: "CTA final — Link do botão", value: "https://wa.me/5547984218275?text=Olá!%20Tenho%20interesse%20no%20Sistema%20de%20Tratamento%20de%20Ponto%20da%20Lógica.%20Gostaria%20de%20saber%20mais%20sobre%20funcionalidades%2C%20valores%20e%20implantação.", type: "text" },
     // Galeria de imagens do sistema
     galeria_titulo: { label: "Galeria — Título da seção", value: "Conheça o Sistema", type: "text" },
     img1: { label: "Galeria — Imagem 1", value: "", type: "image_url" },
@@ -414,6 +434,8 @@ export const defaultContent: AllContentMeta = {
     ad4_depois: { label: "Antes x Depois 4 — Depois", value: "Decisões baseadas em dados reais", type: "text" },
     cta_titulo: { label: "Título CTA final", value: "Pronto para organizar seu atendimento?", type: "text" },
     cta_desc:   { label: "Descrição CTA final", value: "A Lógica comercializa e implanta o Lógica.OnDesk com suporte completo e treinamento da equipe.", type: "text" },
+    cta_btn:    { label: "CTA final — Texto do botão", value: "Quero conhecer o OnDesk", type: "text" },
+    cta_link:   { label: "CTA final — Link do botão", value: "https://wa.me/5547984218275?text=Olá!%20Tenho%20interesse%20no%20Lógica.OnDesk.%20Gostaria%20de%20saber%20mais%20sobre%20funcionalidades%2C%20valores%20e%20implantação.", type: "text" },
     // Galeria de imagens do sistema
     galeria_titulo: { label: "Galeria — Título da seção", value: "Conheça o Sistema", type: "text" },
     img1: { label: "Galeria — Imagem 1", value: "", type: "image_url" },

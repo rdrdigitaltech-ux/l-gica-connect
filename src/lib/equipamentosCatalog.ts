@@ -32,6 +32,12 @@ export interface EquipamentoProdutoV2 {
   marca: string;
   video_url: string;
   pdf_url: string;
+  /** CTA personalizado para este produto */
+  cta_titulo?: string;
+  cta_subtitulo?: string;
+  cta_texto?: string;
+  /** Link do CTA (URL ou WhatsApp). Vazio = usa o padrão WhatsApp */
+  cta_link?: string;
   /** Reservado e-commerce futuro */
   preco_venda: string;
   preco_promocional: string;

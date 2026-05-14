@@ -355,10 +355,11 @@ export default function SistemaDinamico() {
               type="button"
               onClick={() =>
                 window.open(
-                  "https://wa.me/5547984218275?text=" +
-                    encodeURIComponent(
-                      `Olá! Tenho interesse no sistema ${sistema.nome} da Lógica. Gostaria de saber mais sobre funcionalidades, valores e implantação.`
-                    ),
+                  sistema.cta_link ||
+                    "https://wa.me/5547984218275?text=" +
+                      encodeURIComponent(
+                        `Olá! Tenho interesse no sistema ${sistema.nome} da Lógica. Gostaria de saber mais sobre funcionalidades, valores e implantação.`
+                      ),
                   "_blank"
                 )
               }
@@ -369,7 +370,7 @@ export default function SistemaDinamico() {
               }}
             >
               <MessageCircle className="h-6 w-6" />
-              Falar com um especialista
+              {sistema.cta_btn || "Falar com um especialista"}
             </button>
             <Link
               to="/sistemas"

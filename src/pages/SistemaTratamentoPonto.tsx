@@ -1,5 +1,7 @@
 import { useEffect } from "react";
 import { useSiteContent } from "@/hooks/useSiteContent";
+import { ImageZoom } from "@/components/ImageZoom";
+import type { SistemaBloco } from "@/lib/dynamicItems";
 import { Link } from "react-router-dom";
 import {
   ArrowLeft,
@@ -18,71 +20,8 @@ import {
 
 const ACCENT = "#FF4757";
 
-const funcionalidades = [
-  {
-    icon: Calculator,
-    title: "Apuração Automática de Ponto",
-    desc: "Cálculo automático de horas trabalhadas, extras, faltas e atrasos com precisão e consistência.",
-  },
-  {
-    icon: CalendarClock,
-    title: "Gestão de Jornadas",
-    desc: "Controle de escalas, turnos e horários flexíveis, com parametrizações adaptadas à sua operação.",
-  },
-  {
-    icon: BarChart3,
-    title: "Relatórios Gerenciais",
-    desc: "Indicadores e visões consolidadas para produtividade, absenteísmo, horas extras e tendências.",
-  },
-  {
-    icon: FileUp,
-    title: "Integração com Folha",
-    desc: "Exportação de dados para sistemas de folha de pagamento, reduzindo retrabalho e inconsistências.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Conformidade Legal",
-    desc: "Apoio à conformidade com a Portaria 671 e rotinas do departamento pessoal, com trilhas e relatórios.",
-  },
-  {
-    icon: FileWarning,
-    title: "Tratamento de Exceções",
-    desc: "Gestão de atestados, férias, folgas e justificativas com fluxo de validação e histórico.",
-  },
-  {
-    icon: Smartphone,
-    title: "Acesso Web e Mobile",
-    desc: "Gestores e colaboradores acessam de qualquer lugar para consultas, ajustes e aprovações.",
-  },
-  {
-    icon: Timer,
-    title: "Banco de Horas",
-    desc: "Controle de banco de horas positivo e negativo com regras claras e visibilidade por período.",
-  },
-] as const;
-
-const beneficios = [
-  {
-    icon: Clock,
-    title: "Fechamento muito mais rápido",
-    desc: "Reduza drasticamente o tempo de fechamento do ponto com apuração automatizada.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Mais segurança e conformidade",
-    desc: "Padronize rotinas e tenha rastreabilidade para auditorias e conferências internas.",
-  },
-  {
-    icon: BarChart3,
-    title: "Decisões com dados",
-    desc: "Acompanhe indicadores para agir rápido em atrasos, faltas e gargalos operacionais.",
-  },
-  {
-    icon: FileUp,
-    title: "Menos retrabalho no RH",
-    desc: "Evite cálculos manuais e exporte informações prontas para a folha de pagamento.",
-  },
-] as const;
+const FUNC_ICONS = [Calculator, CalendarClock, BarChart3, FileUp, ShieldCheck, FileWarning, Smartphone, Timer];
+const BEN_ICONS  = [Clock, ShieldCheck, BarChart3, FileUp];
 
 export default function SistemaTratamentoPonto() {
   const { content: cms } = useSiteContent("sistema_ponto");
@@ -91,8 +30,25 @@ export default function SistemaTratamentoPonto() {
     window.scrollTo(0, 0);
   }, []);
 
+  const funcionalidades = [1, 2, 3, 4, 5, 6, 7, 8].map((n, i) => ({
+    icon: FUNC_ICONS[i],
+    title: cms[`f${n}_titulo`] ?? "",
+    desc:  cms[`f${n}_desc`]  ?? "",
+  }));
+
+  const beneficios = [1, 2, 3, 4].map((n, i) => ({
+    icon: BEN_ICONS[i],
+    title: cms[`b${n}_titulo`] ?? "",
+    desc:  cms[`b${n}_desc`]  ?? "",
+  }));
+
   const whatsappText =
     "Olá! Tenho interesse no Sistema de Tratamento de Ponto. Gostaria de falar com um especialista sobre funcionalidades, valores e implantação.";
+
+  const blocos: SistemaBloco[] = (() => {
+    try { return JSON.parse(cms.blocos || "[]") as SistemaBloco[]; }
+    catch { return []; }
+  })().sort((a, b) => a.ordem - b.ordem);
 
   return (
     <div className="min-h-screen bg-[#0A0C10]">
@@ -149,11 +105,11 @@ export default function SistemaTratamentoPonto() {
             }}
           >
             <Clock className="h-4 w-4" style={{ color: ACCENT }} />
-            <span
+              <span
               className="text-xs font-bold uppercase tracking-wider"
               style={{ color: "rgba(255, 255, 255, 0.92)" }}
             >
-              Sistema de Tratamento de Ponto
+              {cms.hero_badge ?? "Sistema de Tratamento de Ponto"}
             </span>
           </div>
 
@@ -161,17 +117,14 @@ export default function SistemaTratamentoPonto() {
             className="mb-6 font-extrabold leading-tight text-gray-200"
             style={{ fontSize: "clamp(28px, 4vw, 52px)" }}
           >
-            Sistema de controle de ponto para RH
+            {cms.hero_titulo ?? "Sistema de controle de ponto para RH"}
           </h1>
 
           <p
-            className="mb-10 max-w-3xl text-gray-300/80"
+            className="mb-10 max-w-3xl whitespace-pre-wrap text-gray-300/80"
             style={{ fontSize: "clamp(14px, 1.6vw, 18px)" }}
           >
-            Sistema profissional de tratamento de ponto que automatiza a gestão
-            de jornadas, reduz erros e reforça a conformidade com a legislação
-            trabalhista. Relatórios inteligentes e integração com folha de
-            pagamento.
+            {cms.hero_subtitulo ?? "Sistema profissional de tratamento de ponto que automatiza a gestão de jornadas, reduz erros e reforça a conformidade com a legislação trabalhista. Relatórios inteligentes e integração com folha de pagamento."}
           </p>
 
           <button
@@ -270,13 +223,10 @@ export default function SistemaTratamentoPonto() {
         <div className="mx-auto max-w-7xl">
           <div className="mb-14 text-center">
             <h2 className="mb-4 text-3xl font-extrabold text-gray-200 lg:text-4xl">
-              Funcionalidades principais
+              {cms.func_secao_titulo ?? "Funcionalidades principais"}
             </h2>
-            <p
-              className="mx-auto max-w-3xl text-base text-gray-400 lg:text-lg"
-            >
-              Tudo o que você precisa para uma apuração completa e uma rotina de
-              RH mais eficiente.
+            <p className="mx-auto max-w-3xl whitespace-pre-wrap text-base text-gray-400 lg:text-lg">
+              {cms.func_secao_desc ?? "Tudo o que você precisa para uma apuração completa e uma rotina de RH mais eficiente."}
             </p>
           </div>
 
@@ -329,10 +279,10 @@ export default function SistemaTratamentoPonto() {
         <div className="mx-auto max-w-7xl">
           <div className="mb-14 text-center">
             <h2 className="mb-4 text-3xl font-extrabold text-gray-200 lg:text-4xl">
-              Benefícios reais para o RH
+              {cms.ben_secao_titulo ?? "Benefícios reais para o RH"}
             </h2>
-            <p className="mx-auto max-w-3xl text-base text-gray-400 lg:text-lg">
-              Menos tempo com planilhas, mais controle e mais previsibilidade.
+            <p className="mx-auto max-w-3xl whitespace-pre-wrap text-base text-gray-400 lg:text-lg">
+              {cms.ben_secao_desc ?? "Menos tempo com planilhas, mais controle e mais previsibilidade."}
             </p>
           </div>
 
@@ -361,6 +311,45 @@ export default function SistemaTratamentoPonto() {
         </div>
       </section>
 
+      {/* BLOCOS EXTRAS */}
+      {blocos.map((sec, idx) => {
+        const hasImage = Boolean(sec.imagem?.trim());
+        const hasTitulo = Boolean(sec.titulo?.trim());
+        const hasTexto = Boolean(sec.texto?.trim());
+        if (!hasImage && !hasTitulo && !hasTexto) return null;
+        const bg = idx % 2 === 0 ? "#12141A" : "#0A0C10";
+        return (
+          <section key={sec.id} className="relative overflow-hidden py-24" style={{ background: bg }}>
+            <div
+              className="pointer-events-none absolute z-0"
+              style={{
+                width: 500, height: 500, top: "-15%",
+                [idx % 2 === 0 ? "right" : "left"]: "-10%",
+                background: "radial-gradient(circle, rgba(255, 71, 87, 0.07) 0%, transparent 70%)",
+                filter: "blur(100px)",
+              }}
+            />
+            <div className="relative z-10 mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
+              <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
+                {hasImage ? (
+                  <ImageZoom src={sec.imagem} alt={sec.titulo || "Seção"} />
+                ) : (
+                  <span className="hidden lg:block" aria-hidden />
+                )}
+                <div className="flex flex-col justify-center space-y-4">
+                  {hasTitulo && (
+                    <h2 className="text-3xl font-extrabold text-gray-200 lg:text-4xl">{sec.titulo}</h2>
+                  )}
+                  {hasTexto && (
+                    <p className="whitespace-pre-wrap text-base leading-relaxed text-gray-400 lg:text-lg">{sec.texto}</p>
+                  )}
+                </div>
+              </div>
+            </div>
+          </section>
+        );
+      })}
+
       {/* CTA FINAL */}
       <section
         className="relative overflow-hidden py-20"
@@ -370,18 +359,16 @@ export default function SistemaTratamentoPonto() {
       >
         <div className="relative z-10 mx-auto max-w-4xl px-4 text-center md:px-6 lg:px-8">
           <h2 className="mb-4 text-3xl font-extrabold text-white md:text-4xl">
-            Quer automatizar o fechamento do ponto?
+            {cms.cta_titulo ?? "Quer automatizar o fechamento do ponto?"}
           </h2>
-          <p className="mb-8 text-lg text-gray-400">
-            A Lógica comercializa e implanta soluções de tratamento de ponto com
-            foco em resultado, conformidade e suporte de verdade.
+          <p className="mb-8 whitespace-pre-wrap text-lg text-gray-400">
+            {cms.cta_desc ?? "A Lógica comercializa e implanta soluções de tratamento de ponto com foco em resultado, conformidade e suporte de verdade."}
           </p>
           <button
             type="button"
             onClick={() =>
               window.open(
-                "https://wa.me/5547984218275?text=" +
-                  encodeURIComponent(whatsappText),
+                cms.cta_link || "https://wa.me/5547984218275?text=" + encodeURIComponent(whatsappText),
                 "_blank"
               )
             }
@@ -392,7 +379,7 @@ export default function SistemaTratamentoPonto() {
             }}
           >
             <MessageCircle className="h-6 w-6" />
-            Falar no WhatsApp
+            {cms.cta_btn || "Falar com um Especialista"}
           </button>
         </div>
       </section>

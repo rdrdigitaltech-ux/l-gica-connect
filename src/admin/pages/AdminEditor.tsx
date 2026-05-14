@@ -534,6 +534,8 @@ const SCHEMA_SISTEMA: FieldSchema[] = [
   { key: "hero_subtitulo", label: "Subtítulo / introdução",   type: "textarea", placeholder: "Texto introdutório da página" },
   { key: "features",       label: "Vantagens / Funcionalidades", type: "textarea", placeholder: "Uma vantagem por linha. Ex:\nGestão de estoque\nEmissão de NF-e\nRelógio de ponto", hint: "Cada linha vira um card de vantagem na página do sistema." },
   { key: "imagem",         label: "Imagem de destaque",       type: "image" },
+  { key: "cta_btn",        label: "CTA final — Texto do botão", type: "text",   placeholder: "Ex: Falar com um Especialista" },
+  { key: "cta_link",       label: "CTA final — Link do botão",  type: "text",   placeholder: "https://wa.me/5547984218275?text=...", hint: "URL completa ou link do WhatsApp. Deixe vazio para usar o WhatsApp padrão." },
 ];
 
 const SCHEMA_SERVICO: FieldSchema[] = [
@@ -557,6 +559,12 @@ function SectionEditor({
   const fields = defaultContent[section] ?? {};
   const Icon = meta.icon;
 
+  const STATIC_SISTEMA_SECTIONS = [
+    "sistema_varejo", "sistema_gastronomia", "sistema_multiloja",
+    "sistema_ponto", "sistema_ondesk",
+  ];
+  const isStaticSistema = STATIC_SISTEMA_SECTIONS.includes(section);
+
   const [values, setValues] = useState<Record<string, string>>(() => {
     const saved = loadContent();
     return { ...getSectionDefaults(section), ...(saved[section] ?? {}) };
@@ -564,6 +572,14 @@ function SectionEditor({
 
   const [modifiedFields, setModifiedFields] = useState<Set<string>>(new Set());
   const [saving, setSaving] = useState(false);
+
+  // Blocos state for static sistema sections
+  const [blocos, setBlocos] = useState<SistemaBloco[]>(() => {
+    try {
+      const saved = loadContent();
+      return JSON.parse((saved[section] ?? {}).blocos || "[]") as SistemaBloco[];
+    } catch { return []; }
+  });
 
   const originalRef = useRef<Record<string, string> | null>(null);
   if (originalRef.current === null) {
@@ -589,11 +605,16 @@ function SectionEditor({
     []
   );
 
+  const patchBlocos = useCallback((newBlocos: SistemaBloco[]) => {
+    setBlocos(newBlocos);
+    handleChange("blocos", JSON.stringify(newBlocos));
+  }, [handleChange]);
+
   const handleSave = async () => {
     setSaving(true);
     try {
       const content = loadContent();
-      content[section] = { ...(content[section] ?? {}), ...values };
+      content[section] = { ...(content[section] ?? {}), ...values, ...(isStaticSistema ? { blocos: JSON.stringify(blocos) } : {}) };
       await saveContent(content);
       originalRef.current = { ...values };
       setModifiedFields(new Set());
@@ -725,6 +746,57 @@ function SectionEditor({
           addLabel="+ Novo Serviço"
           emptyState="Nenhum serviço extra cadastrado. Adicione quando a Lógica oferecer um novo serviço."
         />
+      )}
+
+      {/* ── Painel de Blocos para páginas de sistema estáticas ─────── */}
+      {isStaticSistema && (
+        <div className="overflow-hidden rounded-2xl border border-gray-800/60 bg-gray-900/20">
+          <div className="flex items-center justify-between border-b border-gray-800/60 px-5 py-4">
+            <div className="flex items-center gap-3">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg" style={{ background: "rgba(255,71,87,0.12)" }}>
+                <Layers className="h-4 w-4 text-[#FF4757]" />
+              </div>
+              <div>
+                <h3 className="text-sm font-semibold text-gray-200">Seções Extras (Blocos)</h3>
+                <p className="text-xs text-gray-500">Adicione seções com imagem e texto que aparecem antes do CTA final</p>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={() => patchBlocos([...blocos, { id: generateId(), titulo: "", texto: "", imagem: "", ordem: blocos.length }])}
+              className="flex items-center gap-1.5 rounded-lg border border-red-900/40 px-3 py-1.5 text-xs font-medium text-red-400 transition-colors hover:border-red-700/60 hover:text-red-300"
+            >
+              <Plus className="h-3.5 w-3.5" />
+              Adicionar bloco
+            </button>
+          </div>
+
+          {blocos.length === 0 ? (
+            <div className="px-5 py-10 text-center">
+              <p className="text-sm text-gray-600">Nenhum bloco ainda. Clique em "Adicionar bloco" para criar uma seção com imagem e texto.</p>
+            </div>
+          ) : (
+            <div className="space-y-4 p-5">
+              {[...blocos].sort((a, b) => a.ordem - b.ordem).map((b, idx) => (
+                <SistemaBlocoRow
+                  key={b.id}
+                  b={b}
+                  idx={idx}
+                  total={blocos.length}
+                  onChange={(nb) => patchBlocos(blocos.map((x) => (x.id === b.id ? nb : x)))}
+                  onMove={(dir) => {
+                    const arr = [...blocos].sort((a, x) => a.ordem - x.ordem);
+                    const j = idx + dir;
+                    if (j < 0 || j >= arr.length) return;
+                    [arr[idx], arr[j]] = [arr[j], arr[idx]];
+                    patchBlocos(arr.map((x, i) => ({ ...x, ordem: i })));
+                  }}
+                  onRemove={() => patchBlocos(blocos.filter((x) => x.id !== b.id).map((x, i) => ({ ...x, ordem: i })))}
+                />
+              ))}
+            </div>
+          )}
+        </div>
       )}
 
       {/* Sticky save bar */}
@@ -1401,4 +1473,87 @@ export default function AdminEditor() {
   }
 
   return <SectionGrid onSelect={handleSelect} />;
+}
+
+// ─── BlocoRow para seções de sistema estáticas ────────────────────────────────
+
+function SistemaBlocoRow({
+  b, idx, total, onChange, onMove, onRemove,
+}: {
+  b: SistemaBloco;
+  idx: number;
+  total: number;
+  onChange: (b: SistemaBloco) => void;
+  onMove: (dir: number) => void;
+  onRemove: () => void;
+}) {
+  const imgRef = useRef<HTMLInputElement>(null);
+  const [uploading, setUploading] = useState(false);
+
+  const inputCls =
+    "w-full rounded-lg border border-gray-700/60 bg-gray-900/60 px-3 py-2 text-sm text-gray-200 placeholder-gray-600 focus:border-red-700/60 focus:outline-none focus:ring-1 focus:ring-red-700/40";
+
+  return (
+    <div className="rounded-xl border border-gray-800/60 bg-gray-900/30 p-4">
+      <div className="mb-3 flex items-center justify-between">
+        <span className="text-xs font-semibold text-gray-400">Bloco {idx + 1}</span>
+        <div className="flex items-center gap-1">
+          <button type="button" disabled={idx === 0} onClick={() => onMove(-1)}
+            className="rounded border border-gray-700/60 p-1 text-gray-400 disabled:opacity-30 hover:border-gray-600 hover:text-gray-200">
+            <ChevronUp className="h-4 w-4" />
+          </button>
+          <button type="button" disabled={idx >= total - 1} onClick={() => onMove(1)}
+            className="rounded border border-gray-700/60 p-1 text-gray-400 disabled:opacity-30 hover:border-gray-600 hover:text-gray-200">
+            <ChevronDown className="h-4 w-4" />
+          </button>
+          <button type="button" onClick={onRemove}
+            className="rounded border border-red-900/50 p-1 text-red-400 hover:border-red-700/60 hover:text-red-300">
+            <Trash2 className="h-4 w-4" />
+          </button>
+        </div>
+      </div>
+
+      <label className="mb-2 block text-xs text-gray-400">
+        Título
+        <input className={`mt-1 ${inputCls}`} value={b.titulo}
+          onChange={(e) => onChange({ ...b, titulo: e.target.value })}
+          placeholder="Ex: Por que escolher nosso sistema?" />
+      </label>
+
+      <label className="mb-3 block text-xs text-gray-400">
+        Texto / Descrição
+        <textarea className={`mt-1 ${inputCls} min-h-[80px] resize-y`} value={b.texto}
+          onChange={(e) => onChange({ ...b, texto: e.target.value })}
+          placeholder="Descreva o conteúdo desta seção..." />
+      </label>
+
+      <div className="text-xs text-gray-400">
+        Imagem (opcional)
+        <input ref={imgRef} type="file" accept="image/*" className="hidden"
+          onChange={async (e) => {
+            const f = e.target.files?.[0];
+            if (!f) return;
+            setUploading(true);
+            try {
+              const url = await uploadCmsFileToStorage(f);
+              if (url) onChange({ ...b, imagem: url });
+            } finally { setUploading(false); }
+          }} />
+        <div className="mt-1 flex gap-2">
+          <button type="button" onClick={() => imgRef.current?.click()}
+            disabled={uploading}
+            className="flex items-center gap-1.5 rounded-lg border border-gray-700/60 px-3 py-1.5 text-xs text-gray-400 hover:border-gray-600 hover:text-gray-200 disabled:opacity-50">
+            <Upload className="h-3.5 w-3.5" />
+            {uploading ? "Enviando…" : "Upload"}
+          </button>
+          <input className={`flex-1 ${inputCls}`} value={b.imagem}
+            onChange={(e) => onChange({ ...b, imagem: e.target.value })}
+            placeholder="Ou cole a URL da imagem" />
+        </div>
+        {b.imagem && (
+          <img src={b.imagem} alt="" className="mt-2 h-24 w-full rounded-lg object-cover" />
+        )}
+      </div>
+    </div>
+  );
 }

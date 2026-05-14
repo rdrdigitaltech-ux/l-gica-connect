@@ -40,6 +40,10 @@ export interface SistemaCard {
   galeria?: string[];
   /** Seções extras com título, texto e imagem */
   blocos?: SistemaBloco[];
+  /** CTA personalizado */
+  cta_btn?: string;
+  /** Link do CTA. Vazio = usa WhatsApp padrão */
+  cta_link?: string;
 }
 
 export interface EquipamentoCategoria {

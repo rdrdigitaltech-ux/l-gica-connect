@@ -1,5 +1,7 @@
 import { useEffect } from "react";
 import { useSiteContent } from "@/hooks/useSiteContent";
+import { ImageZoom } from "@/components/ImageZoom";
+import type { SistemaBloco } from "@/lib/dynamicItems";
 import { Link } from "react-router-dom";
 import {
   ArrowLeft,
@@ -20,74 +22,7 @@ import {
 
 const ACCENT = "#FF4757";
 
-const funcionalidades = [
-  {
-    icon: LayoutDashboard,
-    title: "Central Unificada",
-    desc: "Todos os atendimentos do WhatsApp em uma única interface organizada e simples de operar.",
-  },
-  {
-    icon: LineChart,
-    title: "Métricas em Tempo Real",
-    desc: "Acompanhe tempo de resposta, volume de atendimentos e performance do time ao vivo.",
-  },
-  {
-    icon: Users,
-    title: "Gestão de Equipe",
-    desc: "Distribua atendimentos, monitore performance e identifique gargalos com clareza.",
-  },
-  {
-    icon: Bot,
-    title: "Automação Inteligente",
-    desc: "Respostas rápidas, tags e fluxos de atendimento para padronizar qualidade e velocidade.",
-  },
-  {
-    icon: History,
-    title: "Histórico Completo",
-    desc: "Converse com contexto: histórico pesquisável e organizado para cada cliente e atendimento.",
-  },
-  {
-    icon: FileChartColumn,
-    title: "Relatórios Avançados",
-    desc: "Dashboards e relatórios para decisões baseadas em dados, não em achismos.",
-  },
-  {
-    icon: Headset,
-    title: "Operação com Controle",
-    desc: "Visão do que está acontecendo agora: filas, responsáveis, prioridades e status.",
-  },
-  {
-    icon: UserPlus,
-    title: "Múltiplos Atendentes",
-    desc: "Vários atendentes trabalhando ao mesmo tempo com rastreabilidade e controle de distribuição.",
-  },
-] as const;
-
-const beneficios = [
-  { value: "40%", title: "Mais conversões", desc: "Atendimento organizado tende a vender mais" },
-  { value: "60%", title: "Respostas mais rápidas", desc: "Menos espera, mais satisfação do cliente" },
-  { value: "0", title: "Atendimentos perdidos", desc: "Controle de fila e acompanhamento por status" },
-  { value: "100%", title: "Visibilidade do time", desc: "Produtividade e métricas em uma tela" },
-] as const;
-
-const antesDepois = [
-  {
-    antes: "Conversas perdidas no meio da bagunça",
-    depois: "Atendimentos organizados e rastreáveis",
-  },
-  {
-    antes: "Sem saber quem está atendendo o quê",
-    depois: "Visão completa do time em tempo real",
-  },
-  {
-    antes: "Impossível medir produtividade",
-    depois: "Métricas por atendente e por fila",
-  },
-  {
-    antes: "Decisões no escuro",
-    depois: "Decisões baseadas em dados reais",
-  },
-] as const;
+const FUNC_ICONS = [LayoutDashboard, LineChart, Users, Bot, History, FileChartColumn, Headset, UserPlus];
 
 export default function SistemaOnDesk() {
   const { content: cms } = useSiteContent("sistema_ondesk");
@@ -96,8 +31,30 @@ export default function SistemaOnDesk() {
     window.scrollTo(0, 0);
   }, []);
 
+  const funcionalidades = [1, 2, 3, 4, 5, 6, 7, 8].map((n, i) => ({
+    icon: FUNC_ICONS[i],
+    title: cms[`f${n}_titulo`] ?? "",
+    desc:  cms[`f${n}_desc`]  ?? "",
+  }));
+
+  const beneficios = [1, 2, 3, 4].map((n) => ({
+    value: cms[`b${n}_valor`]  ?? "",
+    title: cms[`b${n}_titulo`] ?? "",
+    desc:  cms[`b${n}_desc`]  ?? "",
+  }));
+
+  const antesDepois = [1, 2, 3, 4].map((n) => ({
+    antes:  cms[`ad${n}_antes`]  ?? "",
+    depois: cms[`ad${n}_depois`] ?? "",
+  }));
+
   const whatsappText =
     "Olá! Tenho interesse no Lógica.OnDesk. Gostaria de conhecer as funcionalidades e agendar uma demonstração.";
+
+  const blocos: SistemaBloco[] = (() => {
+    try { return JSON.parse(cms.blocos || "[]") as SistemaBloco[]; }
+    catch { return []; }
+  })().sort((a, b) => a.ordem - b.ordem);
 
   return (
     <div className="min-h-screen bg-[#0A0C10]">
@@ -153,7 +110,7 @@ export default function SistemaOnDesk() {
             >
               <Headset className="h-4 w-4" style={{ color: ACCENT }} />
               <span className="text-xs font-bold uppercase tracking-wider text-gray-200">
-                Lógica.OnDesk
+                {cms.hero_badge ?? "Lógica.OnDesk"}
               </span>
             </div>
             <div
@@ -172,27 +129,14 @@ export default function SistemaOnDesk() {
             className="mb-5 font-extrabold leading-tight text-gray-200"
             style={{ fontSize: "clamp(30px, 4.2vw, 56px)" }}
           >
-            Pare de adivinhar.{" "}
-            <span
-              style={{
-                background: `linear-gradient(135deg, ${ACCENT} 0%, #FF6B7A 100%)`,
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-              }}
-            >
-              Organize seu atendimento
-            </span>{" "}
-            e acelere resultados.
+            {cms.hero_titulo ?? "Pare de adivinhar. Organize seu atendimento e acelere resultados."}
           </h1>
 
           <p
-            className="mb-10 max-w-3xl text-gray-300/80"
+            className="mb-10 max-w-3xl whitespace-pre-wrap text-gray-300/80"
             style={{ fontSize: "clamp(14px, 1.6vw, 18px)" }}
           >
-            Transforme o caos do WhatsApp em métricas reais. Tenha controle total
-            da equipe em uma única tela, monitore produtividade em tempo real e
-            tome decisões rápidas com a sua nova central de comando.
+            {cms.hero_subtitulo ?? "Transforme o caos do WhatsApp em métricas reais. Tenha controle total da equipe em uma única tela, monitore produtividade em tempo real e tome decisões rápidas com a sua nova central de comando."}
           </p>
 
           <div className="flex flex-col gap-4 sm:flex-row">
@@ -355,10 +299,10 @@ export default function SistemaOnDesk() {
         <div className="mx-auto max-w-7xl">
           <div className="mb-14 text-center">
             <h2 className="mb-4 text-3xl font-extrabold text-gray-200 lg:text-4xl">
-              Funcionalidades completas
+              {cms.func_secao_titulo ?? "Funcionalidades completas"}
             </h2>
-            <p className="mx-auto max-w-3xl text-base text-gray-400 lg:text-lg">
-              Tudo o que você precisa para atender melhor e medir performance.
+            <p className="mx-auto max-w-3xl whitespace-pre-wrap text-base text-gray-400 lg:text-lg">
+              {cms.func_secao_desc ?? "Tudo o que você precisa para atender melhor e medir performance."}
             </p>
           </div>
 
@@ -420,11 +364,9 @@ export default function SistemaOnDesk() {
         <div className="mx-auto max-w-7xl">
           <div className="mb-14 text-center">
             <h2 className="mb-4 text-3xl font-extrabold text-gray-200 lg:text-4xl">
-              Resultados em números
+              {cms.ben_secao_titulo ?? "Resultados em números"}
             </h2>
-            <p
-              className="mx-auto max-w-3xl text-base text-gray-400 lg:text-lg"
-            >
+            <p className="mx-auto max-w-3xl text-base text-gray-400 lg:text-lg">
               Indicadores para acompanhar produtividade e conversão.
             </p>
           </div>
@@ -474,6 +416,45 @@ export default function SistemaOnDesk() {
         </div>
       </section>
 
+      {/* BLOCOS EXTRAS */}
+      {blocos.map((sec, idx) => {
+        const hasImage = Boolean(sec.imagem?.trim());
+        const hasTitulo = Boolean(sec.titulo?.trim());
+        const hasTexto = Boolean(sec.texto?.trim());
+        if (!hasImage && !hasTitulo && !hasTexto) return null;
+        const bg = idx % 2 === 0 ? "#12141A" : "#0A0C10";
+        return (
+          <section key={sec.id} className="relative overflow-hidden py-24" style={{ background: bg }}>
+            <div
+              className="pointer-events-none absolute z-0"
+              style={{
+                width: 500, height: 500, top: "-15%",
+                [idx % 2 === 0 ? "right" : "left"]: "-10%",
+                background: "radial-gradient(circle, rgba(255, 71, 87, 0.07) 0%, transparent 70%)",
+                filter: "blur(100px)",
+              }}
+            />
+            <div className="relative z-10 mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
+              <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
+                {hasImage ? (
+                  <ImageZoom src={sec.imagem} alt={sec.titulo || "Seção"} />
+                ) : (
+                  <span className="hidden lg:block" aria-hidden />
+                )}
+                <div className="flex flex-col justify-center space-y-4">
+                  {hasTitulo && (
+                    <h2 className="text-3xl font-extrabold text-gray-200 lg:text-4xl">{sec.titulo}</h2>
+                  )}
+                  {hasTexto && (
+                    <p className="whitespace-pre-wrap text-base leading-relaxed text-gray-400 lg:text-lg">{sec.texto}</p>
+                  )}
+                </div>
+              </div>
+            </div>
+          </section>
+        );
+      })}
+
       {/* CTA FINAL */}
       <section
         className="relative overflow-hidden py-20"
@@ -483,18 +464,16 @@ export default function SistemaOnDesk() {
       >
         <div className="relative z-10 mx-auto max-w-4xl px-4 text-center md:px-6 lg:px-8">
           <h2 className="mb-4 text-3xl font-extrabold text-white md:text-4xl">
-            Quer organizar seu atendimento no WhatsApp?
+            {cms.cta_titulo ?? "Quer organizar seu atendimento no WhatsApp?"}
           </h2>
-          <p className="mb-8 text-lg text-gray-400">
-            Agende uma demonstração e veja como o Lógica.OnDesk transforma volume
-            em produtividade, métricas e resultado.
+          <p className="mb-8 whitespace-pre-wrap text-lg text-gray-400">
+            {cms.cta_desc ?? "Agende uma demonstração e veja como o Lógica.OnDesk transforma volume em produtividade, métricas e resultado."}
           </p>
           <button
             type="button"
             onClick={() =>
               window.open(
-                "https://wa.me/5547984218275?text=" +
-                  encodeURIComponent(whatsappText),
+                cms.cta_link || "https://wa.me/5547984218275?text=" + encodeURIComponent(whatsappText),
                 "_blank"
               )
             }
@@ -505,7 +484,7 @@ export default function SistemaOnDesk() {
             }}
           >
             <MessageCircle className="h-6 w-6" />
-            Falar no WhatsApp
+            {cms.cta_btn || "Quero conhecer o OnDesk"}
           </button>
         </div>
       </section>

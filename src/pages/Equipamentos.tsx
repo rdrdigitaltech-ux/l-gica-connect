@@ -65,7 +65,7 @@ export default function Equipamentos() {
   return (
     <div className="min-h-screen bg-[#0A0C10]">
       <section
-        className="relative overflow-hidden pt-32 pb-20"
+        className="relative overflow-hidden pt-32 pb-8"
         style={{
           background:
             "linear-gradient(180deg, #000000 0%, #0A0C10 50%, #12141A 100%)",
@@ -108,7 +108,7 @@ export default function Equipamentos() {
         </div>
       </section>
 
-      <section className="py-4" style={{ background: "#12141A" }}>
+      <section className="py-3" style={{ background: "#12141A" }}>
         <div className="mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
           <div className="mb-4 flex items-center justify-between lg:hidden">
             <h3 className="text-lg font-bold text-gray-200">
@@ -257,7 +257,7 @@ export default function Equipamentos() {
       </section>
 
       <section
-        className="relative overflow-hidden py-24"
+        className="relative overflow-hidden py-12"
         style={{ background: "#12141A" }}
       >
         <div
